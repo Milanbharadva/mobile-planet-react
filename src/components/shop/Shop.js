@@ -35,16 +35,17 @@ const Shop = () => {
             data.map((item) => (
               <div
                 key={item.ID}
-                className={`a hover:shadow-none flex cursor-pointer flex-col py-8 items-center gap-2    ${item.categoryname}`}
-                onClick={() => {
-                  navigate(`/singleproduct/${item.ID}`);
-                }}
+                className={`a hover:shadow-none flex  flex-col py-8 items-center gap-2    ${item.categoryname}`}
               >
                 <img
                   src={`${window.location.origin}/assets/product/${item.productimage}`}
                   height="300px"
                   // className="object-contain"
                   alt={`${item.productname}`}
+                  onClick={() => {
+                    navigate(`/singleproduct/${item.ID}`);
+                  }}
+                  className="cursor-pointer"
                 />
                 <h1 className="text-lg md:text-2xl font-bold">
                   {item.productname.toUpperCase()}

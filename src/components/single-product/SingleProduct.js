@@ -31,7 +31,7 @@ const SingleProduct = () => {
                 className="object-contain"
               />
             </div>
-            <div className="md:w-[60%] md:ml-6 flex flex-col gap-5 justify-center">
+            <div className="md:w-[60%] md:ml-24 flex flex-col gap-5 justify-center">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
                 {product.productname.toUpperCase()}
               </h2>

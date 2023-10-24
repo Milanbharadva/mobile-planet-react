@@ -20,7 +20,7 @@ const Category = () => {
           return (
             <div
               className="flex flex-col justify-between items-center a p-10 hover:shadow-none transition cursor-pointer"
-              onClick={() => navigate(`/?cat=${item.categoryname}`)}
+              onClick={() => navigate(`/product/${item.categoryname}`)}
             >
               <img
                 src={`${window.location.origin}/assets/category/${item.categoryname}.jpg`}

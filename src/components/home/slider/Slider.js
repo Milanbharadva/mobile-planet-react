@@ -27,7 +27,7 @@ const Slider2 = () => {
               <div key={index} className="w-full flex-shrink-0">
                 <img
                   src={`${window.location.origin}/assets/slider/${image}`}
-                  alt={`Image ${index}`}
+                  alt={` ${index}`}
                   className="w-full lg:h-[500px] object-contain"
                 />
               </div>

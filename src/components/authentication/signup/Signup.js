@@ -23,7 +23,7 @@ const Signup = () => {
   const validate = (e) => {
     e.preventDefault();
     console.log(true);
-    if (data.email != "" && data.password != "") {
+    if (data.email !== "" && data.password !== "") {
       fetch(
         "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json",
         {
