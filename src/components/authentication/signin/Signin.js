@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
 
@@ -12,6 +12,10 @@ const Signin = (props) => {
     password: "",
   };
   const [formdata, setFormdata] = useState(objstructutre);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handler = (e) => {
     e.preventDefault();
@@ -30,9 +34,9 @@ const Signin = (props) => {
         )
         .map((userdata) => {
           localStorage.setItem("userid", userdata.ID);
-          console.log(userdata)
-          props.onchange()
-          navigate('/')
+          console.log(userdata);
+          props.onchange();
+          navigate("/");
         });
     }
   };

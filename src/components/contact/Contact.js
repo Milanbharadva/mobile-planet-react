@@ -2,8 +2,12 @@ import Breadcrumb from "../breadcrumb/Breadcrumb";
 import { BsFillMapFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { FaAddressBook, FaMapMarkerAlt } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const Contact = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const objstructure = {
     name: "",
     email: "",
@@ -29,7 +33,6 @@ const Contact = () => {
       .then((res) => res.json())
       .then((data) => (data.name ? setDatastatus(true) : ""));
     setFormdata(objstructure);
-    
   };
   const handler = (e) => {
     e.preventDefault();

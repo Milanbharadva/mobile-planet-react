@@ -147,13 +147,13 @@ const Navbar = (props) => {
                   }}
                 >
                   <li className="hover:text-[#F28123] transition [#F28123] cursor-pointer">
-                    SIGN OUT
+                    SIGN&nbsp;OUT
                   </li>
                 </Link>
               ) : (
                 <NavLink to="/signin">
                   <li className="hover:text-[#F28123] transition [#F28123] cursor-pointer">
-                    SIGN IN
+                    SIGN&nbsp;IN
                   </li>
                 </NavLink>
               )}
