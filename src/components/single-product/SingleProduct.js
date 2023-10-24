@@ -25,11 +25,20 @@ const SingleProduct = () => {
             className="flex md:flex-row  flex-col mx-5 sm:mx-10 md:mx-20 lg:mx-30"
           >
             <div className="md:w-[40%] a px-2 py-4">
-              <img
-                src={`${window.location.origin}/assets/product/${product.productimage}`}
-                alt={product.productname}
-                className="object-contain"
-              />
+              <a
+                href={`${window.location.origin}/assets/product/${product.productimage}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  src={`${window.location.origin}/assets/product/${product.productimage}`}
+                  alt={product.productname}
+                  className="object-contain cursor-pointer"
+                  onClick={() => {
+                    window.location.href = `${window.location.origin}/assets/product/${product.productimage}`;
+                  }}
+                />
+              </a>
             </div>
             <div className="md:w-[60%] md:ml-24 flex flex-col gap-5 justify-center">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">

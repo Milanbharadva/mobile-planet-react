@@ -4,12 +4,16 @@ import { AiOutlineClockCircle } from "react-icons/ai";
 import { FaAddressBook, FaMapMarkerAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Contact = () => {
+  const notify = () =>
+    toast.success("Your contact request is submitted successfully");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  document.title="Mobile Planet | Contact Us"
+  document.title = "Mobile Planet | Contact Us";
 
   const objstructure = {
     ID: uuidv4(),
@@ -36,7 +40,7 @@ const Contact = () => {
       }
     )
       .then((res) => res.json())
-      .then((data) => (data.name ? setDatastatus(true) : ""));
+      .then((data) => (data.name ? notify() : ""));
     setFormdata(objstructure);
   };
   const handler = (e) => {
@@ -48,6 +52,8 @@ const Contact = () => {
   return (
     <section>
       <Breadcrumb paragraph="GET 24/7 SUPPORT" heading="Contact us" />
+      <ToastContainer />
+
       <div className="md:mx-16 mx-10 flex lg:flex-row flex-col space-y-4 lg:mx-20 mt-32 mb-32">
         <div className="lg:w-[60%]">
           <div>
@@ -71,6 +77,7 @@ const Contact = () => {
                     className="h-12 w-full mb-5 md:mb-0 md:w-[48%] mr-4 p-4 "
                     onChange={handler}
                     value={formdata.name}
+                    required
                   />
                   <input
                     type="email"
@@ -79,6 +86,7 @@ const Contact = () => {
                     name="email"
                     onChange={handler}
                     value={formdata.email}
+                    required
                   />
                 </div>
                 <div className="w-full mb-4">
@@ -89,6 +97,7 @@ const Contact = () => {
                     name="phone"
                     onChange={handler}
                     value={formdata.phone}
+                    required
                   />
                   <input
                     type="text"
@@ -97,6 +106,7 @@ const Contact = () => {
                     name="subject"
                     onChange={handler}
                     value={formdata.subject}
+                    required
                   />
                 </div>
                 <textarea
@@ -105,6 +115,7 @@ const Contact = () => {
                   name="message"
                   onChange={handler}
                   value={formdata.message}
+                  required
                 ></textarea>
                 <button className="buttons">Submit</button>
               </form>

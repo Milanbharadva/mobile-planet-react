@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Signin = (props) => {
+  const notify = () => toast.error("Wrong Email or Password");
+  const notify2 = () => toast.success("Login sucessful");
+
   const [error, setError] = useState(false);
   document.title = "Mobile Planet | Sign In";
 
@@ -37,11 +41,12 @@ const Signin = (props) => {
         items.map((userdata) => {
           localStorage.setItem("userid", userdata.ID);
           props.onchange();
+          notify2()
           navigate("/");
           return 0;
         });
       } else {
-        setError(true);
+        notify();
       }
     }
   };
@@ -85,11 +90,8 @@ const Signin = (props) => {
           <button className="buttons">SIGN IN</button>
         </form>
       </div>
-      {error && (
-        <h2 className="flex justify-center text-lg font-semibold text-red-800">
-          Wrong Email or Password
-        </h2>
-      )}
+      <ToastContainer />
+
       <div className="mt-3">
         <h2 className="flex justify-center text-md font-semibold">
           Don't have an account ? &nbsp;
