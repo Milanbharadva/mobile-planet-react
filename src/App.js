@@ -14,7 +14,7 @@ export default function App() {
   const [userstatus, setUserstatus] = useState(false);
 
   const setstatus = () => {
-    setUserstatus((prevstate) => !prevstate);
+    setUserstatus(!userstatus);
   };
   return (
     <div>

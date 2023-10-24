@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
 
 const Signin = (props) => {
-  const { data, error, isPending } = useFetch(
+  const { data } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
   );
   const navigate = useNavigate();
@@ -36,7 +36,9 @@ const Signin = (props) => {
           console.log(userdata);
           props.onchange();
           navigate("/");
-        });
+          return 0
+        }
+        );
     }
   };
   return (
