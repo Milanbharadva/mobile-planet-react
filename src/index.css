@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+img {
+    height: revert-layer;
+    width: revert-layer;
+    object-fit: contain;
+}

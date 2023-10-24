@@ -1,0 +1,39 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  scroll-behavior: smooth;
+  padding: 0;
+}
+
+.active {
+  color: #F28123;
+}
+
+.buttons {
+  margin-top: 15px;
+  background-color: #F28123;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 50px;
+}
+
+.a {
+  box-shadow: 0 0 20px #e4e4e4;
+}
+
+.buttons:hover {
+  color: #F28123;
+  background-color: #051922;
+  transition: all .1s;
+}
+
+.icons {
+  border: 2px #F28123 dotted;
+  border-radius: 50%;
+  padding: 16px;
+  height: fit-content;
+}
+
+input {
+  border: 1px solid rgb(53, 52, 52);
+}
