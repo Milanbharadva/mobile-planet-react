@@ -10,9 +10,7 @@ const Shop = () => {
   const { data, error, isPending } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
   );
-  if (data != null) {
-    var val = Object.values(data);
-  }
+
   return (
     <div className="mt-10">
       {error && (
@@ -29,7 +27,7 @@ const Shop = () => {
       )}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-10  px-20">
         {data &&
-          val.map((item) => (
+          data.map((item) => (
             <div
               key={item.ID}
               className="flex flex-col items-center gap-2 md:mt-5"

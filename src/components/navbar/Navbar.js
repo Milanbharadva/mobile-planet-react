@@ -11,9 +11,7 @@ const Navbar = (props) => {
   const { data } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
   );
-  if (data != null) {
-    var val = Object.values(data);
-  }
+
   const [click, setClick] = useState(false);
   const content = (
     <>
@@ -59,8 +57,8 @@ const Navbar = (props) => {
           >
             <li className="my-4 py-4   hover:rounded">PRODUCT</li>
           </NavLink>
-          {val &&
-          val.filter((item) => item.ID === localStorage.getItem("userid"))
+          {data &&
+          data.filter((item) => item.ID === localStorage.getItem("userid"))
             .length > 0 ? (
             <Link
               onClick={() => {
@@ -137,8 +135,8 @@ const Navbar = (props) => {
                   PRODUCT
                 </li>
               </NavLink>
-              {val &&
-              val.filter((item) => item.ID === localStorage.getItem("userid"))
+              {data &&
+              data.filter((item) => item.ID === localStorage.getItem("userid"))
                 .length > 0 ? (
                 <Link
                   onClick={() => {

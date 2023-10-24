@@ -3,12 +3,15 @@ import { BsFillMapFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { FaAddressBook, FaMapMarkerAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
 const Contact = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const objstructure = {
+    ID: uuidv4(),
     name: "",
     email: "",
     phone: "",
@@ -20,6 +23,7 @@ const Contact = () => {
 
   const validate = (e) => {
     e.preventDefault();
+    console.log(formdata);
     fetch(
       "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/contact.json",
       {

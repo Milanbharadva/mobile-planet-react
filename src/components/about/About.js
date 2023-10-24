@@ -1,9 +1,10 @@
 import Breadcrumb from "../breadcrumb/Breadcrumb";
 import { FaMoneyBillAlt, FaSyncAlt, FaTruck } from "react-icons/fa";
 import { BsBriefcaseFill } from "react-icons/bs";
-const About = () => { const top = () => {
-  window.scrollTo(0, 0);
-};
+const About = () => {
+  const top = () => {
+    window.scrollTo(0, 0);
+  };
   return (
     <section>
       {top()}

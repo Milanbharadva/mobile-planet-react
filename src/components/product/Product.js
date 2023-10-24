@@ -7,12 +7,9 @@ const Product = () => {
   const { data, error, isPending } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
   );
-  if (data != null) {
-    var val = Object.values(data);
-  }
   return (
     <div className="mt-10 md:mx-20 sm:mx-10 mx-3 lg:mx-20 xl:mx-48 ">
-      {error && (
+      {error && !isPending && (
         <div className="flex items-center justify-center">
           <h1 className="text-3xl font-semibold text-red-700">
             Error in fetch please try again later.
@@ -25,8 +22,10 @@ const Product = () => {
         </div>
       )}
       <div>
-        {val &&
-          val.map((item) => (
+        {data &&
+          !isPending &&
+          !error &&
+          data.map((item) => (
             <div
               key={item.ID}
               className="flex justify-around py-5 border-2 items-center md:items-start md:flex-row flex-col gap-8"

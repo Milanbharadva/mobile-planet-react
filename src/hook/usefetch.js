@@ -12,7 +12,7 @@ export const useFetch = (url) => {
         if (!response.ok) throw new Error(response.statusText);
         const json = await response.json();
         setIsPending(false);
-        setData(json);
+        setData(Object.values(json));
         setError(null);
       } catch (error) {
         setError(`${error} Could not Fetch Data `);

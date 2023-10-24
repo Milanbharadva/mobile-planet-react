@@ -26,8 +26,7 @@ const Signin = (props) => {
   const validate = (e) => {
     e.preventDefault();
     if (data != null) {
-      var val = Object.values(data);
-      val
+      data
         .filter(
           (item) =>
             item.email === formdata.email && item.password === formdata.password
