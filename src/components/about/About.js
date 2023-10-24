@@ -1,13 +1,16 @@
 import Breadcrumb from "../breadcrumb/Breadcrumb";
 import { FaMoneyBillAlt, FaSyncAlt, FaTruck } from "react-icons/fa";
 import { BsBriefcaseFill } from "react-icons/bs";
+import { useEffect } from "react";
 const About = () => {
-  const top = () => {
+  useEffect(() => {
     window.scrollTo(0, 0);
-  };
+  },[])
+  document.title="Mobile Planet | About"
+
   return (
     <section>
-      {top()}
+      
       <Breadcrumb paragraph="we sale mobiles" heading="About Us" />
       <div className="flex lg:flex-row gap-10 lg:gap-0 flex-col mx-3 md:mx-10">
         <div className="flex flex-col lg:w-[50%] justify-center gap-8">

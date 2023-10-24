@@ -9,6 +9,7 @@ const Contact = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  document.title="Mobile Planet | Contact Us"
 
   const objstructure = {
     ID: uuidv4(),

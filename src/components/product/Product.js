@@ -4,6 +4,8 @@ const Product = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  document.title = "Mobile Planet | Product";
+
   const { data, error, isPending } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
   );

@@ -2,7 +2,7 @@ import { NavLink, Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useState } from "react";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { useFetch } from "../../hook/usefetch";
 const Navbar = (props) => {
   const handleclick = () => {
@@ -90,6 +90,17 @@ const Navbar = (props) => {
               <AiOutlineShoppingCart className="text-2xl" />
             </li>
           </NavLink>
+          <NavLink
+            to="/profile"
+            className="inline-block"
+            onClick={() => {
+              setClick(false);
+            }}
+          >
+            <li className="my-4 py-4 hover:rounded">
+              <AiOutlineUser className="text-2xl" />
+            </li>
+          </NavLink>
         </ul>
       </div>
     </>
@@ -158,6 +169,11 @@ const Navbar = (props) => {
               <NavLink to="/cart">
                 <li>
                   <AiOutlineShoppingCart className="text-2xl hover:fill-[#F28123]" />
+                </li>
+              </NavLink>
+              <NavLink to="/profile">
+                <li>
+                  <AiOutlineUser className="text-2xl hover:fill-[#F28123]" />
                 </li>
               </NavLink>
             </ul>

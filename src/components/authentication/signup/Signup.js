@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 const Signup = () => {
+  document.title = "Mobile Planet | Sign Up";
+
   const navigate = useNavigate();
   const objstructutre = {
     ID: uuidv4(),
@@ -11,6 +13,8 @@ const Signup = () => {
     email: "",
   };
   const [data, setData] = useState(objstructutre);
+  const [error, setError] = useState(false);
+
   const handler = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -18,18 +22,24 @@ const Signup = () => {
   };
   const validate = (e) => {
     e.preventDefault();
-    fetch(
-      "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json",
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => (data.name ? navigate("/signin") : ""));
+    console.log(true);
+    if (data.email != "" && data.password != "") {
+      fetch(
+        "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => (data.name ? navigate("/signin") : ""));
+    } else {
+      console.log("error");
+      setError(true);
+    }
   };
   return (
     <div>
@@ -51,6 +61,7 @@ const Signup = () => {
               value={data.username}
               onChange={handler}
               placeholder="Username"
+              required
             />
           </div>
           <div className="flex flex-col items-center gap-2">
@@ -64,6 +75,7 @@ const Signup = () => {
               value={data.email}
               onChange={handler}
               placeholder="Email"
+              required
             />
           </div>
 
@@ -78,11 +90,17 @@ const Signup = () => {
               value={data.password}
               onChange={handler}
               placeholder="Password"
+              required
             />
           </div>
           <button className="buttons">SIGN UP</button>
         </form>
       </div>
+      {error && (
+        <h2 className="flex justify-center text-lg font-semibold text-red-800">
+          Please fill all the details.
+        </h2>
+      )}
       <div className="mt-3">
         <h2 className="flex justify-center text-md font-semibold">
           Already have an account ? &nbsp;

@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
 
 const Signin = (props) => {
+  const [error, setError] = useState(false);
+  document.title = "Mobile Planet | Sign In";
+
   const { data } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
   );
@@ -26,19 +29,20 @@ const Signin = (props) => {
   const validate = (e) => {
     e.preventDefault();
     if (data != null) {
-      data
-        .filter(
-          (item) =>
-            item.email === formdata.email && item.password === formdata.password
-        )
-        .map((userdata) => {
+      let items = data.filter(
+        (item) =>
+          item.email === formdata.email && item.password === formdata.password
+      );
+      if (items.length > 0) {
+        items.map((userdata) => {
           localStorage.setItem("userid", userdata.ID);
-          console.log(userdata);
           props.onchange();
           navigate("/");
-          return 0
-        }
-        );
+          return 0;
+        });
+      } else {
+        setError(true);
+      }
     }
   };
   return (
@@ -60,6 +64,7 @@ const Signin = (props) => {
               value={formdata.email}
               onChange={handler}
               placeholder="Email"
+              required
             />
           </div>
 
@@ -74,11 +79,17 @@ const Signin = (props) => {
               value={formdata.password}
               onChange={handler}
               placeholder="Password"
+              required
             />
           </div>
           <button className="buttons">SIGN IN</button>
         </form>
       </div>
+      {error && (
+        <h2 className="flex justify-center text-lg font-semibold text-red-800">
+          Wrong Email or Password
+        </h2>
+      )}
       <div className="mt-3">
         <h2 className="flex justify-center text-md font-semibold">
           Don't have an account ? &nbsp;
