@@ -15,7 +15,6 @@ import Profile from "./components/profile/Profile";
 import SingleProduct from "./components/single-product/SingleProduct";
 
 export default function App() {
-  console.log("home running")
 
   const [userstatus, setUserstatus] = useState(false);
 
@@ -26,7 +25,6 @@ export default function App() {
   document.title = "Mobile Planet";
   return (
     <div>
-      {" "}
       <Navbar onchange={setstatus} />
       <Routes>
         <Route exact path="/" element={<Home />} />

@@ -73,7 +73,8 @@ const Navbar = (props) => {
           loadeddata.filter(
             (item) => item.data.ID === localStorage.getItem("userid")
           ).length > 0 ? (
-            <Link
+            <li
+              className="my-4 py-4   hover:rounded cursor-pointer"
               onClick={() => {
                 setClick(false);
                 props.onchange();
@@ -81,8 +82,8 @@ const Navbar = (props) => {
                 notify();
               }}
             >
-              <li className="my-4 py-4   hover:rounded">SIGN OUT</li>
-            </Link>
+              SIGN OUT
+            </li>
           ) : (
             <NavLink
               to="/signin"
@@ -100,8 +101,9 @@ const Navbar = (props) => {
               setClick(false);
             }}
           >
-            <li className="my-4 py-4  hover:rounded">
+            <li className=" hover:rounded flex">
               <AiOutlineShoppingCart className="text-2xl" />
+              <span className="inline text-sm -pt-1">{count}</span>
             </li>
           </NavLink>
           {loadeddata &&
@@ -193,9 +195,7 @@ const Navbar = (props) => {
               <NavLink to="/cart">
                 <li className="flex gap-0 ">
                   <AiOutlineShoppingCart className="text-2xl hover:fill-[#F28123]" />
-                  <span className="text-sm pt-1">
-                    {fetchdata.loadeddata && count}
-                  </span>
+                  <span className="text-sm pt-1">{count}</span>
                 </li>
               </NavLink>
               {loadeddata &&

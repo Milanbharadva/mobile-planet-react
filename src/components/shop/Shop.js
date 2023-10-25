@@ -2,11 +2,50 @@ import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../hook/usefetch";
 import { useEffect } from "react";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
-
+import { v4 as uuidv4 } from "uuid";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Shop = () => {
   const { loadeddata, error, isPending } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
   );
+
+  const notify = () => toast.success("Product added to cart");
+  const notify2 = () => toast.warning("Please log in to add to cart");
+  const notify3 = () =>
+    toast.error("error in add to cart please try again later");
+  function addtocart(productid) {
+    if (localStorage.getItem("userid")) {
+      const itemdata = {
+        ID: uuidv4(),
+        userid: localStorage.getItem("userid"),
+        productid: productid,
+        quantity: 1,
+      };
+      console.log(itemdata);
+        fetch(
+          "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json",
+          {
+            method: "POST",
+            body: JSON.stringify(itemdata),
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((loadeddata) => {
+            if (loadeddata.name) {
+              notify();
+            } else {
+              notify3();
+            }
+          });
+      } else {
+        notify2();
+    }
+  }
+
   document.title = "Mobile Planet | Shop";
 
   useEffect(() => {
@@ -55,7 +94,9 @@ const Shop = () => {
                   {item.data.productprice}₹
                 </p>
                 <button
-                  onClick={() => navigate("/cart")}
+                  onClick={() => {
+                    addtocart(`${item.data.ID}`);
+                  }}
                   className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
                 >
                   Add to cart

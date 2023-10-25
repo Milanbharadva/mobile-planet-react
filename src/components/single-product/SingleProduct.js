@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const SingleProduct = (props) => {
-  console.log("single product running")
   const notify = () => toast.success("Product added to cart");
   const notify2 = () => toast.warning("Please log in to add to cart");
   const notify3 = () =>
@@ -44,12 +43,9 @@ const SingleProduct = (props) => {
         .then((loadeddata) => {
           if (loadeddata.name) {
             notify();
-           setTimeout(() => {
             props.onchange(true);
-           }, 5000);
-          }
-          else{
-            notify3()
+          } else {
+            notify3();
           }
         });
     } else {
