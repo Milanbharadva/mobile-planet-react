@@ -42,7 +42,7 @@ const SingleProduct = (props) => {
         .then((res) => res.json())
         .then((data) =>{
           if(data.name){
-            // notify();
+            notify();
             props.onchange(true);
           }
         }
