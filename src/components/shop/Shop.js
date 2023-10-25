@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
 
 const Shop = () => {
-  const { data, error, isPending } = useFetch(
+  const { loadeddata, error, isPending } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
   );
   document.title = "Mobile Planet | Shop";
@@ -31,26 +31,29 @@ const Shop = () => {
           </div>
         )}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-5 px-10 md:px-24  lg:px-32">
-          {data &&
-            data.map((item) => (
+          {loadeddata &&
+            loadeddata.map((item) => (
               <div
-                key={item.ID}
-                className={`a hover:shadow-none flex  flex-col py-8 items-center gap-2    ${item.categoryname}`}
+                key={item.data.ID}
+                className={`a hover:shadow-none flex  flex-col py-8 items-center gap-2
+                 ${item.data.categoryname}`}
               >
                 <img
-                  src={`${window.location.origin}/assets/product/${item.productimage}`}
+                  src={`${window.location.origin}/assets/product/${item.data.productimage}`}
                   height="300px"
                   // className="object-contain"
-                  alt={`${item.productname}`}
+                  alt={`${item.data.productname}`}
                   onClick={() => {
-                    navigate(`/singleproduct/${item.ID}`);
+                    navigate(`/singleproduct/${item.data.ID}`);
                   }}
                   className="cursor-pointer"
                 />
                 <h1 className="text-lg md:text-2xl font-bold">
-                  {item.productname.toUpperCase()}
+                  {item.data.productname.toUpperCase()}
                 </h1>
-                <p className="text-xl font-semibold">{item.productprice}₹</p>
+                <p className="text-xl font-semibold">
+                  {item.data.productprice}₹
+                </p>
                 <button
                   onClick={() => navigate("/cart")}
                   className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"

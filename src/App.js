@@ -15,6 +15,8 @@ import Profile from "./components/profile/Profile";
 import SingleProduct from "./components/single-product/SingleProduct";
 
 export default function App() {
+  console.log("home running")
+
   const [userstatus, setUserstatus] = useState(false);
 
   const setstatus = () => {

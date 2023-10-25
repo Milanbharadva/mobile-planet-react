@@ -3,13 +3,18 @@ import { useFetch } from "../../../hook/usefetch";
 
 const Category = () => {
   const navigate = useNavigate();
-  const { data } = useFetch(
+  const { loadeddata } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
   );
   let uniqdata;
-  if (data != null) {
-    uniqdata = data.filter((obj, i) => {
-      return i === data.findIndex((o) => obj.categoryname === o.categoryname);
+  if (loadeddata != null) {
+    uniqdata = loadeddata.filter((obj, i) => {
+      return (
+        i ===
+        loadeddata.findIndex(
+          (o) => obj.data.categoryname === o.data.categoryname
+        )
+      );
     });
   }
 
@@ -19,18 +24,19 @@ const Category = () => {
         uniqdata.map((item) => {
           return (
             <div
+            key={item.data.ID}
               className="flex flex-col justify-between items-center a p-10 hover:shadow-none transition cursor-pointer"
-              onClick={() => navigate(`/product/${item.categoryname}`)}
+              onClick={() => navigate(`/product/${item.data.categoryname}`)}
             >
               <img
-                src={`${window.location.origin}/assets/category/${item.categoryname}.jpg`}
+                src={`${window.location.origin}/assets/category/${item.data.categoryname}.jpg`}
                 height="300px"
                 width="260px"
                 className="mix-blend-hard-light"
-                alt={`logo of ${item.categoryname}`}
+                alt={`logo of ${item.data.categoryname}`}
               />
               <h3 className=" text-xl font-semibold capitalize">
-                {item.categoryname}
+                {item.data.categoryname}
               </h3>
 
               <button className="buttons">Explore More</button>

@@ -12,7 +12,7 @@ const Navbar = (props) => {
   const handleclick = () => {
     setClick(!click);
   };
-  const { data } = useFetch(
+  const { loadeddata } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
   );
   const fetchdata = useFetch(
@@ -20,9 +20,9 @@ const Navbar = (props) => {
   );
 
   const count =
-    fetchdata.data &&
-    fetchdata.data.filter(
-      (item) => item.userid === localStorage.getItem("userid")
+    fetchdata.loadeddata &&
+    fetchdata.loadeddata.filter(
+      (item) => item.data.userid === localStorage.getItem("userid")
     ).length;
   const [click, setClick] = useState(false);
   const content = (
@@ -69,9 +69,10 @@ const Navbar = (props) => {
           >
             <li className="my-4 py-4   hover:rounded">PRODUCT</li>
           </NavLink>
-          {data &&
-          data.filter((item) => item.ID === localStorage.getItem("userid"))
-            .length > 0 ? (
+          {loadeddata &&
+          loadeddata.filter(
+            (item) => item.data.ID === localStorage.getItem("userid")
+          ).length > 0 ? (
             <Link
               onClick={() => {
                 setClick(false);
@@ -103,9 +104,10 @@ const Navbar = (props) => {
               <AiOutlineShoppingCart className="text-2xl" />
             </li>
           </NavLink>
-          {data &&
-          data.filter((item) => item.ID === localStorage.getItem("userid"))
-            .length > 0 ? (
+          {loadeddata &&
+          loadeddata.filter(
+            (item) => item.data.ID === localStorage.getItem("userid")
+          ).length > 0 ? (
             <NavLink
               to="/profile"
               className="inline-block"
@@ -166,9 +168,10 @@ const Navbar = (props) => {
                   PRODUCT
                 </li>
               </NavLink>
-              {data &&
-              data.filter((item) => item.ID === localStorage.getItem("userid"))
-                .length > 0 ? (
+              {loadeddata &&
+              loadeddata.filter(
+                (item) => item.data.ID === localStorage.getItem("userid")
+              ).length > 0 ? (
                 <Link
                   onClick={() => {
                     props.onchange();
@@ -191,13 +194,14 @@ const Navbar = (props) => {
                 <li className="flex gap-0 ">
                   <AiOutlineShoppingCart className="text-2xl hover:fill-[#F28123]" />
                   <span className="text-sm pt-1">
-                    {fetchdata.data && count}
+                    {fetchdata.loadeddata && count}
                   </span>
                 </li>
               </NavLink>
-              {data &&
-              data.filter((item) => item.ID === localStorage.getItem("userid"))
-                .length > 0 ? (
+              {loadeddata &&
+              loadeddata.filter(
+                (item) => item.data.ID === localStorage.getItem("userid")
+              ).length > 0 ? (
                 <NavLink to="/profile">
                   <li>
                     <AiOutlineUser className="text-2xl hover:fill-[#F28123]" />

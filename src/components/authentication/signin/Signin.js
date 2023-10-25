@@ -10,7 +10,7 @@ const Signin = (props) => {
   const [error, setError] = useState(false);
   document.title = "Mobile Planet | Sign In";
 
-  const { data } = useFetch(
+  const { loadeddata } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
   );
   const navigate = useNavigate();
@@ -32,14 +32,14 @@ const Signin = (props) => {
 
   const validate = (e) => {
     e.preventDefault();
-    if (data != null) {
-      let items = data.filter(
+    if (loadeddata != null) {
+      let items = loadeddata.filter(
         (item) =>
-          item.email === formdata.email && item.password === formdata.password
+          item.data.email === formdata.email && item.data.password === formdata.password
       );
       if (items.length > 0) {
         items.map((userdata) => {
-          localStorage.setItem("userid", userdata.ID);
+          localStorage.setItem("userid", userdata.data.ID);
           props.onchange();
           notify2();
           navigate("/");
@@ -69,7 +69,7 @@ const Signin = (props) => {
               value={formdata.email}
               onChange={handler}
               placeholder="Email"
-              required
+              
             />
           </div>
 
@@ -84,7 +84,7 @@ const Signin = (props) => {
               value={formdata.password}
               onChange={handler}
               placeholder="Password"
-              required
+              
             />
           </div>
           <button className="buttons">SIGN IN</button>

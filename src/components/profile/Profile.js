@@ -2,14 +2,15 @@ import { useRef } from "react";
 import { useFetch } from "../../hook/usefetch";
 
 const Profile = () => {
-  const { data } = useFetch(
+  const { loadeddata } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
   );
-  if (data != null) {
-    var items = data
-      .filter((item) => item.ID === localStorage.getItem("userid"))
+  if (loadeddata != null) {
+    var items = loadeddata
+      .filter((item) => item.data.ID === localStorage.getItem("userid"))
       .map((filtereditem) => filtereditem)[0];
   }
+
   let idref = useRef();
   let usernameref = useRef();
   let passwordref = useRef();
@@ -19,7 +20,6 @@ const Profile = () => {
   let postallref = useRef();
   let countryref = useRef();
   let stateref = useRef();
-
   function validate(e) {
     e.preventDefault();
 
@@ -34,9 +34,8 @@ const Profile = () => {
       country: countryref.current.value,
       state: stateref.current.value,
     };
-
     fetch(
-      "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json",
+      `https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user/${items.id}`,
       {
         method: "POST",
         body: JSON.stringify(obj),
@@ -46,7 +45,7 @@ const Profile = () => {
       }
     )
       .then((res) => res.json())
-      .then((data) => (data.name ? <p>data submitted</p> : ""));
+      .then((data) => (data.name ? console.log("sucess") : ""));
   }
   document.title = "Mobile Planet | Profile";
   return (
@@ -61,7 +60,7 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 p-4 "
               name="ID"
               ref={idref}
-              value={items && items.ID}
+              value={items && items.data.ID}
               disabled
             />
           </div>
@@ -72,7 +71,7 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 p-4 "
               name="ID"
               ref={passwordref}
-              value={items && items.password}
+              value={items && items.data.password}
               disabled
             />
           </div>
@@ -83,7 +82,7 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 p-4 "
               name="username"
               ref={usernameref}
-              value={items && items.username}
+              value={items && items.data.username}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -93,7 +92,7 @@ const Profile = () => {
               className="h-5  w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 p-4 "
               name="email"
               ref={emailref}
-              value={items && items.email}
+              value={items && items.data.email}
               disabled
             />
           </div>
@@ -104,7 +103,7 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 p-4 "
               name="phone"
               ref={phoneref}
-              value={items && items.phone}
+              value={items && items.data.phone}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -114,7 +113,7 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 p-4 "
               name="address"
               ref={addressref}
-              value={items && items.address}
+              value={items && items.data.address}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -124,7 +123,7 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 p-4 "
               name="postal"
               ref={postallref}
-              value={items && items.postal}
+              value={items && items.data.postal}
             />
           </div>
           <div className="flex gap-3">
@@ -135,7 +134,7 @@ const Profile = () => {
                 className="h-5 w-[130px] mb-5 md:mb-0 mr-4 p-4 "
                 name="country"
                 ref={countryref}
-                value={items && items.country}
+                value={items && items.data.country}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -145,7 +144,7 @@ const Profile = () => {
                 className="h-5 w-[130px] mb-5 md:mb-0 mr-4 p-4 "
                 name="state"
                 ref={stateref}
-                value={items && items.state}
+                value={items && items.data.state}
               />
             </div>
           </div>

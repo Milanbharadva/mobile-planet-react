@@ -7,6 +7,19 @@ import { v4 as uuidv4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Contact = () => {
+  const date = new Date();
+  let currenttime =
+    date.getDate() +
+    ":" +
+    (date.getMonth() + 1) +
+    ":" +
+    date.getFullYear() +
+    " " +
+    date.getHours() +
+    ":" +
+    date.getMinutes() +
+    ":" +
+    date.getSeconds();
   const notify = () =>
     toast.success("Your contact request is submitted successfully");
 
@@ -17,6 +30,7 @@ const Contact = () => {
 
   const objstructure = {
     ID: uuidv4(),
+    time: currenttime,
     name: "",
     email: "",
     phone: "",
@@ -24,11 +38,9 @@ const Contact = () => {
     message: "",
   };
   const [formdata, setFormdata] = useState(objstructure);
-  const [datastatus, setDatastatus] = useState(false);
 
   const validate = (e) => {
     e.preventDefault();
-    console.log(formdata);
     fetch(
       "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/contact.json",
       {
@@ -119,11 +131,6 @@ const Contact = () => {
                 ></textarea>
                 <button className="buttons">Submit</button>
               </form>
-              {datastatus && (
-                <h2 className="text-lg text-green-700 mt-2">
-                  Your data is submitted successfully.
-                </h2>
-              )}
             </div>
           </div>
         </div>

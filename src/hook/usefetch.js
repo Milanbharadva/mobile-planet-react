@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 export const useFetch = (url) => {
-  const [data, setData] = useState(null);
   const [loadeddata, setLoadeddata] = useState([]);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
@@ -29,5 +28,5 @@ export const useFetch = (url) => {
     };
     fetchData();
   }, [url]);
-  return { data, isPending, error, loadeddata };
+  return {  isPending, error, loadeddata };
 };
