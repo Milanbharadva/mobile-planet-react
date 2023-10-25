@@ -15,7 +15,16 @@ const Navbar = (props) => {
   const { data } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
   );
+  const fetchdata = useFetch(
+    "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json"
+  );
 
+  const count =
+    fetchdata.data &&
+    fetchdata.data.filter(
+      (item) => item.userid === localStorage.getItem("userid")
+    ).length;
+  console.log(count);
   const [click, setClick] = useState(false);
   const content = (
     <>
@@ -69,7 +78,7 @@ const Navbar = (props) => {
                 setClick(false);
                 props.onchange();
                 localStorage.removeItem("userid");
-                notify()
+                notify();
               }}
             >
               <li className="my-4 py-4   hover:rounded">SIGN OUT</li>
@@ -118,7 +127,6 @@ const Navbar = (props) => {
   );
   return (
     <nav className="flex z-10   sticky top-0 pr-10 bg-[#07212e] text-white">
-  
       <ToastContainer />
       <div className="h-10vh flex z-50  lg:py-5 px-10 py-4 flex-1">
         <div className="flex items-center flex-1">
@@ -166,7 +174,7 @@ const Navbar = (props) => {
                   onClick={() => {
                     props.onchange();
                     localStorage.removeItem("userid");
-                    notify()
+                    notify();
                   }}
                 >
                   <li className="hover:text-[#F28123] transition [#F28123] cursor-pointer">
@@ -181,8 +189,11 @@ const Navbar = (props) => {
                 </NavLink>
               )}
               <NavLink to="/cart">
-                <li>
+                <li className="flex gap-0 ">
                   <AiOutlineShoppingCart className="text-2xl hover:fill-[#F28123]" />
+                  <span className="text-sm pt-1">
+                    {fetchdata.data && count}
+                  </span>
                 </li>
               </NavLink>
               {data &&

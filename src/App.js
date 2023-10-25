@@ -15,7 +15,7 @@ import Profile from "./components/profile/Profile";
 import SingleProduct from "./components/single-product/SingleProduct";
 
 export default function App() {
-
+  console.log("home")
   const [userstatus, setUserstatus] = useState(false);
 
   const setstatus = () => {
@@ -37,7 +37,7 @@ export default function App() {
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/profile" element={<Profile />} />
-        <Route exact path="/singleproduct/:id" element={<SingleProduct />} />
+        <Route exact path="/singleproduct/:id" element={<SingleProduct onchange={setstatus}/>} />
         <Route exact path="/signin" element={<Signin onchange={setstatus} />} />
       </Routes>
       <Footer />

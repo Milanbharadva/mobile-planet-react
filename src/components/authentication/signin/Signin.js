@@ -41,7 +41,7 @@ const Signin = (props) => {
         items.map((userdata) => {
           localStorage.setItem("userid", userdata.ID);
           props.onchange();
-          notify2()
+          notify2();
           navigate("/");
           return 0;
         });
