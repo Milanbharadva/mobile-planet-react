@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export const useFetch = (url) => {
   const [data, setData] = useState(null);
+  const [loadeddata, setLoadeddata] = useState([]);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
   useEffect(() => {
@@ -12,8 +13,15 @@ export const useFetch = (url) => {
         if (!response.ok) throw new Error(response.statusText);
         const json = await response.json();
         setIsPending(false);
-        setData(Object.values(json));
         setError(null);
+        let dataarray = [];
+        for (const key in json) {
+          dataarray.push({
+            id: key,
+            data: json[key],
+          });
+        }
+        setLoadeddata(dataarray);
       } catch (error) {
         setError(`${error} Could not Fetch Data `);
         setIsPending(false);
@@ -21,5 +29,5 @@ export const useFetch = (url) => {
     };
     fetchData();
   }, [url]);
-  return { data, isPending, error };
+  return { data, isPending, error, loadeddata };
 };

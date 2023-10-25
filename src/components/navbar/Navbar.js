@@ -24,7 +24,6 @@ const Navbar = (props) => {
     fetchdata.data.filter(
       (item) => item.userid === localStorage.getItem("userid")
     ).length;
-  console.log(count);
   const [click, setClick] = useState(false);
   const content = (
     <>

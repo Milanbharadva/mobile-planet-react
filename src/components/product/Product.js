@@ -6,15 +6,15 @@ const Product = () => {
   const navigator = useNavigate();
   let parameter = useParams();
   let category = parameter.category;
-  console.log(category);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   document.title = "Mobile Planet | Product";
 
-  const { data, error, isPending } = useFetch(
+  const { data, error, isPending,loadeddata } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
   );
+  loadeddata&&console.log(loadeddata)
   return (
     <div className="mt-10 md:mx-20 sm:mx-10 mx-3 lg:mx-20 xl:mx-48 ">
       {error && !isPending && (

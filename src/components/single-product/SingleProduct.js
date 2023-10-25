@@ -7,8 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 const SingleProduct = (props) => {
   const notify = () => toast.success("Product added to cart");
   const notify2 = () => toast.warning("Please log in to add to cart");
-  const notify3 = () => toast.error("error in add to cart please try again later");
-
+  const notify3 = () =>
+    toast.error("error in add to cart please try again later");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -40,20 +40,19 @@ const SingleProduct = (props) => {
         }
       )
         .then((res) => res.json())
-        .then((data) =>{
-          if(data.name){
-            notify();
-            props.onchange(true);
+        .then((data) => {
+          if (data.name) {
+            notify()
+            // props.onchange(true);
           }
-        }
-          );
+        });
     } else {
       notify2();
     }
   }
   return (
     <div className="mt-10">
-      <ToastContainer />
+      <ToastContainer limit={1}/>
 
       {items &&
         items.map((product) => (
