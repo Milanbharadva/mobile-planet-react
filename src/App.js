@@ -13,9 +13,9 @@ import { useState } from "react";
 import Cart from "./components/cart/Cart";
 import Profile from "./components/profile/Profile";
 import SingleProduct from "./components/single-product/SingleProduct";
+import Checkout from "./components/checkout/Checkout";
 
 export default function App() {
-
   const [userstatus, setUserstatus] = useState(false);
 
   const setstatus = () => {
@@ -36,7 +36,12 @@ export default function App() {
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/profile" element={<Profile />} />
-        <Route exact path="/singleproduct/:id" element={<SingleProduct onchange={setstatus}/>} />
+        <Route exact path="/checkout" element={<Checkout />} />
+        <Route
+          exact
+          path="/singleproduct/:id"
+          element={<SingleProduct onchange={setstatus} />}
+        />
         <Route exact path="/signin" element={<Signin onchange={setstatus} />} />
       </Routes>
       <Footer />

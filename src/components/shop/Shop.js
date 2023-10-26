@@ -3,7 +3,7 @@ import { useFetch } from "../../hook/usefetch";
 import { useEffect } from "react";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
 import { v4 as uuidv4 } from "uuid";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Shop = () => {
   const { loadeddata, error, isPending } = useFetch(
@@ -22,27 +22,26 @@ const Shop = () => {
         productid: productid,
         quantity: 1,
       };
-      console.log(itemdata);
-        fetch(
-          "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json",
-          {
-            method: "POST",
-            body: JSON.stringify(itemdata),
-            headers: {
-              "Content-type": "application/json",
-            },
+      fetch(
+        "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json",
+        {
+          method: "POST",
+          body: JSON.stringify(itemdata),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((loadeddata) => {
+          if (loadeddata.name) {
+            notify();
+          } else {
+            notify3();
           }
-        )
-          .then((res) => res.json())
-          .then((loadeddata) => {
-            if (loadeddata.name) {
-              notify();
-            } else {
-              notify3();
-            }
-          });
-      } else {
-        notify2();
+        });
+    } else {
+      notify2();
     }
   }
 

@@ -7,7 +7,6 @@ const Signin = (props) => {
   const notify = () => toast.error("Wrong Email or Password");
   const notify2 = () => toast.success("Login sucessful");
 
-  const [error, setError] = useState(false);
   document.title = "Mobile Planet | Sign In";
 
   const { loadeddata } = useFetch(
@@ -35,7 +34,8 @@ const Signin = (props) => {
     if (loadeddata != null) {
       let items = loadeddata.filter(
         (item) =>
-          item.data.email === formdata.email && item.data.password === formdata.password
+          item.data.email === formdata.email &&
+          item.data.password === formdata.password
       );
       if (items.length > 0) {
         items.map((userdata) => {
@@ -69,7 +69,6 @@ const Signin = (props) => {
               value={formdata.email}
               onChange={handler}
               placeholder="Email"
-              
             />
           </div>
 
@@ -84,7 +83,6 @@ const Signin = (props) => {
               value={formdata.password}
               onChange={handler}
               placeholder="Password"
-              
             />
           </div>
           <button className="buttons">SIGN IN</button>

@@ -28,5 +28,5 @@ export const useFetch = (url) => {
     };
     fetchData();
   }, [url]);
-  return {  isPending, error, loadeddata };
+  return { isPending, error, loadeddata };
 };

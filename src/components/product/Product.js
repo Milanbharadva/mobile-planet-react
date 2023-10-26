@@ -3,7 +3,7 @@ import { useFetch } from "../../hook/usefetch";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { v4 as uuidv4 } from "uuid";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Product = () => {
   const notify = () => toast.success("Product added to cart");
@@ -25,7 +25,6 @@ const Product = () => {
         productid: productid,
         quantity: 1,
       };
-      console.log(itemdata);
       fetch(
         "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json",
         {
