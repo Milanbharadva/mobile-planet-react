@@ -1,29 +1,36 @@
 import { NavLink, Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import { AiOutlineMenu } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { useFetch } from "../../hook/usefetch";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Navbar = (props) => {
   const notify = () => toast.warning("Logout sucessfully");
-
+  console.log("navbar");
   const handleclick = () => {
     setClick(!click);
   };
   const { loadeddata } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
   );
+  let n = Date()
+  console.log(n);
   const fetchdata = useFetch(
-    "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json"
+    `https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json?${n}`
   );
-
+  const [counter, setCounter] = useState(0);
+  console.log("counter state", counter);
   const count =
     fetchdata.loadeddata &&
     fetchdata.loadeddata.filter(
       (item) => item.data.userid === localStorage.getItem("userid")
     ).length;
+  console.log("count ", counter);
+  useEffect(() => {
+    setCounter(count);
+  }, [count]);
   const [click, setClick] = useState(false);
   const content = (
     <>
@@ -103,7 +110,7 @@ const Navbar = (props) => {
           >
             <li className=" hover:rounded flex">
               <AiOutlineShoppingCart className="text-2xl" />
-              <span className="inline text-sm -pt-1">{count}</span>
+              <span className="inline text-sm -pt-1">{counter}</span>
             </li>
           </NavLink>
           {loadeddata &&
