@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const Product = () => {
+const Product = (props) => {
   const notify = () => toast.success("Product added to cart");
   const notify2 = () => toast.warning("Please log in to add to cart");
   const notify3 = () =>
@@ -38,6 +38,7 @@ const Product = () => {
         .then((res) => res.json())
         .then((loadeddata) => {
           if (loadeddata.name) {
+            props.onchange()
             notify();
           } else {
             notify3();

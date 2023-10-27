@@ -30,9 +30,17 @@ export default function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/about" element={<About />} />
         <Route exact path="/contact" element={<Contact />} />
-        <Route exact path="/shop" element={<Shop />} />
-        <Route exact path="/product" element={<Product />} />
-        <Route exact path="/product/:category" element={<Product />} />
+        <Route exact path="/shop" element={<Shop onchange={setstatus} />} />
+        <Route
+          exact
+          path="/product"
+          element={<Product onchange={setstatus} />}
+        />
+        <Route
+          exact
+          path="/product/:category"
+          element={<Product onchange={setstatus} />}
+        />
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/profile" element={<Profile />} />

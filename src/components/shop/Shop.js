@@ -5,7 +5,7 @@ import Breadcrumb from "../breadcrumb/Breadcrumb";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const Shop = () => {
+const Shop = (props) => {
   const { loadeddata, error, isPending } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
   );
@@ -35,6 +35,7 @@ const Shop = () => {
         .then((res) => res.json())
         .then((loadeddata) => {
           if (loadeddata.name) {
+            props.onchange();
             notify();
           } else {
             notify3();
