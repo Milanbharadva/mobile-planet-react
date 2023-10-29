@@ -128,7 +128,6 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      {console.log(totalprice)}
     </>
   );
 };

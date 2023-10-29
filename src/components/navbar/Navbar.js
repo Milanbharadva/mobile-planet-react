@@ -8,26 +8,22 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Navbar = (props) => {
   const notify = () => toast.warning("Logout sucessfully");
-  console.log("navbar");
   const handleclick = () => {
     setClick(!click);
   };
   const { loadeddata } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
   );
-  let n = Date()
-  console.log(n);
+  let n = Date();
   const fetchdata = useFetch(
     `https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json?${n}`
   );
   const [counter, setCounter] = useState(0);
-  console.log("counter state", counter);
   const count =
     fetchdata.loadeddata &&
     fetchdata.loadeddata.filter(
       (item) => item.data.userid === localStorage.getItem("userid")
     ).length;
-  console.log("count ", counter);
   useEffect(() => {
     setCounter(count);
   }, [count]);
