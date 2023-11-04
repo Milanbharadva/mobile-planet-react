@@ -38,7 +38,7 @@ const Product = (props) => {
         .then((res) => res.json())
         .then((loadeddata) => {
           if (loadeddata.name) {
-            props.onchange()
+            props.onchange();
             notify();
           } else {
             notify3();

@@ -1,8 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../hook/usefetch";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
+import { useEffect } from "react";
 
 const Cart = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   let totalprice = 0;
   document.title = "Mobile Planet | Cart";
   const navigate = useNavigate();
@@ -122,8 +127,14 @@ const Cart = () => {
               </tbody>
             </table>
             <div className="text-center">
-
-            <button className="text-center buttons" onClick={()=>{navigate('/checkout')}}>Checkout</button>
+              <button
+                className="text-center buttons"
+                onClick={() => {
+                  navigate("/checkout");
+                }}
+              >
+                Checkout
+              </button>
             </div>
           </div>
         </div>

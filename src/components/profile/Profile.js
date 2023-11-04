@@ -1,7 +1,10 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useFetch } from "../../hook/usefetch";
 
 const Profile = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { loadeddata } = useFetch(
     "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
   );

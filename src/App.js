@@ -17,7 +17,10 @@ import Checkout from "./components/checkout/Checkout";
 
 export default function App() {
   const [userstatus, setUserstatus] = useState(false);
-
+  const [onlinestatus, setonlinestatus] = useState(navigator.onLine);
+  setInterval(() => {
+    setonlinestatus(navigator.onLine);
+  }, 5000);
   const setstatus = () => {
     setUserstatus(!userstatus);
   };
@@ -25,34 +28,46 @@ export default function App() {
   document.title = "Mobile Planet";
   return (
     <div>
-      <Navbar onchange={setstatus} />
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/about" element={<About />} />
-        <Route exact path="/contact" element={<Contact />} />
-        <Route exact path="/shop" element={<Shop onchange={setstatus} />} />
-        <Route
-          exact
-          path="/product"
-          element={<Product onchange={setstatus} />}
-        />
-        <Route
-          exact
-          path="/product/:category"
-          element={<Product onchange={setstatus} />}
-        />
-        <Route exact path="/signup" element={<Signup />} />
-        <Route exact path="/cart" element={<Cart />} />
-        <Route exact path="/profile" element={<Profile />} />
-        <Route exact path="/checkout" element={<Checkout />} />
-        <Route
-          exact
-          path="/singleproduct/:id"
-          element={<SingleProduct onchange={setstatus} />}
-        />
-        <Route exact path="/signin" element={<Signin onchange={setstatus} />} />
-      </Routes>
-      <Footer />
+      <div className={navigator.onLine ? "" : "offline"}>
+        <Navbar onchange={setstatus} />
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/about" element={<About />} />
+          <Route exact path="/contact" element={<Contact />} />
+          <Route exact path="/shop" element={<Shop onchange={setstatus} />} />
+          <Route
+            exact
+            path="/product"
+            element={<Product onchange={setstatus} />}
+          />
+          <Route
+            exact
+            path="/product/:category"
+            element={<Product onchange={setstatus} />}
+          />
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/cart" element={<Cart />} />
+          <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/checkout" element={<Checkout />} />
+          <Route
+            exact
+            path="/singleproduct/:id"
+            element={<SingleProduct onchange={setstatus} />}
+          />
+          <Route
+            exact
+            path="/signin"
+            element={<Signin onchange={setstatus} />}
+          />
+        </Routes>
+        <Footer />
+      </div>
+
+      {!onlinestatus && (
+        <h1 className="fixed bottom-0 font-semibold text-xl pointer-events-none w-[100vw] text-center py-3 bg-black text-white ">
+          You are currently offline.
+        </h1>
+      )}
     </div>
   );
 }

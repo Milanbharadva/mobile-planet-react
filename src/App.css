@@ -50,3 +50,7 @@ input {
   top: -10px;
   opacity: 0.9;
 }
+.offline{
+  pointer-events: none;
+filter: grayscale(1);  
+}
