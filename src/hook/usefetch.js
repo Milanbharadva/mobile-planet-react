@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { collection, query, onSnapshot } from "firebase/firestore";
+import { db } from "../Firebase/fiirebase";
 export const useFetch = (url) => {
   const [loadeddata, setLoadeddata] = useState([]);
   const [isPending, setIsPending] = useState(false);
@@ -8,19 +9,16 @@ export const useFetch = (url) => {
     const fetchData = async () => {
       setIsPending(true);
       try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(response.statusText);
-        const json = await response.json();
+        const q = query(collection(db, url));
+        const unsub = onSnapshot(q, (querysnashot) => {
+          let arr = [];
+          querysnashot.forEach((doc) => {
+            arr.push({ id: doc.id, ...doc.data() });
+          });
+          setLoadeddata(arr);
+        });
         setIsPending(false);
         setError(null);
-        let dataarray = [];
-        for (const key in json) {
-          dataarray.push({
-            id: key,
-            data: json[key],
-          });
-        }
-        setLoadeddata(dataarray);
       } catch (error) {
         setError(`${error} Could not Fetch Data `);
         setIsPending(false);

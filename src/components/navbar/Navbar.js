@@ -11,18 +11,15 @@ const Navbar = (props) => {
   const handleclick = () => {
     setClick(!click);
   };
-  const { loadeddata } = useFetch(
-    "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
-  );
+  const { loadeddata } = useFetch("user");
   let n = Date();
-  const fetchdata = useFetch(
-    `https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json?${n}`
-  );
+  const fetchdata = useFetch(`user`);
+  const data = useFetch("cart");
   const [counter, setCounter] = useState(0);
   const count =
-    fetchdata.loadeddata &&
-    fetchdata.loadeddata.filter(
-      (item) => item.data.userid === localStorage.getItem("userid")
+    data.loadeddata &&
+    data.loadeddata.filter(
+      (item) => item.itemdata.userid === localStorage.getItem("userid")
     ).length;
   useEffect(() => {
     setCounter(count);

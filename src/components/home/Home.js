@@ -4,6 +4,8 @@ import Header from "./header/Header";
 import Slider from "./slider/Slider";
 
 const Home = () => {
+  document.title = "Mobile Planet";
+
   const top = () => {
     window.scrollTo(0, 0);
   };

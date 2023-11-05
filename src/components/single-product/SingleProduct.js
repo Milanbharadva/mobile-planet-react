@@ -3,6 +3,8 @@ import { useParams } from "react-router";
 import { useFetch } from "../../hook/usefetch";
 import { v4 as uuidv4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
+import { db } from "../../Firebase/fiirebase";
+import { collection, addDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
 const SingleProduct = (props) => {
   const notify = () =>
@@ -15,44 +17,31 @@ const SingleProduct = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const { loadeddata } = useFetch(
-    "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
-  );
+  const { loadeddata } = useFetch("product");
   const parameters = useParams();
   const productid = parameters.id;
 
   if (loadeddata != null) {
-    var items = loadeddata.filter((item) => item.data.ID == productid);
+    var items = loadeddata.filter((item) => item.id == productid);
   }
-  function addtocart() {
-    console.log("added cart");
+  async function addtocart() {
     if (localStorage.getItem("userid")) {
       const itemdata = {
-        ID: uuidv4(),
+        id: uuidv4(),
         userid: localStorage.getItem("userid"),
         productid: productid,
         quantity: 1,
       };
-      fetch(
-        "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json",
-        {
-          method: "POST",
-          body: JSON.stringify(itemdata),
-          headers: {
-            "Content-type": "application/json",
-          },
+      await addDoc(collection(db, "cart"), {
+        itemdata,
+      }).then((res) => {
+        if (res._key.path.segments[1] != null) {
+          props.onchange();
+          notify();
+        } else {
+          notify3();
         }
-      )
-        .then((res) => res.json())
-        .then((loadeddata) => {
-          if (loadeddata.name) {
-            notify("success");
-            props.onchange(true);
-            console.log(loadeddata);
-          } else {
-            notify3();
-          }
-        });
+      });
     } else {
       notify2();
     }
@@ -64,57 +53,57 @@ const SingleProduct = (props) => {
         {items &&
           items.map((product) => (
             <div
-              key={product.data.ID}
+              key={product.id}
               className="flex md:flex-row  flex-col mx-5 sm:mx-10 md:mx-20 lg:mx-30"
             >
               <div className="md:w-[40%] a px-2 py-4">
                 <a
-                  href={`${window.location.origin}/assets/product/${product.data.productimage}`}
+                  href={`${window.location.origin}/assets/product/${product.productimage}`}
                   target="_blank"
                   rel="noreferrer"
                 >
                   <img
-                    src={`${window.location.origin}/assets/product/${product.data.productimage}`}
-                    alt={product.data.productname}
+                    src={`${window.location.origin}/assets/product/${product.productimage}`}
+                    alt={product.productname}
                     className="object-contain cursor-pointer"
                     onClick={() => {
-                      window.location.href = `${window.location.origin}/assets/product/${product.data.productimage}`;
+                      window.location.href = `${window.location.origin}/assets/product/${product.productimage}`;
                     }}
                   />
                 </a>
               </div>
               <div className="md:w-[60%] md:ml-24 flex flex-col gap-5 justify-center">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-                  {product.data.productname.toUpperCase()}
+                  {product.productname.toUpperCase()}
                 </h2>
                 <p className="text-xl font-bold">
-                  PRICE : {product.data.productprice}
+                  PRICE : {product.productprice}
                 </p>
                 <p className="text-xl font-bold">
                   {" "}
-                  RAM : {product.data.productram}GB
+                  RAM : {product.productram}GB
                 </p>
                 <p className="text-xl font-bold">
                   {" "}
-                  ROM : {product.data.productrom}GB
+                  ROM : {product.productrom}GB
                 </p>
                 <p className="text-xl font-bold">
-                  Color : {product.data.productcolor}
+                  Color : {product.productcolor}
                 </p>
                 <p className="text-xl font-bold">
-                  Camera : {product.data.productcamera}
+                  Camera : {product.productcamera}
                 </p>
                 <p className="text-xl font-bold">
-                  Battery Capacity : {product.data.productbattery}
+                  Battery Capacity : {product.productbattery}
                 </p>
                 <p className="text-xl font-bold">
-                  Display : {product.data.productdisplay}
+                  Display : {product.productdisplay}
                 </p>
                 <p className="text-xl font-bold">
-                  Processor : {product.data.productprocessor}
+                  Processor : {product.productprocessor}
                 </p>
                 <p className="text-xl font-bold">
-                  Category : {product.data.categoryname.toUpperCase()}
+                  Category : {product.categoryname.toUpperCase()}
                 </p>
                 <div>
                   <button className="buttons" onClick={addtocart}>

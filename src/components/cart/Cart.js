@@ -11,21 +11,17 @@ const Cart = () => {
   let totalprice = 0;
   document.title = "Mobile Planet | Cart";
   const navigate = useNavigate();
-  const { loadeddata } = useFetch(
-    "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json"
-  );
+  const { loadeddata } = useFetch("cart");
   let data;
   if (loadeddata) {
     data =
       loadeddata &&
       loadeddata.filter(
-        (item) => item.data.userid === localStorage.getItem("userid")
+        (item) => item.itemdata.userid === localStorage.getItem("userid")
       );
   }
 
-  const productdata = useFetch(
-    "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
-  );
+  const productdata = useFetch("product");
 
   return (
     <>
@@ -47,25 +43,25 @@ const Cart = () => {
                 {data &&
                   data.map((item) => {
                     let productdatafiltered = productdata.loadeddata.filter(
-                      (items) => items.data.ID == item.data.productid
+                      (items) => items.id == item.itemdata.productid
                     )[0];
+                    console.log(productdatafiltered);
                     if (productdatafiltered) {
                       totalprice =
-                        totalprice +
-                        parseInt(productdatafiltered.data.productprice);
+                        totalprice + parseInt(productdatafiltered.productprice);
                     }
                     return (
                       productdatafiltered && (
                         <tr className="text-center ">
                           <td className="py-5 border flex justify-center ">
                             <img
-                              src={`${window.location.origin}/assets/product/${productdatafiltered.data.productimage}`}
+                              src={`${window.location.origin}/assets/product/${productdatafiltered.productimage}`}
                               className="cursor-pointer"
-                              alt={productdatafiltered.data.productname}
+                              alt={productdatafiltered.productname}
                               height="60px"
                               onClick={() => {
                                 navigate(
-                                  `/singleproduct/${productdatafiltered.data.ID}`
+                                  `/singleproduct/${productdatafiltered.id}`
                                 );
                               }}
                             />
@@ -74,22 +70,22 @@ const Cart = () => {
                             className="py-5 border cursor-pointer"
                             onClick={() => {
                               navigate(
-                                `/singleproduct/${productdatafiltered.data.ID}`
+                                `/singleproduct/${productdatafiltered.id}`
                               );
                             }}
                           >
                             {productdatafiltered &&
-                              productdatafiltered.data.productname.toUpperCase()}
+                              productdatafiltered.productname.toUpperCase()}
                           </td>
                           <td className="py-5 border ">
                             {parseInt(
-                              productdatafiltered.data.productprice
+                              productdatafiltered.productprice
                             ).toLocaleString()}
                           </td>
-                          <td className="py-5 border ">{item.data.quantity}</td>
+                          <td className="py-5 border ">{item.itemdata.quantity}</td>
                           <td className="py-5 border  pr-2">
                             {parseInt(
-                              productdatafiltered.data.productprice
+                              productdatafiltered.productprice
                             ).toLocaleString()}
                           </td>
                         </tr>

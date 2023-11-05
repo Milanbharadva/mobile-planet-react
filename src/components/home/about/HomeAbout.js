@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
 const HomeAbout = () => {
+  document.title = "Mobile Planet";
+
   const navigate = useNavigate();
   return (
     <div className="flex gap-10 lg:gap-0 mx-8 sm:mx-12 lg:mx-32 flex-col lg:flex-row mt-24 mb-20">

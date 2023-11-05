@@ -5,6 +5,8 @@ import { FaAddressBook, FaMapMarkerAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
+import { db } from "../../Firebase/fiirebase";
+import { collection, addDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
 const Contact = () => {
   const date = new Date();
@@ -39,20 +41,11 @@ const Contact = () => {
   };
   const [formdata, setFormdata] = useState(objstructure);
 
-  const validate = (e) => {
+  const validate = async (e) => {
     e.preventDefault();
-    fetch(
-      "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/contact.json",
-      {
-        method: "POST",
-        body: JSON.stringify(formdata),
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => (data.name ? notify() : ""));
+    await addDoc(collection(db, "contact"), {
+      formdata,
+    }).then((res) => (res._key.path.segments[1] != null ? notify() : ""));
     setFormdata(objstructure);
   };
   const handler = (e) => {

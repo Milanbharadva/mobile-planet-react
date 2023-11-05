@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useFetch } from "../../hook/usefetch";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { db } from "../../Firebase/fiirebase";
+import { collection, addDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,41 +18,30 @@ const Product = (props) => {
     window.scrollTo(0, 0);
   }, []);
   document.title = "Mobile Planet | Product";
-  function addtocart(productid) {
+  async function addtocart(productid) {
     if (localStorage.getItem("userid")) {
       const itemdata = {
-        ID: uuidv4(),
+        id: uuidv4(),
         userid: localStorage.getItem("userid"),
         productid: productid,
         quantity: 1,
       };
-      fetch(
-        "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json",
-        {
-          method: "POST",
-          body: JSON.stringify(itemdata),
-          headers: {
-            "Content-type": "application/json",
-          },
+      await addDoc(collection(db, "cart"), {
+        itemdata,
+      }).then((res) => {
+        if (res._key.path.segments[1] != null) {
+          props.onchange();
+          notify();
+        } else {
+          notify3();
         }
-      )
-        .then((res) => res.json())
-        .then((loadeddata) => {
-          if (loadeddata.name) {
-            props.onchange();
-            notify();
-          } else {
-            notify3();
-          }
-        });
+      });
     } else {
       notify2();
     }
   }
 
-  const { error, isPending, loadeddata } = useFetch(
-    "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
-  );
+  const { error, isPending, loadeddata } = useFetch("product");
   return (
     <div className="mt-10 md:mx-20 sm:mx-10 mx-3 lg:mx-20 xl:mx-48 ">
       {error && !isPending && (
@@ -71,46 +61,44 @@ const Product = (props) => {
         {loadeddata &&
           loadeddata
             .filter((item) =>
-              category ? item.data.categoryname === category : item
+              category ? item.categoryname === category : item
             )
             .map((item) => (
               <div
-                key={item.data.ID}
+                key={item.id}
                 className="flex justify-around py-5 border-2 items-center md:items-start md:flex-row flex-col gap-8"
               >
                 <div className="lg:w-[20%] object-contain">
                   <img
-                    src={`${window.location.origin}/assets/product/${item.data.productimage}`}
+                    src={`${window.location.origin}/assets/product/${item.productimage}`}
                     height="200px"
                     width="200px"
-                    alt={item.data.productname}
+                    alt={item.productname}
                   />
                 </div>
                 <div className="flex flex-col justify-around md:w-[30%] lg:w-[50%] gap-4 px-3">
-                  <h2 className="text-xl font-bold">{`${item.data.productname.toUpperCase()} ( ${
-                    item.data.productcolor
-                  } , ${item.data.productrom}GB )`}</h2>
+                  <h2 className="text-xl font-bold">{`${item.productname.toUpperCase()} ( ${
+                    item.productcolor
+                  } , ${item.productrom}GB )`}</h2>
                   <ul className="flex flex-col gap-1">
-                    <li className="">{`${item.data.productram} GB RAM | ${item.data.productrom} GB ROM`}</li>
-                    <li className="">{item.data.productdisplay}</li>
-                    <li className="">{item.data.productcamera}</li>
-                    <li className="">{item.data.productbattery}</li>
-                    <li className="">{item.data.productprocessor}</li>
+                    <li className="">{`${item.productram} GB RAM | ${item.productrom} GB ROM`}</li>
+                    <li className="">{item.productdisplay}</li>
+                    <li className="">{item.productcamera}</li>
+                    <li className="">{item.productbattery}</li>
+                    <li className="">{item.productprocessor}</li>
                   </ul>
                 </div>
                 <div className="flex flex-col gap-3  items-center">
-                  <h2 className="text-xl font-bold">
-                    {item.data.productprice}
-                  </h2>
+                  <h2 className="text-xl font-bold">{item.productprice}</h2>
                   <button
                     className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
-                    onClick={() => navigator(`/singleproduct/${item.data.ID}`)}
+                    onClick={() => navigator(`/singleproduct/${item.id}`)}
                   >
                     Details
                   </button>
                   <button
                     onClick={() => {
-                      addtocart(item.data.ID);
+                      addtocart(item.id);
                     }}
                     className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
                   >

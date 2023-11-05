@@ -1,6 +1,8 @@
 import { FaSyncAlt, FaTruck } from "react-icons/fa";
 import { BsFillTelephoneFill } from "react-icons/bs";
 const Header = () => {
+  document.title = "Mobile Planet";
+
   return (
     <div className=" mt-16 bg-[#f5f5f5] flex md:flex-row flex-col pl-3 ml-5 sm:ml-10 space-y-3 md:ml-0 md:space-y-0 justify-around py-20 mb-16">
       <div className="flex gap-4 items-center">

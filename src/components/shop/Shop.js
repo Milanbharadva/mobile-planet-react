@@ -5,42 +5,33 @@ import Breadcrumb from "../breadcrumb/Breadcrumb";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { db } from "../../Firebase/fiirebase";
+import { collection, addDoc } from "firebase/firestore";
 const Shop = (props) => {
-  const { loadeddata, error, isPending } = useFetch(
-    "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/product.json"
-  );
+  const { loadeddata, error, isPending } = useFetch("product");
 
   const notify = () => toast.success("Product added to cart");
   const notify2 = () => toast.warning("Please log in to add to cart");
   const notify3 = () =>
     toast.error("error in add to cart please try again later");
-  function addtocart(productid) {
+  async function addtocart(productid) {
     if (localStorage.getItem("userid")) {
       const itemdata = {
-        ID: uuidv4(),
+        id: uuidv4(),
         userid: localStorage.getItem("userid"),
         productid: productid,
         quantity: 1,
       };
-      fetch(
-        "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/cart.json",
-        {
-          method: "POST",
-          body: JSON.stringify(itemdata),
-          headers: {
-            "Content-type": "application/json",
-          },
+      await addDoc(collection(db, "cart"), {
+        itemdata,
+      }).then((res) => {
+        if (res._key.path.segments[1] != null) {
+          props.onchange();
+          notify();
+        } else {
+          notify3();
         }
-      )
-        .then((res) => res.json())
-        .then((loadeddata) => {
-          if (loadeddata.name) {
-            props.onchange();
-            notify();
-          } else {
-            notify3();
-          }
-        });
+      });
     } else {
       notify2();
     }
@@ -73,29 +64,26 @@ const Shop = (props) => {
           {loadeddata &&
             loadeddata.map((item) => (
               <div
-                key={item.data.ID}
+                key={item.id}
                 className={`a hover:shadow-none flex  flex-col py-8 items-center gap-2
-                 ${item.data.categoryname}`}
+              ${item.categoryname}`}
               >
                 <img
-                  src={`${window.location.origin}/assets/product/${item.data.productimage}`}
+                  src={`${window.location.origin}/assets/product/${item.productimage}`}
                   height="300px"
-                  // className="object-contain"
-                  alt={`${item.data.productname}`}
+                  alt={`${item.productname}`}
                   onClick={() => {
-                    navigate(`/singleproduct/${item.data.ID}`);
+                    navigate(`/singleproduct/${item.id}`);
                   }}
                   className="cursor-pointer"
                 />
                 <h1 className="text-lg md:text-2xl font-bold">
-                  {item.data.productname.toUpperCase()}
+                  {item.productname.toUpperCase()}
                 </h1>
-                <p className="text-xl font-semibold">
-                  {item.data.productprice}₹
-                </p>
+                <p className="text-xl font-semibold">{item.productprice}₹</p>
                 <button
                   onClick={() => {
-                    addtocart(`${item.data.ID}`);
+                    addtocart(`${item.id}`);
                   }}
                   className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
                 >

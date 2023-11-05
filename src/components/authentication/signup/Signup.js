@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-
+import { db } from "../../../Firebase/fiirebase";
+import { collection, addDoc } from "firebase/firestore";
 const Signup = () => {
   document.title = "Mobile Planet | Sign Up";
 
@@ -20,21 +21,15 @@ const Signup = () => {
     const { name, value } = e.target;
     setData((prevformdata) => ({ ...prevformdata, [name]: value }));
   };
-  const validate = (e) => {
+  const validate = async (e) => {
     e.preventDefault();
+
     if (data.email !== "" && data.password !== "") {
-      fetch(
-        "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json",
-        {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => (data.name ? navigate("/signin") : ""));
+      await addDoc(collection(db, "user"), {
+        data,
+      }).then((res) =>
+        res._key.path.segments[1] != null ? navigate("/signin") : ""
+      );
     } else {
       setError(true);
     }

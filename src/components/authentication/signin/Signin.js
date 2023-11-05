@@ -9,9 +9,7 @@ const Signin = (props) => {
 
   document.title = "Mobile Planet | Sign In";
 
-  const { loadeddata } = useFetch(
-    "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
-  );
+  const { loadeddata } = useFetch("user");
   const navigate = useNavigate();
   const objstructutre = {
     email: "",
