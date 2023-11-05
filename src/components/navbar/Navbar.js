@@ -19,7 +19,7 @@ const Navbar = (props) => {
   const count =
     data.loadeddata &&
     data.loadeddata.filter(
-      (item) => item.itemdata.userid === localStorage.getItem("userid")
+      (item) => item.userid === localStorage.getItem("userid")
     ).length;
   useEffect(() => {
     setCounter(count);
@@ -71,7 +71,8 @@ const Navbar = (props) => {
           </NavLink>
           {loadeddata &&
           loadeddata.filter(
-            (item) => item.data.ID === localStorage.getItem("userid")
+            (item) => 
+            item.id === localStorage.getItem("userid")
           ).length > 0 ? (
             <li
               className="my-4 py-4   hover:rounded cursor-pointer"
@@ -108,7 +109,7 @@ const Navbar = (props) => {
           </NavLink>
           {loadeddata &&
           loadeddata.filter(
-            (item) => item.data.ID === localStorage.getItem("userid")
+            (item) => item.id === localStorage.getItem("userid")
           ).length > 0 ? (
             <NavLink
               to="/profile"
@@ -172,7 +173,7 @@ const Navbar = (props) => {
               </NavLink>
               {loadeddata &&
               loadeddata.filter(
-                (item) => item.data.ID === localStorage.getItem("userid")
+                (item) => item.id === localStorage.getItem("userid")
               ).length > 0 ? (
                 <Link
                   onClick={() => {
@@ -200,7 +201,7 @@ const Navbar = (props) => {
               </NavLink>
               {loadeddata &&
               loadeddata.filter(
-                (item) => item.data.ID === localStorage.getItem("userid")
+                (item) => item.id === localStorage.getItem("userid")
               ).length > 0 ? (
                 <NavLink to="/profile">
                   <li>
