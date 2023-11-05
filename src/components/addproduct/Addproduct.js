@@ -1,7 +1,11 @@
 import { db } from "../../Firebase/fiirebase";
 import React, { useRef, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { collection, addDoc } from "firebase/firestore";
 const Addproduct = () => {
+  const notify = () => toast.success("Product added");
+
   let nameref = useRef();
   let priceref = useRef();
   let ramref = useRef();
@@ -27,12 +31,27 @@ const Addproduct = () => {
       productprocessor: processorref.current.value,
       productimage: imgref.current.files[0].name,
       categoryname: categoryref.current.value,
+    }).then((res) => {
+      if (res._key.path.segments[1]) {
+        nameref.current.value = "";
+        priceref.current.value = "";
+        ramref.current.value = "";
+        romref.current.value = "";
+        colorref.current.value = "";
+        cameraref.current.value = "";
+        battteryref.current.value = "";
+        displayref.current.value = "";
+        processorref.current.value = "";
+        imgref.current.value = "";
+        categoryref.current.value = "";
+        notify();
+      }
     });
   }
 
   return (
     <div>
-      <form method="post" onSubmit={validate}>
+      <form method="post" onSubmit={validate} className=" mt-5 flex flex-col justify-center items-center">
         <div className="card-body">
           <div className="form-group">
             <label htmlFor="exampleInputEmail1">Product name </label>
