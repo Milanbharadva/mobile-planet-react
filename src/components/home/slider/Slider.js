@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-const images = ["apple.jpg", "samsung.jpg", "oneplus.jpg"];
+const images = ["apple.png", "samsung.png", "oneplus.png"];
 
 const Slider2 = () => {
   const [currentImage, setCurrentImage] = useState(0);
