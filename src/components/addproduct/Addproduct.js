@@ -64,6 +64,7 @@ const Addproduct = () => {
               name="productname"
               placeholder="Enter Product name"
               ref={nameref}
+              autoComplete="on"
             />
           </div>
           <br />

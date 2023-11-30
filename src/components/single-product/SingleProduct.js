@@ -105,7 +105,7 @@ const SingleProduct = (props) => {
                   {product.productname.toUpperCase()}
                 </h2>
                 <p className="text-xl font-bold">
-                  PRICE : {product.productprice}
+                  PRICE : {parseInt(product.productprice).toLocaleString()}
                 </p>
                 <p className="text-xl font-bold">
                   {" "}

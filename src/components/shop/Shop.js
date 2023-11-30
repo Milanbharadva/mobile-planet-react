@@ -108,7 +108,9 @@ const Shop = (props) => {
                 <h1 className="text-lg md:text-2xl font-bold">
                   {item.productname.toUpperCase()}
                 </h1>
-                <p className="text-xl font-semibold">{item.productprice}₹</p>
+                <p className="text-xl font-semibold">
+                  {parseInt(item.productprice).toLocaleString()}₹
+                </p>
                 <button
                   onClick={() => {
                     addtocart(`${item.id}`);

@@ -26,7 +26,7 @@ const Category = () => {
               onClick={() => navigate(`/product/${item.categoryname}`)}
             >
               <img
-                src={`${window.location.origin}/assets/category/${item.categoryname}.jpg`}
+                src={`${window.location.origin}/assets/category/${item.categoryname.toLowerCase()}.jpg`}
                 height="300px"
                 width="260px"
                 className="mix-blend-hard-light"
