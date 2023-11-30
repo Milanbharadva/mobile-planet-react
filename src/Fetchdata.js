@@ -4,7 +4,6 @@ import { collection, query, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase/fiirebase";
 const Fetchdata = () => {
   const [data, setData] = useState([]);
-  console.log(data);
   useEffect(() => {
     const q = query(collection(db, "product"));
     const unsub = onSnapshot(q, (querysnashot) => {

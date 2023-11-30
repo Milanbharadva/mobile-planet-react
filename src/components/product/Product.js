@@ -2,12 +2,15 @@ import { useEffect } from "react";
 import { useFetch } from "../../hook/usefetch";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../../Firebase/fiirebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Product = (props) => {
+  const cartdata = useFetch("cart");
+
   const notify = () => toast.success("Product added to cart");
+  const notify4 = () => toast.success("cart updated sucessfully");
   const notify2 = () => toast.warning("Please log in to add to cart");
   const notify3 = () =>
     toast.error("error in add to cart please try again later");
@@ -19,23 +22,48 @@ const Product = (props) => {
   }, []);
   document.title = "Mobile Planet | Product";
   async function addtocart(productid) {
+    let isdatarepeat = false;
+    let idtodelete;
+    let previousquantity = 0;
     if (localStorage.getItem("userid")) {
-      const itemdata = {
-        id: uuidv4(),
-        userid: localStorage.getItem("userid"),
-        productid: productid,
-        quantity: 1,
-      };
-      await addDoc(collection(db, "cart"), {
-        itemdata,
-      }).then((res) => {
-        if (res._key.path.segments[1] != null) {
-          props.onchange();
-          notify();
-        } else {
-          notify3();
+      cartdata.loadeddata.map((data) => {
+        if (data.itemdata.productid == productid) {
+          previousquantity = data.itemdata.quantity;
+          isdatarepeat = true;
+          idtodelete = data.id;
         }
       });
+      if (isdatarepeat) {
+        if (idtodelete != null) {
+          const itemdata = {
+            id: uuidv4(),
+            userid: localStorage.getItem("userid"),
+            productid: productid,
+            quantity: previousquantity + 1,
+          };
+          await deleteDoc(doc(db, "cart", idtodelete));
+          await addDoc(collection(db, "cart"), {
+            itemdata,
+          }).then((data) => (data.id ? notify4() : ""));
+        }
+      } else {
+        const itemdata = {
+          id: uuidv4(),
+          userid: localStorage.getItem("userid"),
+          productid: productid,
+          quantity: 1,
+        };
+        await addDoc(collection(db, "cart"), {
+          itemdata,
+        }).then((res) => {
+          if (res._key.path.segments[1] != null) {
+            props.onchange();
+            notify();
+          } else {
+            notify3();
+          }
+        });
+      }
     } else {
       notify2();
     }

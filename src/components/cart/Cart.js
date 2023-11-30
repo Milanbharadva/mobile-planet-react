@@ -56,12 +56,11 @@ const Cart = () => {
                     }
                     return (
                       productdatafiltered && (
-                        <tr className="text-center ">
+                        <tr className="text-center " key={item.id}>
                           <td
                             className="py-5 border "
                             onClick={async () => {
                               await deleteDoc(doc(db, "cart", item.id));
-                              // console.log(item.id);
                             }}
                           >
                             <IoClose />
