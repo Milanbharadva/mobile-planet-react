@@ -10,7 +10,7 @@ const Product = (props) => {
   const cartdata = useFetch("cart");
 
   const notify = () => toast.success("Product added to cart");
-  const notify4 = () => toast.success("cart updated sucessfully");
+  const notify4 = () => toast.success("item quantity updated sucessfully");
   const notify2 = () => toast.warning("Please log in to add to cart");
   const notify3 = () =>
     toast.error("error in add to cart please try again later");

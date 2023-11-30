@@ -52,7 +52,9 @@ const Cart = () => {
                     )[0];
                     if (productdatafiltered) {
                       totalprice =
-                        totalprice + parseInt(productdatafiltered.productprice);
+                        totalprice +
+                        productdatafiltered.productprice *
+                          item.itemdata.quantity;
                     }
                     return (
                       productdatafiltered && (
@@ -94,12 +96,13 @@ const Cart = () => {
                               productdatafiltered.productprice
                             ).toLocaleString()}
                           </td>
-                          <td className="py-5 border ">
+                          <td className="py-5 border">
                             {item.itemdata.quantity}
                           </td>
-                          <td className="py-5 border  pr-2">
-                            {parseInt(
-                              productdatafiltered.productprice
+                          <td className="py-5 border pr-2">
+                            {(
+                              productdatafiltered.productprice *
+                              item.itemdata.quantity
                             ).toLocaleString()}
                           </td>
                         </tr>

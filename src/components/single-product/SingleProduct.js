@@ -4,7 +4,7 @@ import { useFetch } from "../../hook/usefetch";
 import { v4 as uuidv4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
 import { db } from "../../Firebase/fiirebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
 const SingleProduct = (props) => {
   const notify = () =>
@@ -14,6 +14,9 @@ const SingleProduct = (props) => {
   const notify2 = () => toast.warning("Please log in to add to cart");
   const notify3 = () =>
     toast.error("error in add to cart please try again later");
+  const notify4 = () => toast.success("item quantity updated sucessfully");
+  const cartdata = useFetch("cart");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -24,24 +27,49 @@ const SingleProduct = (props) => {
   if (loadeddata != null) {
     var items = loadeddata.filter((item) => item.id === productid);
   }
-  async function addtocart() {
+  async function addtocart(productid) {
+    let isdatarepeat = false;
+    let idtodelete;
+    let previousquantity = 0;
     if (localStorage.getItem("userid")) {
-      const itemdata = {
-        id: uuidv4(),
-        userid: localStorage.getItem("userid"),
-        productid: productid,
-        quantity: 1,
-      };
-      await addDoc(collection(db, "cart"), {
-        itemdata,
-      }).then((res) => {
-        if (res._key.path.segments[1] != null) {
-          props.onchange();
-          notify();
-        } else {
-          notify3();
+      cartdata.loadeddata.map((data) => {
+        if (data.itemdata.productid == productid) {
+          previousquantity = data.itemdata.quantity;
+          isdatarepeat = true;
+          idtodelete = data.id;
         }
       });
+      if (isdatarepeat) {
+        if (idtodelete != null) {
+          const itemdata = {
+            id: uuidv4(),
+            userid: localStorage.getItem("userid"),
+            productid: productid,
+            quantity: previousquantity + 1,
+          };
+          await deleteDoc(doc(db, "cart", idtodelete));
+          await addDoc(collection(db, "cart"), {
+            itemdata,
+          }).then((data) => (data.id ? notify4() : ""));
+        }
+      } else {
+        const itemdata = {
+          id: uuidv4(),
+          userid: localStorage.getItem("userid"),
+          productid: productid,
+          quantity: 1,
+        };
+        await addDoc(collection(db, "cart"), {
+          itemdata,
+        }).then((res) => {
+          if (res._key.path.segments[1] != null) {
+            props.onchange();
+            notify();
+          } else {
+            notify3();
+          }
+        });
+      }
     } else {
       notify2();
     }
@@ -106,7 +134,12 @@ const SingleProduct = (props) => {
                   Category : {product.categoryname.toUpperCase()}
                 </p>
                 <div>
-                  <button className="buttons" onClick={addtocart}>
+                  <button
+                    className="buttons"
+                    onClick={() => {
+                      addtocart(product.id);
+                    }}
+                  >
                     Add to cart
                   </button>
                 </div>
