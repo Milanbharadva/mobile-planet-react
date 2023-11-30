@@ -27,6 +27,7 @@ const Product = (props) => {
     let previousquantity = 0;
     if (localStorage.getItem("userid")) {
       cartdata.loadeddata.map((data) => {
+        console.log(data);
         if (data.itemdata.productid == productid) {
           previousquantity = data.itemdata.quantity;
           isdatarepeat = true;
@@ -117,7 +118,9 @@ const Product = (props) => {
                   </ul>
                 </div>
                 <div className="flex flex-col gap-3  items-center">
-                  <h2 className="text-xl font-bold">{parseInt(item.productprice).toLocaleString()}</h2>
+                  <h2 className="text-xl font-bold">
+                    {parseInt(item.productprice).toLocaleString()}
+                  </h2>
                   <button
                     className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
                     onClick={() => navigator(`/singleproduct/${item.id}`)}

@@ -105,7 +105,7 @@ const Shop = (props) => {
                   }}
                   className="cursor-pointer"
                 />
-                <h1 className="text-lg md:text-2xl font-bold">
+                <h1 className="text-lg md:text-xl font-bold">
                   {item.productname.toUpperCase()}
                 </h1>
                 <p className="text-xl font-semibold">

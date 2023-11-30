@@ -151,7 +151,7 @@ const SingleProduct = (props) => {
             </div>
           ))}
         <div className="mt-24">
-          <h1 className="underline text-2xl underline-offset-4 decoration-[#F28123] flex justify-center items-center">
+          <h1 className="underline text-3xl underline-offset-4 decoration-[#F28123] flex justify-center items-center">
             <span className="text-[#F28123]">Related&nbsp;</span> Products
           </h1>
           <div className="mt-10">
@@ -166,7 +166,7 @@ const SingleProduct = (props) => {
                   .map((item) => (
                     <div
                       key={item.id}
-                      className={`a hover:shadow-none flex  flex-col py-8 items-center gap-2
+                      className={`a hover:shadow-none flex flex-col py-8 items-center gap-2
               ${item.categoryname}`}
                     >
                       <img

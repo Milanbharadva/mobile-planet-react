@@ -1,19 +1,18 @@
 import { useEffect, useRef } from "react";
 import { useFetch } from "../../hook/usefetch";
-
+import { doc, deleteDoc, addDoc, collection } from "firebase/firestore";
+import { db } from "../../Firebase/fiirebase";
 const Profile = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const { loadeddata } = useFetch(
-    "https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user.json"
-  );
+  const { loadeddata } = useFetch("user");
   if (loadeddata != null) {
     var items = loadeddata
       .filter((item) => item.data.ID === localStorage.getItem("userid"))
       .map((filtereditem) => filtereditem)[0];
   }
-
+  console.log(items);
   let idref = useRef();
   let usernameref = useRef();
   let passwordref = useRef();
@@ -23,32 +22,21 @@ const Profile = () => {
   let postallref = useRef();
   let countryref = useRef();
   let stateref = useRef();
-  function validate(e) {
+  async function validate(e) {
     e.preventDefault();
-
-    let obj = {
+    let data = {
       ID: idref.current.value,
       username: usernameref.current.value,
       password: passwordref.current.value,
       email: emailref.current.value,
       phone: phoneref.current.value,
-      adddress: addressref.current.value,
+      address: addressref.current.value,
       postal: postallref.current.value,
       country: countryref.current.value,
       state: stateref.current.value,
     };
-    fetch(
-      `https://ecommerce-project-d04f8-default-rtdb.firebaseio.com/user/${items.id}`,
-      {
-        method: "POST",
-        body: JSON.stringify(obj),
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => (data.name ? console.log("sucess") : ""));
+    await deleteDoc(doc(db, "user", items.id));
+    await addDoc(collection(db, "user"), { data });
   }
   document.title = "Mobile Planet | Profile";
   return (
