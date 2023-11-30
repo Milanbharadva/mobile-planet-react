@@ -14,8 +14,6 @@ import Cart from "./components/cart/Cart";
 import Profile from "./components/profile/Profile";
 import SingleProduct from "./components/single-product/SingleProduct";
 import Checkout from "./components/checkout/Checkout";
-import Addata from "./Addata";
-import Fetchdata from "./Fetchdata";
 import Addproduct from "./components/addproduct/Addproduct";
 import Error from "./components/404/Error";
 
@@ -34,8 +32,6 @@ export default function App() {
   document.title = "Mobile Planet";
   return (
     <div>
-      {/* <Addata />
-      <Fetchdata /> */}
       <div className={navigator.onLine ? "" : "offline"}>
         <Navbar onchange={setstatus} />
         <Routes>
@@ -44,7 +40,7 @@ export default function App() {
           <Route exact path="/about" element={<About />} />
           <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/shop" element={<Shop onchange={setstatus} />} />
-          <Route path="*" element={<Error/>}/>
+          <Route path="*" element={<Error />} />
           <Route
             exact
             path="/product"

@@ -22,7 +22,7 @@ const SingleProduct = (props) => {
   const productid = parameters.id;
 
   if (loadeddata != null) {
-    var items = loadeddata.filter((item) => item.id == productid);
+    var items = loadeddata.filter((item) => item.id === productid);
   }
   async function addtocart() {
     if (localStorage.getItem("userid")) {

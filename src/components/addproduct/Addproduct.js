@@ -1,5 +1,5 @@
 import { db } from "../../Firebase/fiirebase";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { collection, addDoc } from "firebase/firestore";
@@ -51,7 +51,11 @@ const Addproduct = () => {
 
   return (
     <div>
-      <form method="post" onSubmit={validate} className=" mt-5 flex flex-col justify-center items-center">
+      <form
+        method="post"
+        onSubmit={validate}
+        className=" mt-5 flex flex-col justify-center items-center"
+      >
         <div className="card-body">
           <div className="form-group">
             <label htmlFor="exampleInputEmail1">Product name </label>

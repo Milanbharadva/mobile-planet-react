@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
 import React from "react";
-import {
-  collection,
-  query,
-  onSnapshot,
-  doc,
-  updateDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, query, onSnapshot } from "firebase/firestore";
 import { db } from "./Firebase/fiirebase";
 const Fetchdata = () => {
   const [data, setData] = useState([]);
-
+  console.log(data);
   useEffect(() => {
     const q = query(collection(db, "product"));
     const unsub = onSnapshot(q, (querysnashot) => {

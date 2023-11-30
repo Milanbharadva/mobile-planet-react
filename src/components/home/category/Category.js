@@ -21,7 +21,7 @@ const Category = () => {
         uniqdata.map((item) => {
           return (
             <div
-              key={item.ID}
+              key={item.id}
               className="flex flex-col justify-between items-center a p-10 hover:shadow-none transition cursor-pointer"
               onClick={() => navigate(`/product/${item.categoryname}`)}
             >

@@ -10,7 +10,7 @@ export const useFetch = (url) => {
       setIsPending(true);
       try {
         const q = query(collection(db, url));
-        const unsub = onSnapshot(q, (querysnashot) => {
+        onSnapshot(q, (querysnashot) => {
           let arr = [];
           querysnashot.forEach((doc) => {
             arr.push({ id: doc.id, ...doc.data() });

@@ -12,8 +12,6 @@ const Navbar = (props) => {
     setClick(!click);
   };
   const { loadeddata } = useFetch("user");
-  let n = Date();
-  const fetchdata = useFetch(`user`);
   const data = useFetch("cart");
   const [counter, setCounter] = useState(0);
   const count =

@@ -43,7 +43,7 @@ const Cart = () => {
                 {data &&
                   data.map((item) => {
                     let productdatafiltered = productdata.loadeddata.filter(
-                      (items) => items.id == item.itemdata.productid
+                      (items) => items.id === item.itemdata.productid
                     )[0];
                     console.log(productdatafiltered);
                     if (productdatafiltered) {
@@ -82,7 +82,9 @@ const Cart = () => {
                               productdatafiltered.productprice
                             ).toLocaleString()}
                           </td>
-                          <td className="py-5 border ">{item.itemdata.quantity}</td>
+                          <td className="py-5 border ">
+                            {item.itemdata.quantity}
+                          </td>
                           <td className="py-5 border  pr-2">
                             {parseInt(
                               productdatafiltered.productprice
