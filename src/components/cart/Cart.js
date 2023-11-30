@@ -2,7 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../hook/usefetch";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
 import { useEffect } from "react";
-
+import { IoClose } from "react-icons/io5";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "../../Firebase/fiirebase";
 const Cart = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,6 +34,9 @@ const Cart = () => {
             <table width="100%" className="border-collapse">
               <thead>
                 <tr className="text-center bg-[#efefef]">
+                  <td className="py-5">
+                    <IoClose />
+                  </td>
                   <td className="py-5">Product image</td>
                   <td className="py-5">Name</td>
                   <td className="py-5">Price</td>
@@ -45,7 +50,6 @@ const Cart = () => {
                     let productdatafiltered = productdata.loadeddata.filter(
                       (items) => items.id === item.itemdata.productid
                     )[0];
-                    console.log(productdatafiltered);
                     if (productdatafiltered) {
                       totalprice =
                         totalprice + parseInt(productdatafiltered.productprice);
@@ -53,6 +57,15 @@ const Cart = () => {
                     return (
                       productdatafiltered && (
                         <tr className="text-center ">
+                          <td
+                            className="py-5 border "
+                            onClick={async () => {
+                              await deleteDoc(doc(db, "cart", item.id));
+                              // console.log(item.id);
+                            }}
+                          >
+                            <IoClose />
+                          </td>
                           <td className="py-5 border flex justify-center ">
                             <img
                               src={`${window.location.origin}/assets/product/${productdatafiltered.productimage}`}
