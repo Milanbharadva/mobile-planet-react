@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
+
 import { useFetch } from "../../hook/usefetch";
 import { v4 as uuidv4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,6 +9,8 @@ import { db } from "../../Firebase/fiirebase";
 import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
 const SingleProduct = (props) => {
+  let productname;
+  const navigate = useNavigate();
   const notify = () =>
     toast.success("Product added to cart", {
       toastId: "sucess",
@@ -102,7 +106,7 @@ const SingleProduct = (props) => {
               </div>
               <div className="md:w-[60%] md:ml-24 flex flex-col gap-5 justify-center">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-                  {product.productname.toUpperCase()}
+                  {(productname = product.productname.toUpperCase())}
                 </h2>
                 <p className="text-xl font-bold">
                   PRICE : {parseInt(product.productprice).toLocaleString()}
@@ -146,6 +150,56 @@ const SingleProduct = (props) => {
               </div>
             </div>
           ))}
+        <div className="mt-24">
+          <h1 className="underline text-2xl underline-offset-4 decoration-[#F28123] flex justify-center items-center">
+            <span className="text-[#F28123]">Related&nbsp;</span> Products
+          </h1>
+          <div className="mt-10">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-5 px-10 md:px-24  lg:px-32">
+              {loadeddata &&
+                loadeddata
+                  .filter(
+                    (items) =>
+                      items.productname.toUpperCase() ==
+                        productname.toUpperCase() && items.id != productid
+                  )
+                  .map((item) => (
+                    <div
+                      key={item.id}
+                      className={`a hover:shadow-none flex  flex-col py-8 items-center gap-2
+              ${item.categoryname}`}
+                    >
+                      <img
+                        src={`${window.location.origin}/assets/product/${item.productimage}`}
+                        height="300px"
+                        alt={`${item.productname}`}
+                        onClick={() => {
+                          navigate(`/singleproduct/${item.id}`);
+                        }}
+                        className="cursor-pointer"
+                      />
+                      <h1 className="text-lg md:text-sm font-bold">
+                        {item.productname.toUpperCase()}
+                      </h1>
+                      <p className="text-md md:text-xl font-bold">
+                        {item.productcolor.toUpperCase()}
+                      </p>
+                      <p className="text-xl font-semibold">
+                        {parseInt(item.productprice).toLocaleString()}₹
+                      </p>
+                      <button
+                        onClick={() => {
+                          addtocart(`${item.id}`);
+                        }}
+                        className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
+                      >
+                        Add to cart
+                      </button>
+                    </div>
+                  ))}
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
