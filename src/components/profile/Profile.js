@@ -7,12 +7,15 @@ const Profile = () => {
     window.scrollTo(0, 0);
   }, []);
   const { loadeddata } = useFetch("user");
+  let olddata = {};
   if (loadeddata != null) {
-    var items = loadeddata
-      .filter((item) => item.data.ID === localStorage.getItem("userid"))
-      .map((filtereditem) => filtereditem)[0];
+    var items = loadeddata.filter(
+      (item) => item.data.ID === localStorage.getItem("userid")
+    )[0];
+    if (items) {
+      olddata = items.data;
+    }
   }
-  console.log(items);
   let idref = useRef();
   let usernameref = useRef();
   let passwordref = useRef();
@@ -73,7 +76,10 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 p-4 "
               name="username"
               ref={usernameref}
-              value={items && items.data.username}
+              onChange={(e) => {
+                console.log(e);
+              }}
+              value={olddata && olddata.username}
             />
           </div>
           <div className="flex flex-col gap-2">

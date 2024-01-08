@@ -27,7 +27,6 @@ const Product = (props) => {
     let previousquantity = 0;
     if (localStorage.getItem("userid")) {
       cartdata.loadeddata.map((data) => {
-        console.log(data);
         if (data.itemdata.productid == productid) {
           previousquantity = data.itemdata.quantity;
           isdatarepeat = true;
