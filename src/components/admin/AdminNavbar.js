@@ -156,39 +156,41 @@ const AdminNavbar = (props) => {
                 </li>
               </Link>
               <NavLink to="/admin/product">
-                <li className="hover:text-[#F28123] transition [#F28123] cursor-pointer">
+                <li className="hover:text-[#F28123] transition  cursor-pointer">
                   PRODUCT
                 </li>
               </NavLink>
               <NavLink to="/admin/addproduct">
-                <li className="hover:text-[#F28123] transition whitespace-nowrap [#F28123] cursor-pointer">
+                <li className="hover:text-[#F28123] transition whitespace-nowrap  cursor-pointer">
                   ADD PRODUCT
                 </li>
               </NavLink>
               <NavLink to="/admin/orders">
-                <li className="hover:text-[#F28123] transition [#F28123] cursor-pointer">
+                <li className="hover:text-[#F28123] transition  cursor-pointer">
                   ORDERS
                 </li>
               </NavLink>
               {localStorage.getItem("adminid") !== null ? (
                 <Link
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     localStorage.removeItem("adminid");
                     notify();
                     navigate("/admin");
                   }}
                 >
-                  <li className="hover:text-[#F28123] transition [#F28123] cursor-pointer">
+                  <li className="hover:text-[#F28123] transition  cursor-pointer">
                     SIGN&nbsp;OUT
                   </li>
                 </Link>
               ) : (
                 <Link
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     navigate("/admin/signin");
                   }}
                 >
-                  <li className="hover:text-[#F28123] transition [#F28123] cursor-pointer">
+                  <li className="hover:text-[#F28123] transition  cursor-pointer">
                     SIGN&nbsp;IN
                   </li>
                 </Link>

@@ -17,10 +17,8 @@ import Checkout from "./components/checkout/Checkout";
 import Addproduct from "./components/admin/Addproduct";
 import Error from "./components/404/Error";
 import AdminLogIn from "./components/admin/auth/AdminLogIn";
-import AdminSignUp from "./components/admin/auth/AdminSignUp";
 import Admin from "./components/admin/Admin";
 import AdminProduct from "./components/admin/AdminProduct";
-import AdminNavbar from "./components/admin/AdminNavbar";
 import EditProduct from "./components/admin/EditProduct";
 
 export default function App() {
@@ -34,18 +32,15 @@ export default function App() {
   const setstatus = () => {
     setUserstatus(!userstatus);
   };
-
   document.title = "Mobile Planet";
   return (
     <div>
       <div className={navigator.onLine ? "" : "offline"}>
         {window.location.pathname.includes("admin") ? (
           <div>
-            <AdminNavbar />
             <Routes>
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/signin" element={<AdminLogIn />} />
-              <Route path="/admin/signup" element={<AdminSignUp />} />
               <Route path="/admin/product" element={<AdminProduct />} />
               <Route path="/admin/editproduct" element={<EditProduct />} />
               <Route exact path="/admin/addproduct" element={<Addproduct />} />

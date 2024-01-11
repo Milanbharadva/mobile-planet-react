@@ -86,20 +86,6 @@ const AdminLogIn = (props) => {
         </form>
       </div>
       <ToastContainer />
-
-      <div className="mt-3">
-        <h2 className="flex justify-center text-md font-semibold">
-          Don't have an account ? &nbsp;
-          <button
-            className="text-blue-600 cursor-pointer"
-            onClick={() => {
-              navigate("/admin/signup");
-            }}
-          >
-            Sign Up
-          </button>
-        </h2>
-      </div>
     </div>
   );
 };

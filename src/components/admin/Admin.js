@@ -9,6 +9,10 @@ const Admin = () => {
       navigate("/admin/signin");
     }
   }, []);
-  return <></>;
+  return (
+    <>
+      <AdminNavbar />
+    </>
+  );
 };
 export default Admin;
