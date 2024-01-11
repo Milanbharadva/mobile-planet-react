@@ -14,8 +14,14 @@ import Cart from "./components/cart/Cart";
 import Profile from "./components/profile/Profile";
 import SingleProduct from "./components/single-product/SingleProduct";
 import Checkout from "./components/checkout/Checkout";
-import Addproduct from "./components/addproduct/Addproduct";
+import Addproduct from "./components/admin/Addproduct";
 import Error from "./components/404/Error";
+import AdminLogIn from "./components/admin/auth/AdminLogIn";
+import AdminSignUp from "./components/admin/auth/AdminSignUp";
+import Admin from "./components/admin/Admin";
+import AdminProduct from "./components/admin/AdminProduct";
+import AdminNavbar from "./components/admin/AdminNavbar";
+import EditProduct from "./components/admin/EditProduct";
 
 export default function App() {
   document.title = "Mobile Planet";
@@ -33,40 +39,59 @@ export default function App() {
   return (
     <div>
       <div className={navigator.onLine ? "" : "offline"}>
-        <Navbar onchange={setstatus} />
-        <Routes>
-          <Route exact path="/addproduct" element={<Addproduct />} />
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/about" element={<About />} />
-          <Route exact path="/contact" element={<Contact />} />
-          <Route exact path="/shop" element={<Shop onchange={setstatus} />} />
-          <Route path="*" element={<Error />} />
-          <Route
-            exact
-            path="/product"
-            element={<Product onchange={setstatus} />}
-          />
-          <Route
-            exact
-            path="/product/:category"
-            element={<Product onchange={setstatus} />}
-          />
-          <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/cart" element={<Cart />} />
-          <Route exact path="/profile" element={<Profile />} />
-          <Route exact path="/checkout" element={<Checkout />} />
-          <Route
-            exact
-            path="/singleproduct/:id"
-            element={<SingleProduct onchange={setstatus} />}
-          />
-          <Route
-            exact
-            path="/signin"
-            element={<Signin onchange={setstatus} />}
-          />
-        </Routes>
-        <Footer />
+        {window.location.pathname.includes("admin") ? (
+          <div>
+            <AdminNavbar />
+            <Routes>
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/signin" element={<AdminLogIn />} />
+              <Route path="/admin/signup" element={<AdminSignUp />} />
+              <Route path="/admin/product" element={<AdminProduct />} />
+              <Route path="/admin/editproduct" element={<EditProduct />} />
+              <Route exact path="/admin/addproduct" element={<Addproduct />} />
+            </Routes>
+          </div>
+        ) : (
+          <div>
+            <Navbar onchange={setstatus} />
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+              <Route exact path="/about" element={<About />} />
+              <Route exact path="/contact" element={<Contact />} />
+              <Route
+                exact
+                path="/shop"
+                element={<Shop onchange={setstatus} />}
+              />
+              <Route path="*" element={<Error />} />
+              <Route
+                exact
+                path="/product"
+                element={<Product onchange={setstatus} />}
+              />
+              <Route
+                exact
+                path="/product/:category"
+                element={<Product onchange={setstatus} />}
+              />
+              <Route exact path="/signup" element={<Signup />} />
+              <Route exact path="/cart" element={<Cart />} />
+              <Route exact path="/profile" element={<Profile />} />
+              <Route exact path="/checkout" element={<Checkout />} />
+              <Route
+                exact
+                path="/singleproduct/:id"
+                element={<SingleProduct onchange={setstatus} />}
+              />
+              <Route
+                exact
+                path="/signin"
+                element={<Signin onchange={setstatus} />}
+              />
+            </Routes>
+            <Footer />
+          </div>
+        )}
       </div>
 
       {!onlinestatus && (

@@ -1,9 +1,16 @@
 import { db } from "../../Firebase/fiirebase";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { collection, addDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 const Addproduct = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem("adminid") === null) {
+      navigate("/admin/signin");
+    }
+  }, []);
   const notify = () => toast.success("Product added");
 
   let nameref = useRef();
