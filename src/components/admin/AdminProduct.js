@@ -10,6 +10,7 @@ import { db } from "../../Firebase/fiirebase";
 const AdminProduct = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
+  const [productnamesearch, setproductnamesearch] = useState("");
   const itemsPerPage = 2;
   useEffect(() => {
     if (localStorage.getItem("adminid") === null) {
@@ -17,18 +18,38 @@ const AdminProduct = () => {
     }
   }, []);
   const data = useFetch("product");
-  const totalProducts = data.loadeddata.length;
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  const paginatedProducts = data.loadeddata.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  if (productnamesearch == null) {
+    var totalProducts = data.loadeddata.length;
+    var paginatedProducts = data.loadeddata.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
+  } else {
+    var totalProducts = data.loadeddata.filter((item) =>
+      item.productname.toLowerCase().includes(productnamesearch.toLowerCase())
+    ).length;
+    var paginatedProducts = data.loadeddata
+      .filter((item) =>
+        item.productname.toLowerCase().includes(productnamesearch.toLowerCase())
+      )
+      .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  }
   let product = data.loadeddata;
   return (
     <>
       <AdminNavbar />
+      <div>
+        <p>Product name</p>
+        <input
+          type="text"
+          onChange={(e) => setproductnamesearch(e.target.value)}
+          name="name"
+        />
+      </div>
+
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto">
           <table className="min-w-full text-left text-sm font-light">
