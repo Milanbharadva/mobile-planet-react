@@ -1,19 +1,30 @@
-import { useEffect } from "react";
-import { db } from "../../Firebase/fiirebase";
-import { useFetch } from "../../hook/usefetch";
+import React, { useEffect, useState } from "react";
 import { deleteDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import AdminNavbar from "./AdminNavbar";
+import { useFetch } from "../../hook/usefetch";
+import Pagination from "./Pagination";
+import { db } from "../../Firebase/fiirebase";
 
 const AdminProduct = () => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 2;
   useEffect(() => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
     }
   }, []);
   const data = useFetch("product");
+  const totalProducts = data.loadeddata.length;
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+  const paginatedProducts = data.loadeddata.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   let product = data.loadeddata;
   return (
     <>
@@ -67,7 +78,7 @@ const AdminProduct = () => {
               </tr>
             </thead>
             <tbody>
-              {product.map((item) => (
+              {paginatedProducts.map((item) => (
                 <tr
                   className="border-b cursor-pointer dark:border-neutral-500"
                   key={item.id}
@@ -179,6 +190,11 @@ const AdminProduct = () => {
               ))}
             </tbody>
           </table>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(totalProducts / itemsPerPage)}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
     </>
