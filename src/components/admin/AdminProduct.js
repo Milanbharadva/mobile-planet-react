@@ -37,6 +37,9 @@ const AdminProduct = () => {
       )
       .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   }
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [productnamesearch]);
   let product = data.loadeddata;
   return (
     <>
@@ -100,10 +103,7 @@ const AdminProduct = () => {
             </thead>
             <tbody>
               {paginatedProducts.map((item) => (
-                <tr
-                  className="border-b cursor-pointer dark:border-neutral-500"
-                  key={item.id}
-                >
+                <tr className="border-b  dark:border-neutral-500" key={item.id}>
                   <td
                     className="whitespace-nowrap px-6 py-4"
                     onClick={() => {
