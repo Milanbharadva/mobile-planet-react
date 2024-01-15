@@ -2,11 +2,11 @@ import { db } from "../../Firebase/fiirebase";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFetch } from "../../hook/usefetch";
 import AdminNavbar from "./AdminNavbar";
-const EditProduct = ({ route }) => {
+const EditProduct = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -15,8 +15,7 @@ const EditProduct = ({ route }) => {
     }
   }, []);
   const notify = () => toast.success("Product updated sucessfully");
-  const formRef = useRef();
-
+  const categoryarr = ["apple", "samsung", "oneplus"];
   const loadeddata = useFetch("product");
   const productforedit = loadeddata.loadeddata.filter(
     (item) => item.id == state.productid
@@ -24,6 +23,7 @@ const EditProduct = ({ route }) => {
   const initialformdata = {
     productname: productforedit && productforedit.productname,
     productprice: productforedit && productforedit.productprice,
+    productdescription: productforedit && productforedit.productdescription,
     productram: productforedit && productforedit.productram,
     productrom: productforedit && productforedit.productrom,
     productcolor: productforedit && productforedit.productcolor,
@@ -34,7 +34,6 @@ const EditProduct = ({ route }) => {
     productimage: productforedit && productforedit.productimage,
     categoryname: productforedit && productforedit.categoryname,
   };
-  console.log(initialformdata);
   const [formdata, setFormdata] = useState(initialformdata);
   useEffect(() => {
     setFormdata(productforedit);
@@ -59,7 +58,7 @@ const EditProduct = ({ route }) => {
       <div className="flex justify-center items-center">
         <div className="bg-white p-8 rounded shadow-md w-[40vw]">
           <h2 className="text-2xl font-semibold mb-6">Edit Product</h2>
-          <form method="post" ref={formRef} onSubmit={validate}>
+          <form method="post" onSubmit={validate}>
             <div>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-600">
@@ -75,7 +74,22 @@ const EditProduct = ({ route }) => {
                   }}
                   className="mt-1 p-2 w-full border rounded-md"
                   autoComplete="on"
+                  required
                 />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-600">
+                  Product description
+                </label>
+                <textarea
+                  name="productdescription"
+                  placeholder="Enter Product description"
+                  className="mt-1 p-2 w-full h-24 border border-black resize-none rounded-md"
+                  value={formdata && formdata.productdescription}
+                  onChange={(e) => {
+                    handler(e);
+                  }}
+                ></textarea>
               </div>
               <div className="mb-4">
                 <label
@@ -92,6 +106,8 @@ const EditProduct = ({ route }) => {
                   onChange={(e) => {
                     handler(e);
                   }}
+                  required
+                  min={1}
                   className="mt-1 p-2 w-full border rounded-md"
                 />
               </div>
@@ -111,25 +127,35 @@ const EditProduct = ({ route }) => {
                     handler(e);
                   }}
                   className="mt-1 p-2 w-full border rounded-md"
+                  min={1}
                 />
               </div>
               <div className="mb-4">
                 <label
                   className="block text-sm font-medium text-gray-600"
-                  htmlFor="exampleInputFile"
+                  htmlFor="imgpicker"
                 >
                   Product Image
                 </label>
                 <input
                   type="file"
+                  // value={formdata.productimage}
                   className="mt-1 p-2 w-full border rounded-md"
-                  id="exampleInputFile"
+                  id="imgpicker"
                   name="productimage"
                   onChange={(e) => {
                     handler(e);
                   }}
                 />
-                {formdata && formdata.productimage}
+                {formdata && (
+                  <div className="w-full justify-center items-center flex">
+                    <img
+                      src={`${window.location.origin}/assets/product/${formdata.productimage}`}
+                      alt=""
+                      className="h-32 "
+                    />
+                  </div>
+                )}
               </div>
               <div className="mb-4">
                 <label
@@ -146,6 +172,7 @@ const EditProduct = ({ route }) => {
                   onChange={(e) => {
                     handler(e);
                   }}
+                  min={1}
                   className="mt-1 p-2 w-full border rounded-md"
                 />
               </div>
@@ -192,16 +219,24 @@ const EditProduct = ({ route }) => {
                 >
                   Product Category
                 </label>
-                <input
-                  type="text"
+                <select
                   name="categoryname"
-                  placeholder="Enter Product Category"
-                  value={formdata && formdata.categoryname}
                   onChange={(e) => {
                     handler(e);
                   }}
+                  defaultValue={formdata && formdata.categoryname}
                   className="mt-1 p-2 w-full border rounded-md"
-                />
+                >
+                  {formdata &&
+                    categoryarr.map((item) => (
+                      <option
+                        value={item}
+                        selected={formdata.categoryname == item}
+                      >
+                        {item}
+                      </option>
+                    ))}
+                </select>
               </div>
               <div className="mb-4">
                 <label
@@ -276,7 +311,10 @@ const EditProduct = ({ route }) => {
                   name="reset"
                   value="reset"
                   className="btn btn-primary col-md-12 buttons"
-                  onClick={() => setFormdata(initialformdata)}
+                  onClick={() => {
+                    document.getElementById("imgpicker").value = "";
+                    setFormdata(initialformdata);
+                  }}
                 >
                   Reset
                 </button>
