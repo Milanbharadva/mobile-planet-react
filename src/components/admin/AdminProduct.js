@@ -10,47 +10,121 @@ import { db } from "../../Firebase/fiirebase";
 const AdminProduct = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemperpage, setitemperpage] = useState(2);
+  const [categoryfilter, setCategoryfilter] = useState("All");
   const [productnamesearch, setproductnamesearch] = useState("");
-  const itemsPerPage = 2;
   useEffect(() => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
     }
   }, []);
   const data = useFetch("product");
+
+  let uniqdata = data.loadeddata.filter((obj, i) => {
+    return (
+      i ===
+      data.loadeddata.findIndex((o) => obj.categoryname === o.categoryname)
+    );
+  });
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  if (productnamesearch == null) {
+  if (productnamesearch == "" && categoryfilter == "All") {
     var totalProducts = data.loadeddata.length;
     var paginatedProducts = data.loadeddata.slice(
-      (currentPage - 1) * itemsPerPage,
-      currentPage * itemsPerPage
+      (currentPage - 1) * itemperpage,
+      currentPage * itemperpage
     );
   } else {
-    var totalProducts = data.loadeddata.filter((item) =>
-      item.productname.toLowerCase().includes(productnamesearch.toLowerCase())
-    ).length;
-    var paginatedProducts = data.loadeddata
-      .filter((item) =>
+    var filteredwithname;
+    if (productnamesearch != "" && categoryfilter !== "All") {
+      filteredwithname = data.loadeddata
+        .filter((item) =>
+          item.productname
+            .toLowerCase()
+            .includes(productnamesearch.toLowerCase())
+        )
+        .filter(
+          (item) =>
+            item.categoryname.toLowerCase() == categoryfilter.toLowerCase()
+        );
+    }
+    if (productnamesearch != "" && categoryfilter == "All") {
+      filteredwithname = data.loadeddata.filter((item) =>
         item.productname.toLowerCase().includes(productnamesearch.toLowerCase())
-      )
-      .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+      );
+    }
+    if (productnamesearch == "" && categoryfilter != "All") {
+      filteredwithname = data.loadeddata.filter(
+        (item) =>
+          item.categoryname.toLowerCase() == categoryfilter.toLowerCase()
+      );
+    }
+    var totalProducts = filteredwithname.length;
+    var paginatedProducts = filteredwithname.slice(
+      (currentPage - 1) * itemperpage,
+      currentPage * itemperpage
+    );
   }
   useEffect(() => {
     setCurrentPage(1);
   }, [productnamesearch]);
-  let product = data.loadeddata;
   return (
     <>
       <AdminNavbar />
-      <div>
-        <p>Product name</p>
-        <input
-          type="text"
-          onChange={(e) => setproductnamesearch(e.target.value)}
-          name="name"
-        />
+      <div className="flex mx-10 my-5 gap-5">
+        <div className="flex flex-col gap-2">
+          <p>Product name</p>
+          <input
+            type="text"
+            onChange={(e) => setproductnamesearch(e.target.value)}
+            name="name"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <p>Product Per Page</p>
+          <select
+            name="productperpageselector"
+            onChange={(e) => {
+              setCurrentPage(1);
+              setitemperpage(e.target.value);
+            }}
+            className="h-full px-1"
+          >
+            <option value="2">2</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        <div className="flex flex-col gap-2">
+          <p>Select Category</p>
+          <select
+            name="productperpageselector"
+            onChange={(e) => {
+              setCategoryfilter(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="h-full px-1"
+          >
+            <option
+              value="All"
+              onClick={() => {
+                setCategoryfilter("All");
+              }}
+              selected
+            >
+              All
+            </option>
+            {uniqdata &&
+              uniqdata.map((item) => (
+                <option value={item.categoryname}>{item.categoryname}</option>
+              ))}
+          </select>
+        </div>
+        <div onClick={() => {}}>
+          <button className="border px-10 h-full border-black">RESET</button>
+        </div>
       </div>
 
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -105,7 +179,7 @@ const AdminProduct = () => {
               {paginatedProducts.map((item) => (
                 <tr className="border-b  dark:border-neutral-500" key={item.id}>
                   <td
-                    className="whitespace-nowrap px-6 py-4"
+                    className="whitespace-nowrap px-6 py-4 cursor-pointer"
                     onClick={() => {
                       if (
                         window.confirm("Do you want to delete this product")
@@ -150,7 +224,7 @@ const AdminProduct = () => {
                       });
                     }}
                   >
-                    <MdEdit />
+                    <MdEdit className="cursor-pointer" />
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">
                     <h5 className="font-medium text-black dark:text-white">
@@ -213,7 +287,7 @@ const AdminProduct = () => {
           </table>
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(totalProducts / itemsPerPage)}
+            totalPages={Math.ceil(totalProducts / itemperpage)}
             onPageChange={handlePageChange}
           />
         </div>
