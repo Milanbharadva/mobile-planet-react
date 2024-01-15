@@ -6,6 +6,7 @@ import AdminNavbar from "./AdminNavbar";
 import { useFetch } from "../../hook/usefetch";
 import Pagination from "./Pagination";
 import { db } from "../../Firebase/fiirebase";
+import { MdMoreVert } from "react-icons/md";
 
 const AdminProduct = () => {
   const navigate = useNavigate();
@@ -26,7 +27,8 @@ const AdminProduct = () => {
       data.loadeddata.findIndex((o) => obj.categoryname === o.categoryname)
     );
   });
-
+  let allcateogryarr = ["All"];
+  uniqdata.map((item) => allcateogryarr.push(item.categoryname));
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -80,6 +82,8 @@ const AdminProduct = () => {
             type="text"
             onChange={(e) => setproductnamesearch(e.target.value)}
             name="name"
+            value={productnamesearch}
+            className="pl-2"
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -90,11 +94,18 @@ const AdminProduct = () => {
               setCurrentPage(1);
               setitemperpage(e.target.value);
             }}
+            defaultValue={2}
             className="h-full px-1"
           >
-            <option value="2">2</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
+            <option value="2" selected={2 == itemperpage}>
+              2
+            </option>
+            <option value="5" selected={5 == itemperpage}>
+              5
+            </option>
+            <option value="10" selected={10 == itemperpage}>
+              10
+            </option>
           </select>
         </div>
         <div className="flex flex-col gap-2">
@@ -106,23 +117,29 @@ const AdminProduct = () => {
               setCurrentPage(1);
             }}
             className="h-full px-1"
+            defaultValue="All"
           >
-            <option
-              value="All"
-              onClick={() => {
-                setCategoryfilter("All");
-              }}
-              selected
-            >
-              All
-            </option>
-            {uniqdata &&
-              uniqdata.map((item) => (
-                <option value={item.categoryname}>{item.categoryname}</option>
-              ))}
+            {allcateogryarr &&
+              allcateogryarr.map((item) => {
+                return (
+                  <option
+                    value={item}
+                    key={item}
+                    selected={item == categoryfilter}
+                  >
+                    {item}
+                  </option>
+                );
+              })}
           </select>
         </div>
-        <div onClick={() => {}}>
+        <div
+          onClick={() => {
+            setCategoryfilter("All");
+            setitemperpage(2);
+            setproductnamesearch("");
+          }}
+        >
           <button className="border px-10 h-full border-black">RESET</button>
         </div>
       </div>
