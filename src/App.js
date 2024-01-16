@@ -20,6 +20,8 @@ import AdminLogIn from "./components/admin/auth/AdminLogIn";
 import Admin from "./components/admin/Admin";
 import AdminProduct from "./components/admin/AdminProduct";
 import EditProduct from "./components/admin/EditProduct";
+import Discount from "./components/admin/Discount";
+import EditDiscount from "./components/admin/EditDiscount";
 
 export default function App() {
   document.title = "Mobile Planet";
@@ -43,6 +45,8 @@ export default function App() {
               <Route path="/admin/signin" element={<AdminLogIn />} />
               <Route path="/admin/product" element={<AdminProduct />} />
               <Route path="/admin/editproduct" element={<EditProduct />} />
+              <Route path="/admin/editdiscount" element={<EditDiscount />} />
+              <Route path="/admin/discount" element={<Discount />} />
               <Route exact path="/admin/addproduct" element={<Addproduct />} />
             </Routes>
           </div>
