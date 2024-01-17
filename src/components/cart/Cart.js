@@ -10,9 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { IoMdClose } from "react-icons/io";
 
 const Cart = () => {
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [discountcode, setdiscountcode] = useState(null);
   const [discountprice, setDiscountprice] = useState(0);
   const [discountbyanddiscount, setdiscountbyanddiscount] = useState(null);
