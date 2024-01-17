@@ -6,25 +6,36 @@ import { db } from "../../Firebase/fiirebase";
 import { useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
 import { MdEdit } from "react-icons/md";
+import { milisecondtotime } from "./TImeConvertor";
 
 const Discount = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemperpage, setitemperpage] = useState(2);
   const [categoryfilter, setCategoryfilter] = useState("All");
-  const [productnamesearch, setproductnamesearch] = useState("");
+  const [discountnamesearch, setdiscountnamesearch] = useState("");
   const navigate = useNavigate();
   const { loadeddata } = useFetch("discount");
-  console.log(loadeddata);
   useEffect(() => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
     }
   }, []);
-  var totalProducts = loadeddata.length;
-  var paginatedProducts = loadeddata.slice(
-    (currentPage - 1) * itemperpage,
-    currentPage * itemperpage
-  );
+  if (categoryfilter == "") {
+    var totalProducts = loadeddata.length;
+    var paginatedProducts = loadeddata.slice(
+      (currentPage - 1) * itemperpage,
+      currentPage * itemperpage
+    );
+  } else {
+    let filteredwithname = loadeddata.filter((item) =>
+      item.name.toLowerCase().includes(discountnamesearch.toLowerCase())
+    );
+    var totalProducts = filteredwithname.length;
+    var paginatedProducts = filteredwithname.slice(
+      (currentPage - 1) * itemperpage,
+      currentPage * itemperpage
+    );
+  }
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -37,9 +48,9 @@ const Discount = () => {
           <p>Product name</p>
           <input
             type="text"
-            onChange={(e) => setproductnamesearch(e.target.value)}
+            onChange={(e) => setdiscountnamesearch(e.target.value)}
             name="name"
-            value={productnamesearch}
+            value={discountnamesearch}
             className="pl-2"
           />
         </div>
@@ -70,10 +81,20 @@ const Discount = () => {
           onClick={() => {
             setCategoryfilter("All");
             setitemperpage(2);
-            setproductnamesearch("");
+            setdiscountnamesearch("");
           }}
         >
           <button className="border px-10 h-full border-black">RESET</button>
+        </div>
+        <div>
+          <button
+            className="buttons"
+            onClick={() => {
+              navigate("/admin/adddiscount");
+            }}
+          >
+            Add Discount
+          </button>
         </div>
       </div>
 
@@ -93,31 +114,15 @@ const Discount = () => {
                 <th className="px-6 py-4">Discount Expire date</th>
                 <th className="px-6 py-4">Discount</th>
                 <th className="px-6 py-4">Minimum Cart</th>
+                <th className="px-6 py-4">Show</th>
               </tr>
             </thead>
             <tbody>
               {paginatedProducts.map((item) => {
                 {
-                  var startdate =
-                    item.startDate &&
-                    new Date(
-                      item.startDate.seconds * 1000 +
-                        item.startDate.nanoseconds / 1e6
-                    )
-                      .toISOString()
-                      .replace("T", " ")
-                      .split(".")[0];
-                  var enddate =
-                    item.endDate &&
-                    new Date(
-                      item.endDate.seconds * 1000 +
-                        item.endDate.nanoseconds / 1e6
-                    )
-                      .toISOString()
-                      .replace("T", " ")
-                      .split(".")[0];
                   id++;
                 }
+
                 return (
                   <tr
                     className="border-b  dark:border-neutral-500"
@@ -182,24 +187,29 @@ const Discount = () => {
 
                     <td className="whitespace-nowrap px-6 py-4">
                       <p className="inline-flex rounded-full bg-warning bg-opacity-10 py-1 px-3 text-sm font-medium text-warning">
-                        {console.log(item)}
                         {item.DiscountCode}
                       </p>
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       <p className="inline-flex rounded-full bg-warning whitespace-nowrap bg-opacity-10 py-1 px-3 text-sm font-medium text-warning">
-                        {startdate}
+                        {milisecondtotime(item.startDate)}
                       </p>
                     </td>
 
                     <td className="whitespace-nowrap px-6 py-4">
                       <p className="inline-flex rounded-full bg-warning bg-opacity-10 py-1 px-3 text-sm font-medium text-warning">
-                        {enddate}
+                        {" "}
+                        {milisecondtotime(item.endDate)}
                       </p>
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       <p className="inline-flex rounded-full bg-warning bg-opacity-10 py-1 px-3 text-sm font-medium text-warning">
-                        {item.Discount}%
+                        {item.Discount} {item.DiscountBy}
+                      </p>
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <p className="inline-flex rounded-full bg-warning bg-opacity-10 py-1 px-3 text-sm font-medium text-warning">
+                        {item.MinimumCart}
                       </p>
                     </td>
                     <td

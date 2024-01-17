@@ -63,7 +63,7 @@ const Addproduct = () => {
       <AdminNavbar />
       <div className="flex justify-center items-center">
         <div className="bg-white p-8 rounded shadow-md w-[40vw]">
-          <h2 className="text-2xl font-semibold mb-6">Edit Product</h2>
+          <h2 className="text-2xl font-semibold mb-6">Add Product</h2>
           <form method="post" onSubmit={validate}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">
@@ -218,6 +218,14 @@ const Addproduct = () => {
                 className="btn btn-primary col-md-12 buttons"
               >
                 Submit
+              </button>
+              <button
+                type="reset"
+                name="reset"
+                value="reset"
+                className="btn btn-primary col-md-12 buttons"
+              >
+                Reset
               </button>
             </div>
           </form>

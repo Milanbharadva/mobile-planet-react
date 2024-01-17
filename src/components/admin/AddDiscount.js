@@ -2,73 +2,57 @@ import { db } from "../../Firebase/fiirebase";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateDoc, doc, Firestore } from "firebase/firestore";
-import { Timestamp } from "firebase/firestore";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useFetch } from "../../hook/usefetch";
+import { addDoc, collection } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import AdminNavbar from "./AdminNavbar";
 import { milisecondtotime } from "./TImeConvertor";
-const EditDiscount = () => {
-  const { state } = useLocation();
+const AddDiscount = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
     }
   }, []);
-
-  const notify = () => toast.success("Product updated sucessfully");
-  const loadeddata = useFetch("discount");
-  const productforedit = loadeddata.loadeddata.filter(
-    (item) => item.id == state.discountid
-  )[0];
-
-  const initialformdata = {
-    Discount: productforedit && productforedit.Discount,
-    DiscountCode: productforedit && productforedit.DiscountCode,
-    MinimumCart: productforedit && productforedit.MinimumCart,
-    name: productforedit && productforedit.name,
-    DiscountBy: productforedit && productforedit.DiscountBy,
-    startDate: productforedit && productforedit.startDate,
-    endDate: productforedit && productforedit.endDate,
-  };
   const [formdata, setFormdata] = useState({
-    Discount: productforedit && productforedit.Discount,
-    DiscountCode: productforedit && productforedit.DiscountCode,
-    MinimumCart: productforedit && productforedit.MinimumCart,
-    name: productforedit && productforedit.name,
-    DiscountBy: productforedit && productforedit.DiscountBy,
-    startDate: productforedit && productforedit.startDate,
-    endDate: productforedit && productforedit.endDate,
+    Discount: "",
+    DiscountBy: "",
+    DiscountCode: "",
+    MinimumCart: "",
+    endDate: 0,
+    name: "",
+    startDate: 0,
   });
-  useEffect(() => {
-    setFormdata(initialformdata);
-  }, [productforedit]);
   const handler = (e) => {
     const { name, value } = e.target;
     setFormdata((prevformdata) => ({ ...prevformdata, [name]: value }));
   };
+  const notify = () => toast.success("Product updated sucessfully");
   async function validate(e) {
     e.preventDefault();
-    const getdiscount = doc(db, "discount", state.discountid);
-    await updateDoc(getdiscount, {
-      Discount: formdata.Discount,
-      DiscountCode: formdata.DiscountCode,
-      MinimumCart: formdata.MinimumCart,
-      name: formdata.name,
-      DiscountBy: formdata.DiscountBy,
-      startDate: formdata.startDate,
-      endDate: formdata.endDate,
+    await addDoc(collection(db, "discount"), formdata).then((res) => {
+      if (res._key.path.segments[1]) {
+        setFormdata({
+          Discount: "",
+          DiscountBy: "",
+          DiscountCode: "",
+          MinimumCart: "",
+          endDate: 0,
+          name: "",
+          startDate: 0,
+        });
+        notify();
+        navigate("/admin/discount");
+      }
     });
-    notify();
-    navigate("/admin/discount");
+    console.log(formdata);
   }
+
   return (
     <div className="bg-gray-200">
       <AdminNavbar />
       <div className="flex justify-center items-center">
         <div className="bg-white p-8 rounded shadow-md w-[40vw]">
-          <h2 className="text-2xl font-semibold mb-6">Edit Discount</h2>
+          <h2 className="text-2xl font-semibold mb-6">Add Discount</h2>
           <form method="post" onSubmit={validate}>
             <div>
               <div className="mb-4">
@@ -79,13 +63,12 @@ const EditDiscount = () => {
                   type="text"
                   name="name"
                   placeholder="Enter Discount name"
-                  value={formdata && formdata.name}
-                  onChange={(e) => {
-                    handler(e);
-                  }}
                   className="mt-1 p-2 w-full border rounded-md"
                   autoComplete="on"
                   required
+                  onChange={(e) => {
+                    handler(e);
+                  }}
                 />
               </div>
               <div className="mb-4">
@@ -93,18 +76,17 @@ const EditDiscount = () => {
                   className="block text-sm font-medium text-gray-600"
                   htmlFor="exampleInputEmail1"
                 >
-                  Discout Code
+                  Discount Code
                 </label>
                 <input
                   type="text"
                   name="DiscountCode"
-                  value={formdata && formdata.DiscountCode}
-                  placeholder="Enter Product price"
+                  placeholder="Enter Discount Code"
+                  required
+                  className="mt-1 p-2 w-full border rounded-md"
                   onChange={(e) => {
                     handler(e);
                   }}
-                  required
-                  className="mt-1 p-2 w-full border rounded-md"
                 />
               </div>
               <div className="mb-4">
@@ -122,11 +104,6 @@ const EditDiscount = () => {
                         onClick={(e) => {
                           handler(e);
                         }}
-                        checked={
-                          formdata && formdata.DiscountBy == "percentage"
-                            ? "true"
-                            : ""
-                        }
                         required
                       />
                       <label htmlFor="percentage">PERCENTAGE ( % )</label>
@@ -139,11 +116,6 @@ const EditDiscount = () => {
                         onClick={(e) => {
                           handler(e);
                         }}
-                        checked={
-                          formdata && formdata.DiscountBy == "rupee"
-                            ? "true"
-                            : ""
-                        }
                       />
                       <label htmlFor="percentage">RUPEE ( ₹ )</label>
                     </div>
@@ -153,11 +125,10 @@ const EditDiscount = () => {
                   type="number"
                   name="Discount"
                   placeholder="Enter Discount"
-                  value={formdata && formdata.Discount}
+                  className="mt-1 p-2 w-full border rounded-md"
                   onChange={(e) => {
                     handler(e);
                   }}
-                  className="mt-1 p-2 w-full border rounded-md"
                   min={1}
                   max={formdata.DiscountBy == "percentage" ? 100 : ""}
                 />
@@ -171,17 +142,16 @@ const EditDiscount = () => {
                     Start Date
                   </label>
                   <input
-                    value={formdata && milisecondtotime(formdata.startDate)}
                     type="datetime-local"
                     name="startDate"
                     placeholder="Enter Discount Start Date"
+                    className="mt-1 p-2 w-full border rounded-md"
                     onChange={(e) => {
                       setFormdata((prevformdata) => ({
                         ...prevformdata,
                         startDate: Date.parse(e.target.value),
                       }));
                     }}
-                    className="mt-1 p-2 w-full border rounded-md"
                   />
                 </div>
                 <div className="w-1/2">
@@ -193,17 +163,16 @@ const EditDiscount = () => {
                   </label>
                   <input
                     type="datetime-local"
-                    min={formdata && milisecondtotime(formdata.startDate)}
-                    value={formdata && milisecondtotime(formdata.endDate)}
                     name="endDate"
+                    min={milisecondtotime(formdata.startDate)}
                     placeholder="Enter Discount End Date"
+                    className="mt-1 p-2 w-full border rounded-md"
                     onChange={(e) => {
                       setFormdata((prevformdata) => ({
                         ...prevformdata,
                         endDate: Date.parse(e.target.value),
                       }));
                     }}
-                    className="mt-1 p-2 w-full border rounded-md"
                   />
                 </div>
               </div>
@@ -217,13 +186,11 @@ const EditDiscount = () => {
                 <input
                   type="number"
                   name="MinimumCart"
-                  placeholder="Enter Product RAM"
-                  value={formdata && formdata.MinimumCart}
+                  placeholder="Enter Minimun Cart Value "
+                  className="mt-1 p-2 w-full border rounded-md"
                   onChange={(e) => {
                     handler(e);
                   }}
-                  className="mt-1 p-2 w-full border rounded-md"
-                  min={1}
                 />
               </div>
             </div>
@@ -237,16 +204,11 @@ const EditDiscount = () => {
                 >
                   Submit
                 </button>
-              </div>
-              <div>
                 <button
-                  type="button"
+                  type="reset"
                   name="reset"
                   value="reset"
                   className="btn btn-primary col-md-12 buttons"
-                  onClick={() => {
-                    // setFormdata(initialformdata);
-                  }}
                 >
                   Reset
                 </button>
@@ -260,4 +222,4 @@ const EditDiscount = () => {
   );
 };
 
-export default EditDiscount;
+export default AddDiscount;

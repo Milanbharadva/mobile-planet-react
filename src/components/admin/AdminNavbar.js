@@ -160,9 +160,9 @@ const AdminNavbar = (props) => {
                   PRODUCT
                 </li>
               </NavLink>
-              <NavLink to="/admin/addproduct">
-                <li className="hover:text-[#F28123] transition whitespace-nowrap  cursor-pointer">
-                  ADD PRODUCT
+              <NavLink to="/admin/discount">
+                <li className="hover:text-[#F28123] transition  cursor-pointer">
+                  DISCOUNT
                 </li>
               </NavLink>
               <NavLink to="/admin/orders">

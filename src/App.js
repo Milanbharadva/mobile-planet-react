@@ -22,6 +22,7 @@ import AdminProduct from "./components/admin/AdminProduct";
 import EditProduct from "./components/admin/EditProduct";
 import Discount from "./components/admin/Discount";
 import EditDiscount from "./components/admin/EditDiscount";
+import AddDiscount from "./components/admin/AddDiscount";
 
 export default function App() {
   document.title = "Mobile Planet";
@@ -48,6 +49,11 @@ export default function App() {
               <Route path="/admin/editdiscount" element={<EditDiscount />} />
               <Route path="/admin/discount" element={<Discount />} />
               <Route exact path="/admin/addproduct" element={<Addproduct />} />
+              <Route
+                exact
+                path="/admin/adddiscount"
+                element={<AddDiscount />}
+              />
             </Routes>
           </div>
         ) : (

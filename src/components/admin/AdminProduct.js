@@ -142,6 +142,16 @@ const AdminProduct = () => {
         >
           <button className="border px-10 h-full border-black">RESET</button>
         </div>
+        <div>
+          <button
+            className="buttons"
+            onClick={() => {
+              navigate("/admin/addproduct");
+            }}
+          >
+            Add Product
+          </button>
+        </div>
       </div>
 
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -255,7 +265,7 @@ const AdminProduct = () => {
                 </td> */}
                   <td className="whitespace-nowrap px-6 py-4">
                     <p className="inline-flex rounded-full bg-warning whitespace-nowrap bg-opacity-10 py-1 px-3 text-sm font-medium text-warning">
-                      {`${parseInt(item.productprice).toLocaleString()} $`}
+                      {`${parseInt(item.productprice).toLocaleString()} ₹`}
                     </p>
                   </td>
                   {/* <td className="whitespace-nowrap px-6 py-4">
