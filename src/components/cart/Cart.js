@@ -96,9 +96,7 @@ const Cart = () => {
             <table width="100%" className="border-collapse">
               <thead>
                 <tr className="text-center bg-[#efefef]">
-                  <td className="py-5">
-                    <IoClose />
-                  </td>
+                  <td className="py-5">Delete</td>
                   <td className="py-5">Product image</td>
                   <td className="py-5">Name</td>
                   <td className="py-5">Price</td>
@@ -122,12 +120,20 @@ const Cart = () => {
                       productdatafiltered && (
                         <tr className="text-center " key={item.id}>
                           <td
-                            className="py-5 border "
+                            className="py-5 border"
                             onClick={async () => {
-                              await deleteDoc(doc(db, "cart", item.id));
+                              if (
+                                window.confirm(
+                                  "Are you sure you want to remove it from cart?"
+                                )
+                              ) {
+                                await deleteDoc(doc(db, "cart", item.id));
+                              }
                             }}
                           >
-                            <IoClose />
+                            <div>
+                              <IoClose />
+                            </div>
                           </td>
                           <td className="py-5 border flex justify-center ">
                             <img
