@@ -10,8 +10,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { IoMdClose } from "react-icons/io";
 
 const Cart = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (localStorage.getItem("userid") == null) {
+      navigate("/signin");
+    }
   }, []);
   const [discountcode, setdiscountcode] = useState(null);
   const [discountprice, setDiscountprice] = useState(0);
@@ -33,7 +37,6 @@ const Cart = () => {
 
   let totalprice = 0;
   document.title = "Mobile Planet | Cart";
-  const navigate = useNavigate();
   const { loadeddata } = useFetch("cart");
   let data;
   if (loadeddata) {
