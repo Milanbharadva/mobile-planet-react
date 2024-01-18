@@ -4,7 +4,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { useFetch } from "../../hook/usefetch";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const AdminNavbar = (props) => {
   const navigate = useNavigate();
@@ -135,7 +135,6 @@ const AdminNavbar = (props) => {
   );
   return (
     <nav className="flex z-10   sticky top-0 pr-10 bg-[#07212e] text-white">
-      <ToastContainer />
       <div className="h-10vh flex z-50  lg:py-5 px-10 py-4 flex-1">
         <div className="flex items-center flex-1">
           <span className="text-3xl font-bold">

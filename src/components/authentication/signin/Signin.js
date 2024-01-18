@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Signin = (props) => {
   const notify = () => toast.error("Wrong Email or Password");
   const notify2 = () => toast.success("Login sucessful");
-
+  const notifyloginbeforecart = () =>
+    toast.error("Please Log In To Access Cart");
+  const { state } = useLocation();
   document.title = "Mobile Planet | Sign In";
 
   const { loadeddata } = useFetch("user");
@@ -17,9 +19,21 @@ const Signin = (props) => {
   };
   const [formdata, setFormdata] = useState(objstructutre);
 
+  const didMountRef = useRef(false);
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    // Check if it's the initial render
+    if (!didMountRef.current) {
+      // Perform the initial render logic
+      window.scrollTo(0, 0);
+      if (state != null) {
+        notifyloginbeforecart();
+      }
+
+      // Set the ref to true, so the effect won't run again
+      didMountRef.current = true;
+    }
+  }, [state]);
 
   const handler = (e) => {
     e.preventDefault();
@@ -86,7 +100,6 @@ const Signin = (props) => {
           <button className="buttons">SIGN IN</button>
         </form>
       </div>
-      <ToastContainer />
 
       <div className="mt-3">
         <h2 className="flex justify-center text-md font-semibold">

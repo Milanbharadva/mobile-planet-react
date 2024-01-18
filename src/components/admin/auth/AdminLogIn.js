@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const AdminLogIn = (props) => {
   const notify = () => toast.error("Wrong Email or Password");
@@ -85,7 +85,6 @@ const AdminLogIn = (props) => {
           <button className="buttons">SIGN IN</button>
         </form>
       </div>
-      <ToastContainer />
     </div>
   );
 };

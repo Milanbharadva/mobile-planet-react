@@ -23,6 +23,7 @@ import EditProduct from "./components/admin/EditProduct";
 import Discount from "./components/admin/Discount";
 import EditDiscount from "./components/admin/EditDiscount";
 import AddDiscount from "./components/admin/AddDiscount";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
   document.title = "Mobile Planet";
@@ -38,6 +39,7 @@ export default function App() {
   document.title = "Mobile Planet";
   return (
     <div>
+      <ToastContainer />
       <div className={navigator.onLine ? "" : "offline"}>
         {window.location.pathname.includes("admin") ? (
           <div>

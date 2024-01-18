@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useFetch } from "../../hook/usefetch";
 import { v4 as uuidv4 } from "uuid";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { db } from "../../Firebase/fiirebase";
 import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
@@ -80,7 +80,6 @@ const SingleProduct = (props) => {
   }
   return (
     <>
-      <ToastContainer />
       <div className="mt-10">
         {items &&
           items.map((product) => (

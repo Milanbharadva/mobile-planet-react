@@ -14,7 +14,11 @@ const Cart = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (localStorage.getItem("userid") == null) {
-      navigate("/signin");
+      navigate("/signin", {
+        state: {
+          toaccesscart: true,
+        },
+      });
     }
   }, []);
   const [discountcode, setdiscountcode] = useState(null);

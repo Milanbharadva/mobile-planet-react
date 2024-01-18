@@ -4,7 +4,7 @@ import { AiOutlineClockCircle } from "react-icons/ai";
 import { FaAddressBook, FaMapMarkerAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { db } from "../../Firebase/fiirebase";
 import { collection, addDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
@@ -57,7 +57,6 @@ const Contact = () => {
   return (
     <section>
       <Breadcrumb paragraph="GET 24/7 SUPPORT" heading="Contact us" />
-      <ToastContainer />
 
       <div className="md:mx-16 mx-10 flex lg:flex-row flex-col space-y-4 lg:mx-20 mt-32 mb-32">
         <div className="lg:w-[60%]">
