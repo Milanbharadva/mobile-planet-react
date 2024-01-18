@@ -90,18 +90,18 @@ const Cart = () => {
   return (
     <>
       <Breadcrumb paragraph="ORDER NOW" heading="Cart" />
-      <div className="mx-20">
-        <div className="flex">
-          <div className="w-[60%]">
+      <div className="md:mx-20 mx-2">
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="md:w-[60%] overflow-x-auto">
             <table width="100%" className="border-collapse">
               <thead>
                 <tr className="text-center bg-[#efefef]">
-                  <td className="py-5">Delete</td>
-                  <td className="py-5">Product image</td>
-                  <td className="py-5">Name</td>
-                  <td className="py-5">Price</td>
-                  <td className="py-5">Quanitiy</td>
-                  <td className="py-5 pr-2">Total</td>
+                  <td className="py-5 px-3">Delete</td>
+                  <td className="py-5 px-3">Product image</td>
+                  <td className="py-5 px-3">Name</td>
+                  <td className="py-5 px-3">Price</td>
+                  <td className="py-5 px-3">Quanitiy</td>
+                  <td className="py-5 px-3 pr-2">Total</td>
                 </tr>
               </thead>
               <tbody>
@@ -119,28 +119,27 @@ const Cart = () => {
                     return (
                       productdatafiltered && (
                         <tr className="text-center " key={item.id}>
-                          <td
-                            className="py-5 border"
-                            onClick={async () => {
-                              if (
-                                window.confirm(
-                                  "Are you sure you want to remove it from cart?"
-                                )
-                              ) {
-                                await deleteDoc(doc(db, "cart", item.id));
-                              }
-                            }}
-                          >
-                            <div>
-                              <IoClose />
+                          <td className="py-5 border">
+                            <div className="flex justify-center   ">
+                              <IoClose
+                                className="border text-3xl cursor-pointer border-black p-1"
+                                onClick={async () => {
+                                  if (
+                                    window.confirm(
+                                      "Are you sure you want to remove it from cart?"
+                                    )
+                                  ) {
+                                    await deleteDoc(doc(db, "cart", item.id));
+                                  }
+                                }}
+                              />
                             </div>
                           </td>
                           <td className="py-5 border flex justify-center ">
                             <img
                               src={`${window.location.origin}/assets/product/${productdatafiltered.productimage}`}
-                              className="cursor-pointer"
+                              className="cursor-pointer px-2  sm:h-[60px]"
                               alt={productdatafiltered.productname}
-                              height="60px"
                               onClick={() => {
                                 navigate(
                                   `/singleproduct/${productdatafiltered.id}`
@@ -149,7 +148,7 @@ const Cart = () => {
                             />
                           </td>
                           <td
-                            className="py-5 border cursor-pointer"
+                            className="py-5 whitespace-nowrap px-2 border cursor-pointer"
                             onClick={() => {
                               navigate(
                                 `/singleproduct/${productdatafiltered.id}`
@@ -159,7 +158,7 @@ const Cart = () => {
                             {productdatafiltered &&
                               productdatafiltered.productname.toUpperCase()}
                           </td>
-                          <td className="py-5 border ">
+                          <td className="py-5 whitespace-nowrap px-2 border ">
                             {parseInt(
                               productdatafiltered.productprice
                             ).toLocaleString()}
@@ -167,7 +166,7 @@ const Cart = () => {
                           <td className="py-5 border">
                             {item.itemdata.quantity}
                           </td>
-                          <td className="py-5 border pr-2">
+                          <td className="py-5 whitespace-nowrap px-2 border pr-2">
                             {(
                               productdatafiltered.productprice *
                               item.itemdata.quantity
@@ -180,10 +179,10 @@ const Cart = () => {
               </tbody>
             </table>
           </div>
-          <div className="ml-10 w-[30%]">
+          <div className="md:ml-10 text-center md:text-left md:w-[30%]">
             <div className="mb-5">
-              <h1 className="text-xl">Have coupon?</h1>
-              <div className="flex gap-1 items-center ">
+              <h1 className="text-xl mb-3 ">Have coupon?</h1>
+              <div className="flex flex-col xl:flex-row gap-1 items-center ">
                 <input
                   type="text"
                   id="discountcode"
@@ -211,7 +210,7 @@ const Cart = () => {
                           clearcounpon();
                         }
                       }}
-                      className="cursor-pointer"
+                      className="cursor-pointer font-bold"
                     />
                   </div>
                 )}

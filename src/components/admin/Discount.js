@@ -45,7 +45,7 @@ const Discount = () => {
       <AdminNavbar />
       <div className="flex mx-10 my-5 gap-5">
         <div className="flex flex-col gap-2">
-          <p>Product name</p>
+          <p>Discount name</p>
           <input
             type="text"
             onChange={(e) => setdiscountnamesearch(e.target.value)}
@@ -55,7 +55,7 @@ const Discount = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <p>Product Per Page</p>
+          <p>Discount Items Per Page</p>
           <select
             name="productperpageselector"
             onChange={(e) => {

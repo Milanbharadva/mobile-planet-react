@@ -170,7 +170,9 @@ const Addproduct = () => {
                   Select category
                 </option>
                 {categoryarr.map((item) => (
-                  <option value={item}>{item}</option>
+                  <option value={item} key={item}>
+                    {item}
+                  </option>
                 ))}
               </select>
             </div>
@@ -210,7 +212,7 @@ const Addproduct = () => {
                 className="mt-1 p-2 w-full border rounded-md"
               />
             </div>
-            <div>
+            <div className="flex gap-5">
               <button
                 type="submit"
                 name="submit"

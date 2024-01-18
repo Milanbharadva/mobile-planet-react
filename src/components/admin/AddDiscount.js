@@ -29,6 +29,7 @@ const AddDiscount = () => {
   const notify = () => toast.success("Product updated sucessfully");
   async function validate(e) {
     e.preventDefault();
+
     await addDoc(collection(db, "discount"), formdata).then((res) => {
       if (res._key.path.segments[1]) {
         setFormdata({
@@ -195,7 +196,7 @@ const AddDiscount = () => {
               </div>
             </div>
             <div className="mb-4 flex gap-5">
-              <div>
+              <div className="flex gap-5">
                 <button
                   type="submit"
                   name="submit"

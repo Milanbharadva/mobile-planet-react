@@ -105,7 +105,7 @@ const Product = (props) => {
                   />
                 </div>
                 <div className="flex flex-col justify-around md:w-[30%] lg:w-[50%] gap-4 px-3">
-                  <h2 className="text-xl font-bold">{`${item.productname.toUpperCase()} ( ${
+                  <h2 className="text-xl font-bold text-center sm:text-left">{`${item.productname.toUpperCase()} ( ${
                     item.productcolor
                   } , ${item.productrom}GB )`}</h2>
                   <ul className="flex flex-col gap-1">
