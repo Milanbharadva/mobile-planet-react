@@ -67,7 +67,7 @@ const EditDiscount = () => {
     <div className="bg-gray-200">
       <AdminNavbar />
       <div className="flex justify-center items-center">
-        <div className="bg-white p-8 rounded shadow-md w-[40vw]">
+        <div className="bg-white p-8 rounded shadow-md lg:w-[40vw] w-[90vw]">
           <h2 className="text-2xl font-semibold mb-6">Edit Discount</h2>
           <form method="post" onSubmit={validate}>
             <div>

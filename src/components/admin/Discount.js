@@ -233,12 +233,12 @@ const Discount = () => {
               })}
             </tbody>
           </table>
+        </div>
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(totalProducts / itemperpage)}
             onPageChange={handlePageChange}
           />
-        </div>
       </div>
     </>
   );

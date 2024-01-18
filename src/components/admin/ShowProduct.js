@@ -6,7 +6,7 @@ import { updateDoc, doc } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFetch } from "../../hook/usefetch";
 import AdminNavbar from "./AdminNavbar";
-const EditProduct = () => {
+const ShowProduct = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -14,8 +14,6 @@ const EditProduct = () => {
       navigate("/admin/signin");
     }
   }, []);
-  const notify = () => toast.success("Product updated sucessfully");
-  const categoryarr = ["apple", "samsung", "oneplus"];
   const loadeddata = useFetch("product");
   const productforedit = loadeddata.loadeddata.filter(
     (item) => item.id == state.productid
@@ -38,18 +36,8 @@ const EditProduct = () => {
   useEffect(() => {
     setFormdata(productforedit);
   }, [productforedit]);
-  const handler = (e) => {
-    const { name, value } = e.target;
-    setFormdata((prevformdata) => ({ ...prevformdata, [name]: value }));
-  };
+
   if (productforedit != null) {
-  }
-  async function validate(e) {
-    e.preventDefault();
-    const getproduct = doc(db, "product", state.productid);
-    await updateDoc(getproduct, formdata);
-    notify();
-    navigate("/admin/product");
   }
 
   return (
@@ -57,8 +45,14 @@ const EditProduct = () => {
       <AdminNavbar />
       <div className="flex justify-center items-center">
         <div className="bg-white p-8 rounded shadow-md lg:w-[40vw] w-[90vw]">
-          <h2 className="text-2xl font-semibold mb-6">Edit Product</h2>
-          <form method="post" onSubmit={validate}>
+          <h2 className="text-2xl font-semibold mb-6">Show Product</h2>
+          <form
+            method="post"
+            onSubmit={(e) => {
+              e.preventDefault();
+              navigate("/admin/product");
+            }}
+          >
             <div>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-600">
@@ -69,12 +63,10 @@ const EditProduct = () => {
                   name="productname"
                   placeholder="Enter Product name"
                   value={formdata && formdata.productname}
-                  onChange={(e) => {
-                    handler(e);
-                  }}
                   className="mt-1 p-2 w-full border rounded-md"
                   autoComplete="on"
                   required
+                  disabled
                 />
               </div>
               <div className="mb-4">
@@ -86,9 +78,7 @@ const EditProduct = () => {
                   placeholder="Enter Product description"
                   className="mt-1 p-2 w-full h-24 border border-black resize-none rounded-md"
                   value={formdata && formdata.productdescription}
-                  onChange={(e) => {
-                    handler(e);
-                  }}
+                  disabled
                 ></textarea>
               </div>
               <div className="mb-4">
@@ -103,12 +93,10 @@ const EditProduct = () => {
                   name="productprice"
                   value={formdata && formdata.productprice}
                   placeholder="Enter Product price"
-                  onChange={(e) => {
-                    handler(e);
-                  }}
                   required
                   min={1}
                   className="mt-1 p-2 w-full border rounded-md"
+                  disabled
                 />
               </div>
               <div className="mb-4">
@@ -123,11 +111,9 @@ const EditProduct = () => {
                   name="productram"
                   placeholder="Enter Product RAM"
                   value={formdata && formdata.productram}
-                  onChange={(e) => {
-                    handler(e);
-                  }}
                   className="mt-1 p-2 w-full border rounded-md"
                   min={1}
+                  disabled
                 />
               </div>
               <div className="mb-4">
@@ -137,16 +123,7 @@ const EditProduct = () => {
                 >
                   Product Image
                 </label>
-                <input
-                  type="file"
-                  // value={formdata.productimage}
-                  className="mt-1 p-2 w-full border rounded-md"
-                  id="imgpicker"
-                  name="productimage"
-                  onChange={(e) => {
-                    handler(e);
-                  }}
-                />
+
                 {formdata && (
                   <div className="w-full justify-center items-center flex">
                     <img
@@ -169,11 +146,9 @@ const EditProduct = () => {
                   name="productrom"
                   placeholder="Enter Product ROM"
                   value={formdata && formdata.productrom}
-                  onChange={(e) => {
-                    handler(e);
-                  }}
                   min={1}
                   className="mt-1 p-2 w-full border rounded-md"
+                  disabled
                 />
               </div>
               <div className="mb-4">
@@ -188,10 +163,8 @@ const EditProduct = () => {
                   name="productcolor"
                   placeholder="Enter Product Color"
                   value={formdata && formdata.productcolor}
-                  onChange={(e) => {
-                    handler(e);
-                  }}
                   className="mt-1 p-2 w-full border rounded-md"
+                  disabled
                 />
               </div>
               <div className="mb-4">
@@ -206,10 +179,8 @@ const EditProduct = () => {
                   name="productcamera"
                   placeholder="Enter Product Camera"
                   value={formdata && formdata.productcamera}
-                  onChange={(e) => {
-                    handler(e);
-                  }}
                   className="mt-1 p-2 w-full border rounded-md"
+                  disabled
                 />
               </div>
               <div className="mb-4">
@@ -219,24 +190,14 @@ const EditProduct = () => {
                 >
                   Product Category
                 </label>
-                <select
-                  name="categoryname"
-                  onChange={(e) => {
-                    handler(e);
-                  }}
-                  defaultValue={formdata && formdata.categoryname}
+                <input
+                  type="text"
+                  name="productcamera"
+                  placeholder="Enter Product Camera"
+                  value={formdata && formdata.categoryname}
                   className="mt-1 p-2 w-full border rounded-md"
-                >
-                  {formdata &&
-                    categoryarr.map((item) => (
-                      <option
-                        value={item}
-                        selected={formdata.categoryname == item}
-                      >
-                        {item}
-                      </option>
-                    ))}
-                </select>
+                  disabled
+                />
               </div>
               <div className="mb-4">
                 <label
@@ -250,10 +211,8 @@ const EditProduct = () => {
                   name="productbattery"
                   value={formdata && formdata.productbattery}
                   placeholder="Enter Product Battery"
-                  onChange={(e) => {
-                    handler(e);
-                  }}
                   className="mt-1 p-2 w-full border rounded-md"
+                  disabled
                 />
               </div>
               <div className="mb-4">
@@ -268,10 +227,8 @@ const EditProduct = () => {
                   name="productdisplay"
                   value={formdata && formdata.productdisplay}
                   placeholder="Enter Product Display"
-                  onChange={(e) => {
-                    handler(e);
-                  }}
                   className="mt-1 p-2 w-full border rounded-md"
+                  disabled
                 />
               </div>
               <div className="mb-4">
@@ -286,10 +243,8 @@ const EditProduct = () => {
                   name="productprocessor"
                   placeholder="Enter Product Processor"
                   value={formdata && formdata.productprocessor}
-                  onChange={(e) => {
-                    handler(e);
-                  }}
                   className="mt-1 p-2 w-full border rounded-md"
+                  disabled
                 />
               </div>
             </div>
@@ -302,21 +257,24 @@ const EditProduct = () => {
                   value="add"
                   className="btn btn-primary col-md-12 buttons"
                 >
-                  Submit
+                  Return To Product Page
                 </button>
               </div>
               <div>
                 <button
                   type="button"
-                  name="reset"
-                  value="reset"
+                  name="button"
+                  value="button"
                   className="btn btn-primary col-md-12 buttons"
                   onClick={() => {
-                    document.getElementById("imgpicker").value = "";
-                    setFormdata(initialformdata);
+                    navigate("/admin/editproduct", {
+                      state: {
+                        productid: state.productid,
+                      },
+                    });
                   }}
                 >
-                  Reset
+                  Edit Product
                 </button>
               </div>
             </div>
@@ -328,4 +286,4 @@ const EditProduct = () => {
   );
 };
 
-export default EditProduct;
+export default ShowProduct;

@@ -24,6 +24,7 @@ import Discount from "./components/admin/Discount";
 import EditDiscount from "./components/admin/EditDiscount";
 import AddDiscount from "./components/admin/AddDiscount";
 import { ToastContainer } from "react-toastify";
+import ShowProduct from "./components/admin/ShowProduct";
 
 export default function App() {
   document.title = "Mobile Planet";
@@ -48,6 +49,7 @@ export default function App() {
               <Route path="/admin/signin" element={<AdminLogIn />} />
               <Route path="/admin/product" element={<AdminProduct />} />
               <Route path="/admin/editproduct" element={<EditProduct />} />
+              <Route path="/admin/showproduct" element={<ShowProduct />} />
               <Route path="/admin/editdiscount" element={<EditDiscount />} />
               <Route path="/admin/discount" element={<Discount />} />
               <Route exact path="/admin/addproduct" element={<Addproduct />} />

@@ -13,7 +13,7 @@ const Addproduct = () => {
     }
   }, []);
   const notify = () => toast.success("Product added");
-  const categoryarr = ["apple", "samsung", "oneplus"];
+  const categoryarr = ["Select category", "apple", "samsung", "oneplus"];
 
   let nameref = useRef();
   let priceref = useRef();
@@ -26,6 +26,7 @@ const Addproduct = () => {
   let processorref = useRef();
   let imgref = useRef();
   let categoryref = useRef();
+
   async function validate(e) {
     e.preventDefault();
     await addDoc(collection(db, "product"), {
@@ -52,7 +53,7 @@ const Addproduct = () => {
         displayref.current.value = "";
         processorref.current.value = "";
         imgref.current.value = "";
-        categoryref.current.value = "";
+        categoryref.current.value = categoryarr[0];
         notify();
       }
     });
@@ -62,8 +63,9 @@ const Addproduct = () => {
     <div className="bg-gray-200">
       <AdminNavbar />
       <div className="flex justify-center items-center">
-        <div className="bg-white p-8 rounded shadow-md w-[40vw]">
+        <div className="bg-white p-8 rounded shadow-md lg:w-[40vw] w-[90vw] ">
           <h2 className="text-2xl font-semibold mb-6">Add Product</h2>
+          <button>Return To Product Page</button>
           <form method="post" onSubmit={validate}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">
@@ -76,6 +78,7 @@ const Addproduct = () => {
                 ref={nameref}
                 autoComplete="on"
                 className="mt-1 p-2 w-full border rounded-md"
+                required
               />
             </div>
 
@@ -165,12 +168,14 @@ const Addproduct = () => {
                 ref={categoryref}
                 className="mt-1 p-2 w-full border rounded-md"
                 required
+                defaultValue={categoryarr[0]}
               >
-                <option value="Select category" disabled selected>
-                  Select category
-                </option>
-                {categoryarr.map((item) => (
-                  <option value={item} key={item}>
+                {categoryarr.map((item, index) => (
+                  <option
+                    value={item}
+                    key={item}
+                    disabled={index == 0 ? true : ""}
+                  >
                     {item}
                   </option>
                 ))}

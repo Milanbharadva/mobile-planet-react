@@ -6,7 +6,7 @@ import AdminNavbar from "./AdminNavbar";
 import { useFetch } from "../../hook/usefetch";
 import Pagination from "./Pagination";
 import { db } from "../../Firebase/fiirebase";
-import { MdMoreVert } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
 
 const AdminProduct = () => {
   const navigate = useNavigate();
@@ -154,7 +154,7 @@ const AdminProduct = () => {
             }}
             className="buttons"
           >
-            Add Discount
+            Add Product
           </button>
         </div>
       </div>
@@ -186,7 +186,7 @@ const AdminProduct = () => {
                   <>
                     <tr
                       className="border-b  dark:border-neutral-500"
-                      key={item.id}
+                      key={calculatedId}
                     >
                       <td className="whitespace-nowrap px-6 py-4">
                         <h5 className="font-medium text-black dark:text-white">
@@ -226,17 +226,19 @@ const AdminProduct = () => {
                       <td
                         className="whitespace-nowrap px-6 py-4 cursor-pointer"
                         onClick={() => {
-                          navigate("/admin/editproduct", {
+                          navigate("/admin/showproduct", {
                             state: {
                               productid: item.id,
                             },
                           });
                         }}
                       >
-                        <div>Show</div>
+                        <div>
+                          <FaEye className="text-xl" />
+                        </div>
                       </td>
                       <td
-                        className="whitespace-nowrap px-6 py-4 cursor-pointer"
+                        className="whitespace-nowrap px-6 py-4 cursor-pointer text-xl"
                         onClick={() => {
                           if (
                             window.confirm("Do you want to delete this product")
@@ -281,7 +283,7 @@ const AdminProduct = () => {
                           });
                         }}
                       >
-                        <MdEdit className="cursor-pointer" />
+                        <MdEdit className="cursor-pointer text-xl" />
                       </td>
                     </tr>
                   </>
@@ -289,12 +291,12 @@ const AdminProduct = () => {
               })}
             </tbody>
           </table>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(totalProducts / itemperpage)}
-            onPageChange={handlePageChange}
-          />
         </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(totalProducts / itemperpage)}
+          onPageChange={handlePageChange}
+        />
       </div>
     </>
   );
