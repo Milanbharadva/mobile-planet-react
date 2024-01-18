@@ -11,7 +11,6 @@ import { milisecondtotime } from "./TImeConvertor";
 const Discount = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemperpage, setitemperpage] = useState(2);
-  const [categoryfilter, setCategoryfilter] = useState("All");
   const [discountnamesearch, setdiscountnamesearch] = useState("");
   const navigate = useNavigate();
   const { loadeddata } = useFetch("discount");
@@ -20,22 +19,16 @@ const Discount = () => {
       navigate("/admin/signin");
     }
   }, []);
-  if (categoryfilter == "") {
-    var totalProducts = loadeddata.length;
-    var paginatedProducts = loadeddata.slice(
-      (currentPage - 1) * itemperpage,
-      currentPage * itemperpage
-    );
-  } else {
-    let filteredwithname = loadeddata.filter((item) =>
-      item.name.toLowerCase().includes(discountnamesearch.toLowerCase())
-    );
-    var totalProducts = filteredwithname.length;
-    var paginatedProducts = filteredwithname.slice(
-      (currentPage - 1) * itemperpage,
-      currentPage * itemperpage
-    );
-  }
+
+  let filteredwithname = loadeddata.filter((item) =>
+    item.name.toLowerCase().includes(discountnamesearch.toLowerCase())
+  );
+  var totalProducts = filteredwithname.length;
+  var paginatedProducts = filteredwithname.slice(
+    (currentPage - 1) * itemperpage,
+    currentPage * itemperpage
+  );
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -234,11 +227,11 @@ const Discount = () => {
             </tbody>
           </table>
         </div>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(totalProducts / itemperpage)}
-            onPageChange={handlePageChange}
-          />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(totalProducts / itemperpage)}
+          onPageChange={handlePageChange}
+        />
       </div>
     </>
   );

@@ -18,9 +18,9 @@ const AdminProduct = () => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
     }
-  }, []);
+  }, [navigate]);
   const data = useFetch("product");
-  let idtodisplay = 0;
+  var totalProducts, paginatedProducts;
   let uniqdata = data.loadeddata.filter((obj, i) => {
     return (
       i ===
@@ -32,15 +32,15 @@ const AdminProduct = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  if (productnamesearch == "" && categoryfilter == "All") {
-    var totalProducts = data.loadeddata.length;
-    var paginatedProducts = data.loadeddata.slice(
+  if (productnamesearch === "" && categoryfilter === "All") {
+    totalProducts = data.loadeddata.length;
+    paginatedProducts = data.loadeddata.slice(
       (currentPage - 1) * itemperpage,
       currentPage * itemperpage
     );
   } else {
     var filteredwithname;
-    if (productnamesearch != "" && categoryfilter !== "All") {
+    if (productnamesearch !== "" && categoryfilter !== "All") {
       filteredwithname = data.loadeddata
         .filter((item) =>
           item.productname
@@ -49,22 +49,22 @@ const AdminProduct = () => {
         )
         .filter(
           (item) =>
-            item.categoryname.toLowerCase() == categoryfilter.toLowerCase()
+            item.categoryname.toLowerCase() === categoryfilter.toLowerCase()
         );
     }
-    if (productnamesearch != "" && categoryfilter == "All") {
+    if (productnamesearch !== "" && categoryfilter === "All") {
       filteredwithname = data.loadeddata.filter((item) =>
         item.productname.toLowerCase().includes(productnamesearch.toLowerCase())
       );
     }
-    if (productnamesearch == "" && categoryfilter != "All") {
+    if (productnamesearch === "" && categoryfilter !== "All") {
       filteredwithname = data.loadeddata.filter(
         (item) =>
-          item.categoryname.toLowerCase() == categoryfilter.toLowerCase()
+          item.categoryname.toLowerCase() === categoryfilter.toLowerCase()
       );
     }
-    var totalProducts = filteredwithname.length;
-    var paginatedProducts = filteredwithname.slice(
+    totalProducts = filteredwithname.length;
+    paginatedProducts = filteredwithname.slice(
       (currentPage - 1) * itemperpage,
       currentPage * itemperpage
     );
@@ -98,13 +98,13 @@ const AdminProduct = () => {
             defaultValue={2}
             className="h-10 px-2 border border-gray-300 rounded-md"
           >
-            <option value="2" selected={2 == itemperpage}>
+            <option value="2" selected={2 === itemperpage}>
               2
             </option>
-            <option value="5" selected={5 == itemperpage}>
+            <option value="5" selected={5 === itemperpage}>
               5
             </option>
-            <option value="10" selected={10 == itemperpage}>
+            <option value="10" selected={10 === itemperpage}>
               10
             </option>
           </select>
@@ -125,7 +125,7 @@ const AdminProduct = () => {
                   <option
                     value={item}
                     key={item}
-                    selected={item == categoryfilter}
+                    selected={item === categoryfilter}
                   >
                     {item}
                   </option>

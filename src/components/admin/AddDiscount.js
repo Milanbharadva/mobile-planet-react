@@ -1,5 +1,5 @@
 import { db } from "../../Firebase/fiirebase";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addDoc, collection } from "firebase/firestore";
@@ -12,7 +12,7 @@ const AddDiscount = () => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
     }
-  }, []);
+  }, [navigate]);
   const [formdata, setFormdata] = useState({
     Discount: "",
     DiscountBy: "",
@@ -45,7 +45,6 @@ const AddDiscount = () => {
         navigate("/admin/discount");
       }
     });
-    console.log(formdata);
   }
 
   return (
@@ -131,7 +130,7 @@ const AddDiscount = () => {
                     handler(e);
                   }}
                   min={1}
-                  max={formdata.DiscountBy == "percentage" ? 100 : ""}
+                  max={formdata.DiscountBy === "percentage" ? 100 : ""}
                 />
               </div>
               <div className="mb-4 flex gap-2">

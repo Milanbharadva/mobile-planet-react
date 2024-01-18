@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useFetch } from "../../hook/usefetch";
 import { v4 as uuidv4 } from "uuid";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { db } from "../../Firebase/fiirebase";
 import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,7 +37,7 @@ const SingleProduct = (props) => {
     let previousquantity = 0;
     if (localStorage.getItem("userid")) {
       cartdata.loadeddata.map((data) => {
-        if (data.itemdata.productid == productid) {
+        if (data.itemdata.productid === productid) {
           previousquantity = data.itemdata.quantity;
           isdatarepeat = true;
           idtodelete = data.id;
@@ -159,7 +159,7 @@ const SingleProduct = (props) => {
                 loadeddata
                   .filter(
                     (items) =>
-                      items.productname.toUpperCase() ==
+                      items.productname.toUpperCase() ===
                         productname.toUpperCase() && items.id != productid
                   )
                   .map((item) => (

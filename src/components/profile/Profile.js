@@ -76,9 +76,7 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 p-4 "
               name="username"
               ref={usernameref}
-              onChange={(e) => {
-                console.log(e);
-              }}
+            
               value={olddata && olddata.username}
             />
           </div>

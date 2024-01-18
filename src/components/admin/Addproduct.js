@@ -11,9 +11,15 @@ const Addproduct = () => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
     }
-  }, []);
+  }, [navigate]);
   const notify = () => toast.success("Product added");
-  const categoryarr = ["Select category", "apple", "samsung", "oneplus"];
+  const categoryarr = [
+    "Select category",
+    "apple",
+    "samsung",
+    "oneplus",
+    "product",
+  ];
 
   let nameref = useRef();
   let priceref = useRef();
@@ -29,34 +35,36 @@ const Addproduct = () => {
 
   async function validate(e) {
     e.preventDefault();
-    await addDoc(collection(db, "product"), {
-      productname: nameref.current.value,
-      productprice: priceref.current.value,
-      productram: ramref.current.value,
-      productrom: romref.current.value,
-      productcolor: colorref.current.value,
-      productcamera: cameraref.current.value,
-      productbattery: battteryref.current.value,
-      productdisplay: displayref.current.value,
-      productprocessor: processorref.current.value,
-      productimage: imgref.current.files[0].name,
-      categoryname: categoryref.current.value,
-    }).then((res) => {
-      if (res._key.path.segments[1]) {
-        nameref.current.value = "";
-        priceref.current.value = "";
-        ramref.current.value = "";
-        romref.current.value = "";
-        colorref.current.value = "";
-        cameraref.current.value = "";
-        battteryref.current.value = "";
-        displayref.current.value = "";
-        processorref.current.value = "";
-        imgref.current.value = "";
-        categoryref.current.value = categoryarr[0];
-        notify();
-      }
-    });
+    for (let i = 0; i < 500; i++) {
+      await addDoc(collection(db, "product"), {
+        productname: nameref.current.value + "  " + i,
+        productprice: priceref.current.value + "  " + i,
+        productram: ramref.current.value + "  " + i,
+        productrom: romref.current.value + "  " + i,
+        productcolor: colorref.current.value ,
+        productcamera: cameraref.current.value + "  " + i,
+        productbattery: battteryref.current.value + "  " + i,
+        productdisplay: displayref.current.value,
+        productprocessor: processorref.current.value,
+        productimage: imgref.current.files[0].name,
+        categoryname: categoryref.current.value,
+      }).then((res) => {
+        if (res._key.path.segments[1]) {
+          // nameref.current.value = "";
+          // priceref.current.value = "";
+          // ramref.current.value = "";
+          // romref.current.value = "";
+          // colorref.current.value = "";
+          // cameraref.current.value = "";
+          // battteryref.current.value = "";
+          // displayref.current.value = "";
+          // processorref.current.value = "";
+          // imgref.current.value = "";
+          // categoryref.current.value = categoryarr[0];
+          notify();
+        }
+      });
+    }
   }
 
   return (
@@ -64,8 +72,16 @@ const Addproduct = () => {
       <AdminNavbar />
       <div className="flex justify-center items-center">
         <div className="bg-white p-8 rounded shadow-md lg:w-[40vw] w-[90vw] ">
-          <h2 className="text-2xl font-semibold mb-6">Add Product</h2>
-          <button>Return To Product Page</button>
+          <div className="flex  justify-between items-center mb-5">
+            <h2 className="text-2xl font-semibold ">Add Product</h2>
+            <button
+              onClick={() => {
+                navigate("/admin/product");
+              }}
+            >
+              Back
+            </button>
+          </div>
           <form method="post" onSubmit={validate}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">
@@ -174,7 +190,7 @@ const Addproduct = () => {
                   <option
                     value={item}
                     key={item}
-                    disabled={index == 0 ? true : ""}
+                    disabled={index === 0 ? true : ""}
                   >
                     {item}
                   </option>

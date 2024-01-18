@@ -1,9 +1,8 @@
 import { db } from "../../Firebase/fiirebase";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateDoc, doc, Firestore } from "firebase/firestore";
-import { Timestamp } from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFetch } from "../../hook/usefetch";
 import AdminNavbar from "./AdminNavbar";
@@ -15,7 +14,7 @@ const EditDiscount = () => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
     }
-  }, []);
+  }, [navigate]);
 
   const notify = () => toast.success("Product updated sucessfully");
   const loadeddata = useFetch("discount");
