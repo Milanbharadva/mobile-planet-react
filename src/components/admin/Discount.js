@@ -39,23 +39,26 @@ const Discount = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  var id = 0;
   return (
     <>
       <AdminNavbar />
-      <div className="flex mx-10 my-5 gap-5">
-        <div className="flex flex-col gap-2">
-          <p>Discount name</p>
+
+      <div className="flex flex-col md:flex-row mx-4 md:mx-10 my-5 gap-4 md:gap-5 md:items-end">
+        <div className="flex flex-col w-full md:w-1/4 gap-2">
+          <label className="text-sm md:text-base">Discount name</label>
           <input
             type="text"
             onChange={(e) => setdiscountnamesearch(e.target.value)}
             name="name"
             value={discountnamesearch}
-            className="pl-2"
+            className="pl-2 border border-gray-300 rounded-md h-10"
           />
         </div>
-        <div className="flex flex-col gap-2">
-          <p>Discount Items Per Page</p>
+
+        <div className="flex flex-col w-full md:w-1/4 gap-2">
+          <label className="text-sm md:text-base">
+            Discount Items Per Page
+          </label>
           <select
             name="productperpageselector"
             onChange={(e) => {
@@ -63,7 +66,7 @@ const Discount = () => {
               setitemperpage(e.target.value);
             }}
             defaultValue={2}
-            className="h-full px-1"
+            className="h-10 px-2 border border-gray-300 rounded-md"
           >
             <option value="2" selected={2 == itemperpage}>
               2
@@ -77,27 +80,29 @@ const Discount = () => {
           </select>
         </div>
 
-        <div
-          onClick={() => {
-            setCategoryfilter("All");
-            setitemperpage(2);
-            setdiscountnamesearch("");
-          }}
-        >
-          <button className="border px-10 h-full border-black">RESET</button>
-        </div>
-        <div>
+        <div className="flex items-center justify-center">
           <button
-            className="buttons"
+            onClick={() => {
+              setitemperpage(2);
+              setdiscountnamesearch("");
+            }}
+            className="border px-4 md:px-10 h-10 border-black"
+          >
+            RESET
+          </button>
+        </div>
+
+        <div className="flex items-center justify-center">
+          <button
             onClick={() => {
               navigate("/admin/adddiscount");
             }}
+            className="buttons"
           >
             Add Discount
           </button>
         </div>
       </div>
-
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto">
           <table className="min-w-full text-left text-sm font-light">
@@ -118,10 +123,9 @@ const Discount = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedProducts.map((item) => {
-                {
-                  id++;
-                }
+              {paginatedProducts.map((item, index) => {
+                const calculatedId =
+                  (currentPage - 1) * itemperpage + index + 1;
 
                 return (
                   <tr
@@ -178,7 +182,7 @@ const Discount = () => {
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       <h5 className="font-medium text-black dark:text-white">
-                        {id}
+                        {calculatedId}
                       </h5>
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
