@@ -22,6 +22,8 @@ const Cart = () => {
   const notifyalreadyapplied = () =>
     toast.error("This code is already applied");
   const notifycouponexpired = () => toast.error("Sorry Counpon Is Expired");
+  const notifycouponapplied = (money) =>
+    toast.success(" Coupon Applied Sucessfully You Saved " + money + "₹");
   const notifyalreadycoupon = () =>
     toast.error(
       "Already one coupon code is applied please remove it first to apply another"
@@ -70,10 +72,14 @@ const Cart = () => {
             setAfterDiscountprice(
               totalprice - (totalprice * discountfiltereddata.Discount) / 100
             );
+            notifycouponapplied(
+              (totalprice * discountfiltereddata.Discount) / 100
+            );
           } else if (discountby == "rupee") {
             setdiscountbyanddiscount(null);
             setDiscountprice(discountfiltereddata.Discount);
             setAfterDiscountprice(totalprice - discountfiltereddata.Discount);
+            notifycouponapplied(totalprice - discountfiltereddata.Discount);
           }
         }
       }
@@ -189,31 +195,33 @@ const Cart = () => {
                   className="border border-gray-500 pl-3 rounded-lg h-10"
                   placeholder="Enter Coupon "
                 />
-                <button
-                  className="h-12 w-24 bg-[#F28123] rounded-[50px] text-white"
-                  onClick={() => {
-                    applycoupon();
-                  }}
-                >
-                  Apply
-                </button>
-                {discountcode != null && (
-                  <div className="flex items-center justify-center gap-2 border border-black rounded-[50px] px-2 bg-black text-white">
-                    {discountcode}
-                    <IoMdClose
-                      onClick={(e) => {
-                        if (
-                          window.confirm(
-                            "Are you sure you want to remove coupon?"
-                          )
-                        ) {
-                          clearcounpon();
-                        }
-                      }}
-                      className="cursor-pointer font-bold"
-                    />
-                  </div>
-                )}
+                <div className="flex gap-2">
+                  <button
+                    className="h-12 w-24 bg-[#F28123] rounded-[50px] text-white"
+                    onClick={() => {
+                      applycoupon();
+                    }}
+                  >
+                    Apply
+                  </button>
+                  {discountcode != null && (
+                    <div className="flex items-center justify-center gap-2 border border-black rounded-[50px] px-2 bg-black text-white">
+                      {discountcode}
+                      <IoMdClose
+                        onClick={(e) => {
+                          if (
+                            window.confirm(
+                              "Are you sure you want to remove coupon?"
+                            )
+                          ) {
+                            clearcounpon();
+                          }
+                        }}
+                        className="cursor-pointer font-bold"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             <table width="100%">

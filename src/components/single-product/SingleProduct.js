@@ -88,7 +88,7 @@ const SingleProduct = (props) => {
               key={product.id}
               className="flex md:flex-row  flex-col mx-5 sm:mx-10 md:mx-20 lg:mx-30"
             >
-              <div className="md:w-[40%] a px-2 py-4">
+              <div className="md:w-[40%] a hover:shadow-none px-2 py-4">
                 <a
                   href={`${window.location.origin}/assets/product/${product.productimage}`}
                   target="_blank"
@@ -155,7 +155,7 @@ const SingleProduct = (props) => {
             <span className="text-[#F28123]">Related&nbsp;</span> Products
           </h1>
           <div className="mt-10">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-5 px-10 md:px-24  lg:px-32">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-5 px-5 md:px-24  lg:px-32">
               {loadeddata &&
                 loadeddata
                   .filter(
@@ -178,7 +178,7 @@ const SingleProduct = (props) => {
                         }}
                         className="cursor-pointer"
                       />
-                      <h1 className="text-lg md:text-sm font-bold">
+                      <h1 className="md:text-lg text-sm font-bold text-center md:text-left">
                         {item.productname.toUpperCase()}
                       </h1>
                       <p className="text-md md:text-xl font-bold">
@@ -191,7 +191,8 @@ const SingleProduct = (props) => {
                         onClick={() => {
                           addtocart(`${item.id}`);
                         }}
-                        className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
+                        // className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
+                        className="buttons"
                       >
                         Add to cart
                       </button>
