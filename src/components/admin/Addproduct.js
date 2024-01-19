@@ -35,36 +35,35 @@ const Addproduct = () => {
 
   async function validate(e) {
     e.preventDefault();
-    for (let i = 0; i < 500; i++) {
-      await addDoc(collection(db, "product"), {
-        productname: nameref.current.value + "  " + i,
-        productprice: priceref.current.value + "  " + i,
-        productram: ramref.current.value + "  " + i,
-        productrom: romref.current.value + "  " + i,
-        productcolor: colorref.current.value ,
-        productcamera: cameraref.current.value + "  " + i,
-        productbattery: battteryref.current.value + "  " + i,
-        productdisplay: displayref.current.value,
-        productprocessor: processorref.current.value,
-        productimage: imgref.current.files[0].name,
-        categoryname: categoryref.current.value,
-      }).then((res) => {
-        if (res._key.path.segments[1]) {
-          // nameref.current.value = "";
-          // priceref.current.value = "";
-          // ramref.current.value = "";
-          // romref.current.value = "";
-          // colorref.current.value = "";
-          // cameraref.current.value = "";
-          // battteryref.current.value = "";
-          // displayref.current.value = "";
-          // processorref.current.value = "";
-          // imgref.current.value = "";
-          // categoryref.current.value = categoryarr[0];
-          notify();
-        }
-      });
-    }
+
+    await addDoc(collection(db, "product"), {
+      productname: nameref.current.value,
+      productprice: priceref.current.value,
+      productram: ramref.current.value,
+      productrom: romref.current.value,
+      productcolor: colorref.current.value,
+      productcamera: cameraref.current.value,
+      productbattery: battteryref.current.value,
+      productdisplay: displayref.current.value,
+      productprocessor: processorref.current.value,
+      productimage: imgref.current.files[0].name,
+      categoryname: categoryref.current.value,
+    }).then((res) => {
+      if (res._key.path.segments[1]) {
+        nameref.current.value = "";
+        priceref.current.value = "";
+        ramref.current.value = "";
+        romref.current.value = "";
+        colorref.current.value = "";
+        cameraref.current.value = "";
+        battteryref.current.value = "";
+        displayref.current.value = "";
+        processorref.current.value = "";
+        imgref.current.value = "";
+        categoryref.current.value = categoryarr[0];
+        notify();
+      }
+    });
   }
 
   return (

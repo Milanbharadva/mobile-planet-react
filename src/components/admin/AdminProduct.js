@@ -7,11 +7,13 @@ import { useFetch } from "../../hook/usefetch";
 import Pagination from "./Pagination";
 import { db } from "../../Firebase/fiirebase";
 import { FaEye } from "react-icons/fa";
+import { FaSortUp } from "react-icons/fa";
+import { FaSortDown } from "react-icons/fa6";
 
 const AdminProduct = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemperpage, setitemperpage] = useState(2);
+  const [itemperpage, setitemperpage] = useState(20);
   const [categoryfilter, setCategoryfilter] = useState("All");
   const [productnamesearch, setproductnamesearch] = useState("");
   useEffect(() => {
@@ -95,17 +97,17 @@ const AdminProduct = () => {
               setCurrentPage(1);
               setitemperpage(e.target.value);
             }}
-            defaultValue={2}
+            defaultValue={20}
             className="h-10 px-2 border border-gray-300 rounded-md"
           >
-            <option value="2" selected={2 === itemperpage}>
-              2
+            <option value="20" selected={20 === itemperpage}>
+              20
             </option>
-            <option value="5" selected={5 === itemperpage}>
-              5
+            <option value="50" selected={50 === itemperpage}>
+              50
             </option>
-            <option value="10" selected={10 === itemperpage}>
-              10
+            <option value="100" selected={100 === itemperpage}>
+              100
             </option>
           </select>
         </div>
@@ -138,7 +140,7 @@ const AdminProduct = () => {
           <button
             onClick={() => {
               setCategoryfilter("All");
-              setitemperpage(2);
+              setitemperpage(20);
               setproductnamesearch("");
             }}
             className="border px-4 md:px-10 h-10 border-black"
@@ -164,7 +166,13 @@ const AdminProduct = () => {
           <table className="min-w-full text-left text-sm font-light">
             <thead className="border-b font-medium dark:border-neutral-500">
               <tr>
-                <th className="px-6 py-4">ID</th>
+                <th className="px-6 py-4">
+                  ID
+                  <div className="flex flex-col gap-1">
+                    <FaSortUp />
+                    <FaSortDown />
+                  </div>
+                </th>
                 <th className="px-6 py-4">Category Name</th>
                 <th className="px-6 py-4">Product Name</th>
                 <th className="px-6 py-4">Product Color</th>

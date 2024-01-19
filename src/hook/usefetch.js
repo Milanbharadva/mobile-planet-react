@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { collection, query, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 import { db } from "../Firebase/fiirebase";
 export const useFetch = (url) => {
   const [loadeddata, setLoadeddata] = useState([]);
@@ -9,7 +15,8 @@ export const useFetch = (url) => {
     const fetchData = async () => {
       setIsPending(true);
       try {
-        const q = query(collection(db, url));
+        const ref = collection(db, url);
+        const q = query(ref, orderBy("productname"));
         onSnapshot(q, (querysnashot) => {
           let arr = [];
           querysnashot.forEach((doc) => {
