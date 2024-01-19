@@ -7,8 +7,8 @@ import { useFetch } from "../../hook/usefetch";
 import Pagination from "./Pagination";
 import { db } from "../../Firebase/fiirebase";
 import { FaEye } from "react-icons/fa";
-import { FaSortUp } from "react-icons/fa";
-import { FaSortDown } from "react-icons/fa6";
+import { FaSort } from "react-icons/fa6";
+import { ImSortAmountDesc } from "react-icons/im";
 
 const AdminProduct = () => {
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ const AdminProduct = () => {
   const [itemperpage, setitemperpage] = useState(20);
   const [categoryfilter, setCategoryfilter] = useState("All");
   const [productnamesearch, setproductnamesearch] = useState("");
+
   useEffect(() => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
@@ -40,6 +41,7 @@ const AdminProduct = () => {
       (currentPage - 1) * itemperpage,
       currentPage * itemperpage
     );
+    console.log(paginatedProducts.sort((a,b)=>console.log()))
   } else {
     var filteredwithname;
     if (productnamesearch !== "" && categoryfilter !== "All") {
@@ -167,18 +169,54 @@ const AdminProduct = () => {
             <thead className="border-b font-medium dark:border-neutral-500">
               <tr>
                 <th className="px-6 py-4">
-                  ID
-                  <div className="flex flex-col gap-1">
-                    <FaSortUp />
-                    <FaSortDown />
+                  <div className="flex items-center">
+                    <span className="whitespace-nowrap"> ID</span>
+                    <FaSort className="cursor-pointer" />
+                    <ImSortAmountDesc />
                   </div>
                 </th>
-                <th className="px-6 py-4">Category Name</th>
-                <th className="px-6 py-4">Product Name</th>
-                <th className="px-6 py-4">Product Color</th>
-                <th className="px-6 py-4">Product Price</th>
-                <th className="px-6 py-4">Product RAM</th>
-                <th className="px-6 py-4">Product ROM</th>
+                <th className="px-6 py-4">
+                  <div className="flex items-center">
+                    <span className="whitespace-nowrap"> Category Name</span>
+                    <FaSort className="cursor-pointer" />
+                    <ImSortAmountDesc />
+                  </div>
+                </th>
+                <th className="px-6 py-4">
+                  <div className="flex items-center">
+                    <span className="whitespace-nowrap"> Product Name</span>
+                    <FaSort className="cursor-pointer" />
+                    <ImSortAmountDesc />
+                  </div>
+                </th>
+                <th className="px-6 py-4">
+                  <div className="flex items-center">
+                    <span className="whitespace-nowrap"> Product Color</span>
+                    <FaSort className="cursor-pointer" />
+                    <ImSortAmountDesc />
+                  </div>
+                </th>
+                <th className="px-6 py-4">
+                  <div className="flex items-center">
+                    <span className="whitespace-nowrap"> Product Price</span>
+                    <FaSort className="cursor-pointer" />
+                    <ImSortAmountDesc />
+                  </div>
+                </th>
+                <th className="px-6 py-4">
+                  <div className="flex items-center">
+                    <span className="whitespace-nowrap"> Product RAM</span>
+                    <FaSort className="cursor-pointer" />
+                    <ImSortAmountDesc />
+                  </div>
+                </th>
+                <th className="px-6 py-4">
+                  <div className="flex items-center">
+                    <span className="whitespace-nowrap"> Product ROM</span>
+                    <FaSort className="cursor-pointer" />
+                    <ImSortAmountDesc />
+                  </div>
+                </th>
                 <th className="px-6 py-4">Show</th>
                 <th className="px-6 py-4" scope="col">
                   Delete
