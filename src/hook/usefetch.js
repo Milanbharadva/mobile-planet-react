@@ -16,8 +16,7 @@ export const useFetch = (url) => {
       setIsPending(true);
       try {
         const ref = collection(db, url);
-        const q = query(ref, orderBy("productname", "asc"));
-        onSnapshot(q, (querysnashot) => {
+        onSnapshot(ref, (querysnashot) => {
           let arr = [];
           querysnashot.forEach((doc) => {
             arr.push({ id: doc.id, ...doc.data() });

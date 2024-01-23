@@ -41,7 +41,6 @@ const AdminProduct = () => {
       (currentPage - 1) * itemperpage,
       currentPage * itemperpage
     );
-    console.log(paginatedProducts.sort((a,b)=>console.log()))
   } else {
     var filteredwithname;
     if (productnamesearch !== "" && categoryfilter !== "All") {
