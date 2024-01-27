@@ -7,74 +7,108 @@ import { useFetch } from "../../hook/usefetch";
 import Pagination from "./Pagination";
 import { db } from "../../Firebase/fiirebase";
 import { FaEye } from "react-icons/fa";
-import { FaSort } from "react-icons/fa6";
-import { ImSortAmountDesc } from "react-icons/im";
+import { FaSort, ImSortAmountDesc } from "react-icons/fa6";
 
 const AdminProduct = () => {
   const navigate = useNavigate();
+  const [sortColumn, setSortColumn] = useState("id"); // Default sorting column
+  const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemperpage, setitemperpage] = useState(20);
-  const [categoryfilter, setCategoryfilter] = useState("All");
-  const [productnamesearch, setproductnamesearch] = useState("");
-
+  const [itemperpage, setItemPerPage] = useState(20);
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [productNameSearch, setProductNameSearch] = useState("");
+  const columnMap = {
+    id: "id",
+    categoryName: "categoryname",
+    productName: "productname",
+    productColor: "productcolor",
+    productPrice: "productprice",
+    productRAM: "productram",
+    productROM: "productrom",
+  };
   useEffect(() => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
     }
   }, [navigate]);
+
   const data = useFetch("product");
+
   var totalProducts, paginatedProducts;
-  let uniqdata = data.loadeddata.filter((obj, i) => {
+  let uniqueData = data.loadeddata.filter((obj, i) => {
     return (
       i ===
       data.loadeddata.findIndex((o) => obj.categoryname === o.categoryname)
     );
   });
-  let allcateogryarr = ["All"];
-  uniqdata.map((item) => allcateogryarr.push(item.categoryname));
+
+  let allCategoryArr = ["All"];
+  uniqueData.forEach((item) => allCategoryArr.push(item.categoryname));
+
+  const handleSort = (column) => {
+    const columnKey = columnMap[column];
+
+    if (sortColumn === columnKey) {
+      // Toggle the sorting direction if the same column is clicked
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      // Set the new sorting column and default to ascending direction
+      setSortColumn(columnKey);
+      setSortDirection("asc");
+    }
+  };
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  if (productnamesearch === "" && categoryfilter === "All") {
+  // Sorting logic
+  const sortedData = [...data.loadeddata];
+  sortedData.sort((a, b) => {
+    const aValue = a[sortColumn];
+    const bValue = b[sortColumn];
+
+    if (sortDirection === "asc") {
+      return aValue.localeCompare(bValue);
+    } else {
+      return bValue.localeCompare(aValue);
+    }
+  });
+
+  const startIndex = (currentPage - 1) * itemperpage;
+  const endIndex = currentPage * itemperpage;
+  paginatedProducts = sortedData.slice(startIndex, endIndex);
+
+  if (productNameSearch === "" && categoryFilter === "All") {
     totalProducts = data.loadeddata.length;
-    paginatedProducts = data.loadeddata.slice(
-      (currentPage - 1) * itemperpage,
-      currentPage * itemperpage
-    );
   } else {
-    var filteredwithname;
-    if (productnamesearch !== "" && categoryfilter !== "All") {
-      filteredwithname = data.loadeddata
+    var filteredWithName;
+    if (productNameSearch !== "" && categoryFilter !== "All") {
+      filteredWithName = data.loadeddata
         .filter((item) =>
           item.productname
             .toLowerCase()
-            .includes(productnamesearch.toLowerCase())
+            .includes(productNameSearch.toLowerCase())
         )
         .filter(
           (item) =>
-            item.categoryname.toLowerCase() === categoryfilter.toLowerCase()
+            item.categoryname.toLowerCase() === categoryFilter.toLowerCase()
         );
-    }
-    if (productnamesearch !== "" && categoryfilter === "All") {
-      filteredwithname = data.loadeddata.filter((item) =>
-        item.productname.toLowerCase().includes(productnamesearch.toLowerCase())
+    } else if (productNameSearch !== "" && categoryFilter === "All") {
+      filteredWithName = data.loadeddata.filter((item) =>
+        item.productname.toLowerCase().includes(productNameSearch.toLowerCase())
       );
-    }
-    if (productnamesearch === "" && categoryfilter !== "All") {
-      filteredwithname = data.loadeddata.filter(
+    } else if (productNameSearch === "" && categoryFilter !== "All") {
+      filteredWithName = data.loadeddata.filter(
         (item) =>
-          item.categoryname.toLowerCase() === categoryfilter.toLowerCase()
+          item.categoryname.toLowerCase() === categoryFilter.toLowerCase()
       );
     }
-    totalProducts = filteredwithname.length;
-    paginatedProducts = filteredwithname.slice(
-      (currentPage - 1) * itemperpage,
-      currentPage * itemperpage
-    );
+    totalProducts = filteredWithName.length;
   }
+
   useEffect(() => {
     setCurrentPage(1);
-  }, [productnamesearch]);
+  }, [productNameSearch]);
+
   return (
     <>
       <AdminNavbar />
@@ -83,9 +117,9 @@ const AdminProduct = () => {
           <label className="text-sm md:text-base">Product name</label>
           <input
             type="text"
-            onChange={(e) => setproductnamesearch(e.target.value)}
+            onChange={(e) => setProductNameSearch(e.target.value)}
             name="name"
-            value={productnamesearch}
+            value={productNameSearch}
             className="pl-2 border border-gray-300 rounded-md h-10"
           />
         </div>
@@ -96,7 +130,7 @@ const AdminProduct = () => {
             name="productperpageselector"
             onChange={(e) => {
               setCurrentPage(1);
-              setitemperpage(e.target.value);
+              setItemPerPage(e.target.value);
             }}
             value={itemperpage}
             className="h-10 px-2 border border-gray-300 rounded-md"
@@ -111,14 +145,14 @@ const AdminProduct = () => {
           <select
             name="productperpageselector"
             onChange={(e) => {
-              setCategoryfilter(e.target.value);
+              setCategoryFilter(e.target.value);
               setCurrentPage(1);
             }}
-            value={categoryfilter}
+            value={categoryFilter}
             className="h-10 px-2 border border-gray-300 rounded-md"
           >
-            {allcateogryarr &&
-              allcateogryarr.map((item) => (
+            {allCategoryArr &&
+              allCategoryArr.map((item) => (
                 <option value={item} key={item}>
                   {item}
                 </option>
@@ -129,9 +163,9 @@ const AdminProduct = () => {
         <div className="flex items-center justify-center">
           <button
             onClick={() => {
-              setCategoryfilter("All");
-              setitemperpage(20);
-              setproductnamesearch("");
+              setCategoryFilter("All");
+              setItemPerPage(20);
+              setProductNameSearch("");
             }}
             className="border px-4 md:px-10 h-10 border-black"
           >
@@ -156,53 +190,108 @@ const AdminProduct = () => {
           <table className="min-w-full text-left text-sm font-light">
             <thead className="border-b font-medium dark:border-neutral-500">
               <tr>
-                <th className="px-6 py-4">
+                <th className="px-6 py-4" onClick={() => handleSort("id")}>
                   <div className="flex items-center">
-                    <span className="whitespace-nowrap"> ID</span>
-                    <FaSort className="cursor-pointer" />
-                    <ImSortAmountDesc />
+                    <span className="whitespace-nowrap">ID</span>
+                    {console.log(sortColumn)}
+
+                    {sortColumn === "id" && (
+                      <FaSort
+                        className={`cursor-pointer ${
+                          sortDirection === "asc" ? "asc" : "desc"
+                        }`}
+                      />
+                    )}
                   </div>
                 </th>
-                <th className="px-6 py-4">
+                <th
+                  className="px-6 py-4"
+                  onClick={() => handleSort("categoryName")}
+                >
                   <div className="flex items-center">
                     <span className="whitespace-nowrap"> Category Name</span>
-                    <FaSort className="cursor-pointer" />
-                    <ImSortAmountDesc />
+                    {sortColumn === "categoryname" && (
+                      <FaSort
+                        className={`cursor-pointer ${
+                          sortDirection === "asc" ? "asc" : "desc"
+                        }`}
+                      />
+                    )}
                   </div>
                 </th>
-                <th className="px-6 py-4">
+                <th
+                  className="px-6 py-4"
+                  onClick={() => handleSort("productName")}
+                >
                   <div className="flex items-center">
                     <span className="whitespace-nowrap"> Product Name</span>
-                    <FaSort className="cursor-pointer" />
-                    <ImSortAmountDesc />
+                    {sortColumn === "productname" && (
+                      <FaSort
+                        className={`cursor-pointer ${
+                          sortDirection === "asc" ? "asc" : "desc"
+                        }`}
+                      />
+                    )}
                   </div>
                 </th>
-                <th className="px-6 py-4">
+                <th
+                  className="px-6 py-4"
+                  onClick={() => handleSort("productColor")}
+                >
                   <div className="flex items-center">
                     <span className="whitespace-nowrap"> Product Color</span>
-                    <FaSort className="cursor-pointer" />
-                    <ImSortAmountDesc />
+                    {sortColumn === "productcolor" && (
+                      <FaSort
+                        className={`cursor-pointer ${
+                          sortDirection === "asc" ? "asc" : "desc"
+                        }`}
+                      />
+                    )}
                   </div>
                 </th>
-                <th className="px-6 py-4">
+                <th
+                  className="px-6 py-4"
+                  onClick={() => handleSort("productPrice")}
+                >
                   <div className="flex items-center">
                     <span className="whitespace-nowrap"> Product Price</span>
-                    <FaSort className="cursor-pointer" />
-                    <ImSortAmountDesc />
+                    {sortColumn === "productprice" && (
+                      <FaSort
+                        className={`cursor-pointer ${
+                          sortDirection === "asc" ? "asc" : "desc"
+                        }`}
+                      />
+                    )}
                   </div>
                 </th>
-                <th className="px-6 py-4">
+                <th
+                  className="px-6 py-4"
+                  onClick={() => handleSort("productRAM")}
+                >
                   <div className="flex items-center">
                     <span className="whitespace-nowrap"> Product RAM</span>
-                    <FaSort className="cursor-pointer" />
-                    <ImSortAmountDesc />
+                    {sortColumn === "productram" && (
+                      <FaSort
+                        className={`cursor-pointer ${
+                          sortDirection === "asc" ? "asc" : "desc"
+                        }`}
+                      />
+                    )}
                   </div>
                 </th>
-                <th className="px-6 py-4">
+                <th
+                  className="px-6 py-4"
+                  onClick={() => handleSort("productROM")}
+                >
                   <div className="flex items-center">
                     <span className="whitespace-nowrap"> Product ROM</span>
-                    <FaSort className="cursor-pointer" />
-                    <ImSortAmountDesc />
+                    {sortColumn === "productrom" && (
+                      <FaSort
+                        className={`cursor-pointer ${
+                          sortDirection === "asc" ? "asc" : "desc"
+                        }`}
+                      />
+                    )}
                   </div>
                 </th>
                 <th className="px-6 py-4">Show</th>

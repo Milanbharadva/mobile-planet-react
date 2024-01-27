@@ -7,17 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 const AdminNavbar = (props) => {
   const navigate = useNavigate();
   const notify = () => toast.warning("Logout sucessfully");
-  const { loadeddata } = useFetch("user");
-  const data = useFetch("cart");
-  const [counter, setCounter] = useState(0);
-  const count =
-    data.loadeddata &&
-    data.loadeddata.filter(
-      (item) => item.itemdata.userid === localStorage.getItem("userid")
-    ).length;
-  useEffect(() => {
-    setCounter(count);
-  }, [count]);
   const [click, setClick] = useState(false);
   const content = (
     <>
@@ -71,68 +60,12 @@ const AdminNavbar = (props) => {
           >
             <li className="my-4 py-4   hover:rounded">ADD PRODUCT</li>
           </NavLink>
-          {loadeddata &&
-          loadeddata.filter(
-            (item) => item.data.ID === localStorage.getItem("userid")
-          ).length > 0 ? (
-            <li
-              className="my-4 py-4   hover:rounded cursor-pointer"
-              onClick={() => {
-                setClick(false);
-                props.onchange();
-                localStorage.removeItem("userid");
-                notify();
-              }}
-            >
-              SIGN OUT
-            </li>
-          ) : (
-            <NavLink
-              to="/signin"
-              onClick={() => {
-                setClick(false);
-              }}
-            >
-              <li className="my-4 py-4   hover:rounded">SIGN IN</li>
-            </NavLink>
-          )}
-          <NavLink
-            to="/cart"
-            className="inline-block"
-            onClick={() => {
-              setClick(false);
-            }}
-          >
-            <li className=" hover:rounded flex">
-              <AiOutlineShoppingCart className="text-2xl" />
-              <span className="inline text-sm -pt-1">{counter}</span>
-            </li>
-          </NavLink>
-          {loadeddata &&
-          loadeddata.filter(
-            (item) => item.data.ID === localStorage.getItem("userid")
-          ).length > 0 ? (
-            <NavLink
-              to="/profile"
-              className="inline-block"
-              onClick={() => {
-                setClick(false);
-              }}
-            >
-              <li className="my-4 py-4 hover:rounded">
-                <AiOutlineUser className="text-2xl" />
-              </li>
-            </NavLink>
-          ) : (
-            ""
-          )}
         </ul>
       </div>
     </>
   );
   return (
     <nav className="flex z-10   sticky top-0 pr-10 bg-[#07212e] text-white">
-      <ToastContainer />
       <div className="h-10vh flex z-50  lg:py-5 px-10 py-4 flex-1">
         <div className="flex items-center flex-1">
           <span className="text-3xl font-bold">
