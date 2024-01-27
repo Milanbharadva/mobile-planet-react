@@ -22,25 +22,27 @@ const EditProduct = () => {
     (item) => item.id == state.productid
   )[0];
   const initialformdata = {
-    productname: productforedit && productforedit.productname,
-    productprice: productforedit && productforedit.productprice,
-    productdescription: productforedit && productforedit.productdescription,
-    productram: productforedit && productforedit.productram,
-    productrom: productforedit && productforedit.productrom,
-    productcolor: productforedit && productforedit.productcolor,
-    productcamera: productforedit && productforedit.productcamera,
-    productbattery: productforedit && productforedit.productbattery,
-    productdisplay: productforedit && productforedit.productdisplay,
-    productprocessor: productforedit && productforedit.productprocessor,
-    productimage: productforedit && productforedit.productimage,
-    categoryname: productforedit && productforedit.categoryname,
+    productname: productforedit?.productname || "",
+    productprice: productforedit?.productprice || "",
+    productdescription: productforedit?.productdescription || "",
+    productram: productforedit?.productram || "",
+    productrom: productforedit?.productrom || "",
+    productcolor: productforedit?.productcolor || "",
+    productcamera: productforedit?.productcamera || "",
+    productbattery: productforedit?.productbattery || "",
+    productdisplay: productforedit?.productdisplay || "",
+    productprocessor: productforedit?.productprocessor || "",
+    productimage: productforedit?.productimage || "",
+    categoryname: productforedit?.categoryname || "",
   };
   const imgref = useRef();
   const [formdata, setFormdata] = useState(initialformdata);
   const [imagePreview, setImagePreview] = useState(null);
   useEffect(() => {
-    setFormdata(productforedit);
-    if (productforedit != null) setImagePreview(productforedit.productimage);
+    setFormdata(initialformdata);
+    if (productforedit && productforedit.productimage) {
+      setImagePreview(productforedit.productimage);
+    }
   }, [productforedit]);
   const handler = (e) => {
     const { name, value } = e.target;
@@ -163,11 +165,7 @@ const EditProduct = () => {
 
                 {formdata && (
                   <div className="w-full  items-center flex">
-                    <img
-                      src={imagePreview}
-                      alt=""
-                      className="h-32 "
-                    />
+                    <img src={imagePreview} alt="" className="h-32 " />
                   </div>
                 )}
               </div>
@@ -238,18 +236,14 @@ const EditProduct = () => {
                   onChange={(e) => {
                     handler(e);
                   }}
-                  defaultValue={formdata && formdata.categoryname}
+                  value={formdata && formdata.categoryname}
                   className="mt-1 p-2 w-full border rounded-md"
                 >
-                  {formdata &&
-                    categoryarr.map((item) => (
-                      <option
-                        value={item}
-                        selected={formdata.categoryname == item}
-                      >
-                        {item}
-                      </option>
-                    ))}
+                  {categoryarr.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="mb-4">
