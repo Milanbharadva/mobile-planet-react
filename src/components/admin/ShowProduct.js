@@ -123,11 +123,7 @@ const ShowProduct = () => {
 
                 {formdata && (
                   <div className="w-full justify-center items-center flex">
-                    <img
-                      src={`${window.location.origin}/assets/product/${formdata.productimage}`}
-                      alt=""
-                      className="h-32 "
-                    />
+                    <img src={formdata.productimage} alt="" className="h-32 " />
                   </div>
                 )}
               </div>

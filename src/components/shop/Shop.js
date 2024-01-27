@@ -97,7 +97,7 @@ const Shop = (props) => {
               ${item.categoryname}`}
               >
                 <img
-                  src={`${window.location.origin}/assets/product/${item.productimage}`}
+                  src={`${item.productimage}`}
                   height="300px"
                   alt={`${item.productname}`}
                   onClick={() => {

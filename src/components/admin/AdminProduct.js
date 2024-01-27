@@ -234,17 +234,17 @@ const AdminProduct = () => {
                       key={calculatedId}
                     >
                       <td className="whitespace-nowrap px-6 py-4">
-                        <h5 className="font-medium text-black dark:text-white">
+                        <h5 className="font-medium text-black ">
                           {calculatedId}
                         </h5>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
-                        <h5 className="font-medium text-black dark:text-white">
+                        <h5 className="font-medium text-black ">
                           {item.categoryname}
                         </h5>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
-                        <p className="text-black dark:text-white">
+                        <p className="text-black  font-bold">
                           {item.productname}
                         </p>
                       </td>

@@ -1,5 +1,5 @@
 import { db } from "../../Firebase/fiirebase";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { updateDoc, doc } from "firebase/firestore";
@@ -14,6 +14,7 @@ const EditProduct = () => {
       navigate("/admin/signin");
     }
   }, []);
+
   const notify = () => toast.success("Product updated sucessfully");
   const categoryarr = ["apple", "samsung", "oneplus"];
   const loadeddata = useFetch("product");
@@ -34,24 +35,37 @@ const EditProduct = () => {
     productimage: productforedit && productforedit.productimage,
     categoryname: productforedit && productforedit.categoryname,
   };
+  const imgref = useRef();
   const [formdata, setFormdata] = useState(initialformdata);
+  const [imagePreview, setImagePreview] = useState(null);
   useEffect(() => {
     setFormdata(productforedit);
+    if (productforedit != null) setImagePreview(productforedit.productimage);
   }, [productforedit]);
   const handler = (e) => {
     const { name, value } = e.target;
     setFormdata((prevformdata) => ({ ...prevformdata, [name]: value }));
   };
-  if (productforedit != null) {
-  }
   async function validate(e) {
     e.preventDefault();
+    formdata.productimage = imagePreview;
     const getproduct = doc(db, "product", state.productid);
     await updateDoc(getproduct, formdata);
     notify();
     navigate("/admin/product");
   }
+  const handleImageChange = () => {
+    const file = imgref.current.files[0];
 
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
   return (
     <div className="bg-gray-200">
       <AdminNavbar />
@@ -139,18 +153,18 @@ const EditProduct = () => {
                 </label>
                 <input
                   type="file"
+                  ref={imgref}
                   // value={formdata.productimage}
                   className="mt-1 p-2 w-full border rounded-md"
                   id="imgpicker"
                   name="productimage"
-                  onChange={(e) => {
-                    handler(e);
-                  }}
+                  onChange={handleImageChange}
                 />
+
                 {formdata && (
-                  <div className="w-full justify-center items-center flex">
+                  <div className="w-full  items-center flex">
                     <img
-                      src={`${window.location.origin}/assets/product/${formdata.productimage}`}
+                      src={imagePreview}
                       alt=""
                       className="h-32 "
                     />

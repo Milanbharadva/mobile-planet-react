@@ -34,6 +34,21 @@ const Addproduct = () => {
   let categoryref = useRef();
   let descriptionref = useRef();
   const [categoryError, setCategoryError] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const handleImageChange = () => {
+    const file = imgref.current.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   async function validate(e) {
     e.preventDefault();
     if (categoryref.current.value === categoryarr[0]) {
@@ -53,11 +68,11 @@ const Addproduct = () => {
       productbattery: battteryref.current.value,
       productdisplay: displayref.current.value,
       productprocessor: processorref.current.value,
-      productimage:
-        imgref.current.files.length > 0 ? imgref.current.files[0].name : "",
+      productimage: imagePreview,
       categoryname: categoryref.current.value,
     }).then((res) => {
       if (res._key.path.segments[1]) {
+        setImagePreview(null);
         nameref.current.value = "";
         priceref.current.value = "";
         ramref.current.value = "";
@@ -153,10 +168,18 @@ const Addproduct = () => {
               <input
                 type="file"
                 id="exampleInputFile"
+                onChange={handleImageChange}
                 name="productimage"
                 ref={imgref}
                 className="mt-1 p-2 w-full border rounded-md"
               />
+              {imagePreview && (
+                <img
+                  src={imagePreview}
+                  alt="Product Preview"
+                  className="mt-2 w-32 h-32 rounded-md"
+                />
+              )}
             </div>
 
             <div className="mb-4">

@@ -98,7 +98,7 @@ const Product = (props) => {
               >
                 <div className="lg:w-[20%] object-contain">
                   <img
-                    src={`${window.location.origin}/assets/product/${item.productimage}`}
+                    src={`${item.productimage}`}
                     height="200px"
                     width="200px"
                     alt={item.productname}

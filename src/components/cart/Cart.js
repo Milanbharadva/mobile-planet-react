@@ -150,7 +150,7 @@ const Cart = () => {
                           </td>
                           <td className="py-5 border flex justify-center ">
                             <img
-                              src={`${window.location.origin}/assets/product/${productdatafiltered.productimage}`}
+                              src={productdatafiltered.productimage}
                               className="cursor-pointer px-2  sm:h-[60px]"
                               alt={productdatafiltered.productname}
                               onClick={() => {
