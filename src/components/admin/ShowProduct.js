@@ -16,26 +16,25 @@ const ShowProduct = () => {
     (item) => item.id == state.productid
   )[0];
   const initialformdata = {
-    productname: productforedit && productforedit.productname,
-    productprice: productforedit && productforedit.productprice,
-    productdescription: productforedit && productforedit.productdescription,
-    productram: productforedit && productforedit.productram,
-    productrom: productforedit && productforedit.productrom,
-    productcolor: productforedit && productforedit.productcolor,
-    productcamera: productforedit && productforedit.productcamera,
-    productbattery: productforedit && productforedit.productbattery,
-    productdisplay: productforedit && productforedit.productdisplay,
-    productprocessor: productforedit && productforedit.productprocessor,
-    productimage: productforedit && productforedit.productimage,
-    categoryname: productforedit && productforedit.categoryname,
+    productname: "",
+    productprice: 0,
+    productdescription: "",
+    productram: 0,
+    productrom: 0,
+    productcolor: "",
+    productcamera: "",
+    productbattery: "",
+    productdisplay: "",
+    productprocessor: "",
+    productimage: "",
+    categoryname: "",
   };
   const [formdata, setFormdata] = useState(initialformdata);
   useEffect(() => {
-    setFormdata(productforedit);
+    if (productforedit) {
+      setFormdata(productforedit);
+    }
   }, [productforedit]);
-
-  if (productforedit != null) {
-  }
 
   return (
     <div className="bg-gray-200">
