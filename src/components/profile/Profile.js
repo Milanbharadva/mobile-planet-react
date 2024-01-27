@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useFetch } from "../../hook/usefetch";
 import { doc, deleteDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
+import Breadcrumb from "../breadcrumb/Breadcrumb";
 const Profile = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -76,7 +77,6 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 p-4 "
               name="username"
               ref={usernameref}
-            
               value={olddata && olddata.username}
             />
           </div>

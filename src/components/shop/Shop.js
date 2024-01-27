@@ -88,6 +88,11 @@ const Shop = (props) => {
             <h1 className="text-2xl font-semibold ">Loading...</h1>
           </div>
         )}
+        {loadeddata.length == 0 && (
+          <h1 className="flex justify-center items-center text-xl font-bold text-red-700">
+            Sorry! No Product Available
+          </h1>
+        )}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-5 px-10 md:px-24  lg:px-32">
           {loadeddata &&
             loadeddata.map((item) => (
