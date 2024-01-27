@@ -84,64 +84,65 @@ const Product = (props) => {
           <h1 className="text-2xl font-semibold ">Loading...</h1>
         </div>
       )}
-      {loadeddata.length == 0 && (
+      {loadeddata.length == 0 ? (
         <h1 className="flex justify-center items-center text-xl font-bold text-red-700">
           Sorry! No Product Available
         </h1>
+      ) : (
+        <div>
+          {loadeddata &&
+            loadeddata
+              .filter((item) =>
+                category ? item.categoryname === category : item
+              )
+              .map((item) => (
+                <div
+                  key={item.id}
+                  className="flex justify-around py-5 border-2 items-center md:items-start md:flex-row flex-col gap-8"
+                >
+                  <div className="lg:w-[20%] object-contain">
+                    <img
+                      src={`${item.productimage}`}
+                      height="200px"
+                      width="200px"
+                      alt={item.productname}
+                    />
+                  </div>
+                  <div className="flex flex-col justify-around md:w-[30%] lg:w-[50%] gap-4 px-3">
+                    <h2 className="text-xl font-bold text-center sm:text-left">{`${item.productname.toUpperCase()} ( ${
+                      item.productcolor
+                    } , ${item.productrom}GB )`}</h2>
+                    <ul className="flex flex-col gap-1">
+                      <li className="">{`${item.productram} GB RAM | ${item.productrom} GB ROM`}</li>
+                      <li className="">{item.productdisplay}</li>
+                      <li className="">{item.productcamera}</li>
+                      <li className="">{item.productbattery}</li>
+                      <li className="">{item.productprocessor}</li>
+                    </ul>
+                  </div>
+                  <div className="flex flex-col gap-3  items-center">
+                    <h2 className="text-xl font-bold">
+                      {parseInt(item.productprice).toLocaleString()}
+                    </h2>
+                    <button
+                      className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
+                      onClick={() => navigator(`/singleproduct/${item.id}`)}
+                    >
+                      Details
+                    </button>
+                    <button
+                      onClick={() => {
+                        addtocart(item.id);
+                      }}
+                      className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
+                    >
+                      Add to cart
+                    </button>
+                  </div>
+                </div>
+              ))}
+        </div>
       )}
-      <div>
-        {loadeddata &&
-          loadeddata
-            .filter((item) =>
-              category ? item.categoryname === category : item
-            )
-            .map((item) => (
-              <div
-                key={item.id}
-                className="flex justify-around py-5 border-2 items-center md:items-start md:flex-row flex-col gap-8"
-              >
-                <div className="lg:w-[20%] object-contain">
-                  <img
-                    src={`${item.productimage}`}
-                    height="200px"
-                    width="200px"
-                    alt={item.productname}
-                  />
-                </div>
-                <div className="flex flex-col justify-around md:w-[30%] lg:w-[50%] gap-4 px-3">
-                  <h2 className="text-xl font-bold text-center sm:text-left">{`${item.productname.toUpperCase()} ( ${
-                    item.productcolor
-                  } , ${item.productrom}GB )`}</h2>
-                  <ul className="flex flex-col gap-1">
-                    <li className="">{`${item.productram} GB RAM | ${item.productrom} GB ROM`}</li>
-                    <li className="">{item.productdisplay}</li>
-                    <li className="">{item.productcamera}</li>
-                    <li className="">{item.productbattery}</li>
-                    <li className="">{item.productprocessor}</li>
-                  </ul>
-                </div>
-                <div className="flex flex-col gap-3  items-center">
-                  <h2 className="text-xl font-bold">
-                    {parseInt(item.productprice).toLocaleString()}
-                  </h2>
-                  <button
-                    className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
-                    onClick={() => navigator(`/singleproduct/${item.id}`)}
-                  >
-                    Details
-                  </button>
-                  <button
-                    onClick={() => {
-                      addtocart(item.id);
-                    }}
-                    className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
-                  >
-                    Add to cart
-                  </button>
-                </div>
-              </div>
-            ))}
-      </div>
     </div>
   );
 };

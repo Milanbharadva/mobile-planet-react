@@ -102,11 +102,9 @@ const SingleProduct = (props) => {
                   PRICE : {parseInt(product.productprice).toLocaleString()}
                 </p>
                 <p className="text-xl font-bold">
-                  {" "}
                   RAM : {product.productram}GB
                 </p>
                 <p className="text-xl font-bold">
-                  {" "}
                   ROM : {product.productrom}GB
                 </p>
                 <p className="text-xl font-bold">
@@ -140,57 +138,62 @@ const SingleProduct = (props) => {
               </div>
             </div>
           ))}
-        <div className="mt-24">
-          <h1 className="underline text-3xl underline-offset-4 decoration-[#F28123] flex justify-center items-center">
-            <span className="text-[#F28123]">Related&nbsp;</span> Products
-          </h1>
-          <div className="mt-10">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-5 px-5 md:px-24  lg:px-32">
-              {loadeddata &&
-                loadeddata
-                  .filter(
-                    (items) =>
-                      items.productname.toUpperCase() ===
-                        productname.toUpperCase() && items.id != productid
-                  )
-                  .map((item) => (
-                    <div
-                      key={item.id}
-                      className={`a hover:shadow-none flex flex-col py-8 items-center gap-2
+        {loadeddata.filter(
+          (items) =>
+            items.productname.toUpperCase() === productname.toUpperCase() &&
+            items.id != productid
+        ).length > 0 && (
+          <div className="mt-24">
+            <h1 className="underline text-3xl underline-offset-4 decoration-[#F28123] flex justify-center items-center">
+              <span className="text-[#F28123]">Related&nbsp;</span> Products
+            </h1>
+            <div className="mt-10">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-5 px-5 md:px-24  lg:px-32">
+                {loadeddata &&
+                  loadeddata
+                    .filter(
+                      (items) =>
+                        items.productname.toUpperCase() ===
+                          productname.toUpperCase() && items.id != productid
+                    )
+                    .map((item) => (
+                      <div
+                        key={item.id}
+                        className={`a hover:shadow-none flex flex-col py-8 items-center gap-2
               ${item.categoryname}`}
-                    >
-                      <img
-                        src={item.productimage}
-                        height="300px"
-                        alt={`${item.productname}`}
-                        onClick={() => {
-                          navigate(`/singleproduct/${item.id}`);
-                        }}
-                        className="cursor-pointer"
-                      />
-                      <h1 className="md:text-lg text-sm font-bold text-center md:text-left">
-                        {item.productname.toUpperCase()}
-                      </h1>
-                      <p className="text-md md:text-xl font-bold">
-                        {item.productcolor.toUpperCase()}
-                      </p>
-                      <p className="text-xl font-semibold">
-                        {parseInt(item.productprice).toLocaleString()}₹
-                      </p>
-                      <button
-                        onClick={() => {
-                          addtocart(`${item.id}`);
-                        }}
-                        // className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
-                        className="buttons"
                       >
-                        Add to cart
-                      </button>
-                    </div>
-                  ))}
+                        <img
+                          src={item.productimage}
+                          height="300px"
+                          alt={`${item.productname}`}
+                          onClick={() => {
+                            navigate(`/singleproduct/${item.id}`);
+                          }}
+                          className="cursor-pointer"
+                        />
+                        <h1 className="md:text-lg text-sm font-bold text-center md:text-left">
+                          {item.productname.toUpperCase()}
+                        </h1>
+                        <p className="text-md md:text-xl font-bold">
+                          {item.productcolor.toUpperCase()}
+                        </p>
+                        <p className="text-xl font-semibold">
+                          {parseInt(item.productprice).toLocaleString()}₹
+                        </p>
+                        <button
+                          onClick={() => {
+                            addtocart(`${item.id}`);
+                          }}
+                          className="buttons"
+                        >
+                          Add to cart
+                        </button>
+                      </div>
+                    ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

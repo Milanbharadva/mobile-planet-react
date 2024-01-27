@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  collection,
-  query,
-  onSnapshot,
-  orderBy,
-  limit,
-} from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase/fiirebase";
 export const useFetch = (url) => {
   const [loadeddata, setLoadeddata] = useState([]);

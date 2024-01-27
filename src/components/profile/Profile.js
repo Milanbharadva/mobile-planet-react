@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { useFetch } from "../../hook/usefetch";
 import { doc, deleteDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
-import Breadcrumb from "../breadcrumb/Breadcrumb";
 const Profile = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
