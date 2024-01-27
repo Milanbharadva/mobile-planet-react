@@ -18,7 +18,6 @@ const Addproduct = () => {
     "apple",
     "samsung",
     "oneplus",
-    "product",
   ];
 
   let nameref = useRef();
