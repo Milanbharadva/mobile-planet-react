@@ -46,7 +46,7 @@ const Addproduct = () => {
         productbattery: battteryref.current.value + i + "MAH",
         productdisplay: displayref.current.value,
         productprocessor: processorref.current.value,
-        productimage: imgref.current.files[0].name||null,
+        productimage:  imgref.current.files? imgref.current.files[0].name:"",
         categoryname: categoryref.current.value,
       }).then((res) => {
         if (res._key.path.segments[1]) {
