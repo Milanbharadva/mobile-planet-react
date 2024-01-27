@@ -54,7 +54,6 @@ const AdminNavbar = () => {
                   ORDERS
                 </li>
               </NavLink>
-              <div></div>
               {localStorage.getItem("adminid") !== null ? (
                 <Link
                   onClick={(e) => {

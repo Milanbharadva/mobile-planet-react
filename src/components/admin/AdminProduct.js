@@ -7,7 +7,7 @@ import { useFetch } from "../../hook/usefetch";
 import Pagination from "./Pagination";
 import { db } from "../../Firebase/fiirebase";
 import { FaEye } from "react-icons/fa";
-import { FaSort, ImSortAmountDesc } from "react-icons/fa6";
+import { FaSort } from "react-icons/fa6";
 
 const AdminProduct = () => {
   const navigate = useNavigate();
@@ -79,25 +79,18 @@ const AdminProduct = () => {
 
   if (productNameSearch === "" && categoryFilter === "All") {
     totalProducts = data.loadeddata.length;
+    filteredWithName=data.loadeddata
   } else {
-    var filteredWithName;
-    if (productNameSearch !== "" && categoryFilter !== "All") {
-      filteredWithName = data.loadeddata
-        .filter((item) =>
-          item.productname
-            .toLowerCase()
-            .includes(productNameSearch.toLowerCase())
-        )
-        .filter(
-          (item) =>
-            item.categoryname.toLowerCase() === categoryFilter.toLowerCase()
-        );
-    } else if (productNameSearch !== "" && categoryFilter === "All") {
-      filteredWithName = data.loadeddata.filter((item) =>
+    var filteredWithName = data.loadeddata;
+
+    if (productNameSearch !== "") {
+      filteredWithName = filteredWithName.filter((item) =>
         item.productname.toLowerCase().includes(productNameSearch.toLowerCase())
       );
-    } else if (productNameSearch === "" && categoryFilter !== "All") {
-      filteredWithName = data.loadeddata.filter(
+    }
+
+    if (categoryFilter !== "All") {
+      filteredWithName = filteredWithName.filter(
         (item) =>
           item.categoryname.toLowerCase() === categoryFilter.toLowerCase()
       );
@@ -193,8 +186,6 @@ const AdminProduct = () => {
                 <th className="px-6 py-4" onClick={() => handleSort("id")}>
                   <div className="flex items-center">
                     <span className="whitespace-nowrap">ID</span>
-                    {console.log(sortColumn)}
-
                     {sortColumn === "id" && (
                       <FaSort
                         className={`cursor-pointer ${
@@ -302,7 +293,8 @@ const AdminProduct = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedProducts.map((item, index) => {
+              {filteredWithName&&filteredWithName.map((item, index) => {
+                console.log(filteredWithName)
                 const calculatedId =
                   (currentPage - 1) * itemperpage + index + 1;
                 return (
