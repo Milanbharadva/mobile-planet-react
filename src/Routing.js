@@ -8,7 +8,7 @@ import Shop from "./components/shop/Shop";
 import Product from "./components/product/Product";
 import Signup from "./components/authentication/signup/Signup";
 import Signin from "./components/authentication/signin/Signin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cart from "./components/cart/Cart";
 import Profile from "./components/profile/Profile";
 import SingleProduct from "./components/single-product/SingleProduct";
@@ -23,6 +23,7 @@ import Discount from "./components/admin/Discount";
 import EditDiscount from "./components/admin/EditDiscount";
 import AddDiscount from "./components/admin/AddDiscount";
 import ShowProduct from "./components/admin/ShowProduct";
+import Loader from "./Loader";
 const Routing = () => {
   const [userstatus, setUserstatus] = useState(false);
   const [onlinestatus, setonlinestatus] = useState(navigator.onLine);
@@ -32,6 +33,21 @@ const Routing = () => {
   const setstatus = () => {
     setUserstatus(!userstatus);
   };
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // Simulate delay for 2 seconds (replace this with actual data fetching)
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <div className={navigator.onLine ? "" : "offline"}>
       {window.location.pathname.includes("admin") ? (

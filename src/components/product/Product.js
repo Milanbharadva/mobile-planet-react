@@ -79,12 +79,11 @@ const Product = (props) => {
           </h1>
         </div>
       )}
-      {isPending && (
-        <div className="flex items-center mt-2 justify-center">
-          <h1 className="text-2xl font-semibold ">Loading...</h1>
+      {isPending ? (
+        <div className="flex items-center justify-center ">
+          <div className="w-8 h-8 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
         </div>
-      )}
-      {loadeddata.length == 0 ? (
+      ) : loadeddata.length == 0 ? (
         <h1 className="flex justify-center items-center text-xl font-bold text-red-700">
           Sorry! No Product Available
         </h1>

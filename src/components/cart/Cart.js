@@ -47,7 +47,8 @@ const Cart = () => {
 
   let totalprice = 0;
   document.title = "Mobile Planet | Cart";
-  const { loadeddata } = useFetch("cart");
+  const { loadeddata, isPending } = useFetch("cart");
+  console.log(isPending);
   let data;
   if (loadeddata) {
     data =
@@ -57,47 +58,51 @@ const Cart = () => {
       );
   }
   const applycoupon = () => {
-    let codeofdiscount = document.getElementById("discountcode").value;
+    const codeOfDiscount = document.getElementById("discountcode").value;
     document.getElementById("discountcode").value = "";
-    if (discountcode == codeofdiscount) {
+
+    if (discountcode === codeOfDiscount) {
       notifyalreadyapplied();
-    } else if (discountcode != null) {
+    } else if (discountcode !== null) {
       notifyalreadycoupon();
     } else {
-      let discountfiltereddata = discountdata.loadeddata.filter(
-        (item) => item.DiscountCode == codeofdiscount
-      )[0];
-      if (discountfiltereddata == undefined) {
+      const discountFilteredData = discountdata.loadeddata.find(
+        (item) => item.DiscountCode === codeOfDiscount
+      );
+
+      if (!discountFilteredData) {
         notifywrongcoupon();
       } else {
-        if (Date.parse(new Date()) > discountfiltereddata.endDate) {
+        if (Date.parse(new Date()) > discountFilteredData.endDate) {
           notifycouponexpired();
-        } else if (totalprice < discountfiltereddata.MinimumCart) {
-          notifymincartvalue(discountfiltereddata.MinimumCart.toLocaleString());
+        } else if (totalprice < discountFilteredData.MinimumCart) {
+          notifymincartvalue(discountFilteredData.MinimumCart.toLocaleString());
         } else {
-          const discountby = discountfiltereddata.DiscountBy;
-          setdiscountcode(discountfiltereddata.DiscountCode);
-          if (discountby == "percentage") {
-            setdiscountbyanddiscount(`${discountfiltereddata.Discount} %`);
+          const discountBy = discountFilteredData.DiscountBy;
+          setdiscountcode(discountFilteredData.DiscountCode);
+
+          if (discountBy === "percentage") {
+            setdiscountbyanddiscount(`${discountFilteredData.Discount} %`);
             setDiscountprice(
-              (totalprice * discountfiltereddata.Discount) / 100
+              (totalprice * discountFilteredData.Discount) / 100
             );
             setAfterDiscountprice(
-              totalprice - (totalprice * discountfiltereddata.Discount) / 100
+              totalprice - (totalprice * discountFilteredData.Discount) / 100
             );
             notifycouponapplied(
-              (totalprice * discountfiltereddata.Discount) / 100
+              (totalprice * discountFilteredData.Discount) / 100
             );
-          } else if (discountby == "rupee") {
+          } else if (discountBy === "rupee") {
             setdiscountbyanddiscount(null);
-            setDiscountprice(discountfiltereddata.Discount);
-            setAfterDiscountprice(totalprice - discountfiltereddata.Discount);
-            notifycouponapplied(totalprice - discountfiltereddata.Discount);
+            setDiscountprice(discountFilteredData.Discount);
+            setAfterDiscountprice(totalprice - discountFilteredData.Discount);
+            notifycouponapplied(totalprice - discountFilteredData.Discount);
           }
         }
       }
     }
   };
+
   function clearcounpon() {
     setdiscountcode(null);
     setDiscountprice(0);
@@ -110,13 +115,19 @@ const Cart = () => {
     <>
       <Breadcrumb paragraph="ORDER NOW" heading="Cart" />
       <div className="md:mx-20 mx-2">
-        {loadeddata.length == 0 && (
-          <div className="flex flex-col  items-center">
-            <h1 className="text-xl font-semibold ">Your Cart Is Empty!</h1>
-            <button className="buttons" onClick={() => navigate("/shop")}>
-              Shop Now
-            </button>
+        {isPending ? (
+          <div className="flex items-center justify-center ">
+            <div className="w-8 h-8 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
           </div>
+        ) : (
+          loadeddata.length == 0 && (
+            <div className="flex flex-col  items-center">
+              <h1 className="text-xl font-semibold ">Your Cart Is Empty!</h1>
+              <button className="buttons" onClick={() => navigate("/shop")}>
+                Shop Now
+              </button>
+            </div>
+          )
         )}
         {loadeddata.length > 0 && (
           <div className="flex flex-col md:flex-row gap-6">
