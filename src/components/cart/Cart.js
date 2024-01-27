@@ -48,7 +48,6 @@ const Cart = () => {
   let totalprice = 0;
   document.title = "Mobile Planet | Cart";
   const { loadeddata, isPending } = useFetch("cart");
-  console.log(isPending);
   let data;
   if (loadeddata) {
     data =
