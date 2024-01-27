@@ -34,7 +34,7 @@
   height: fit-content;
 }
 
-input {
+input, textarea,select {
   border: 1px solid rgb(53, 52, 52);
 }
 
@@ -50,7 +50,8 @@ input {
   top: -10px;
   opacity: 0.9;
 }
-.offline{
+
+.offline {
   pointer-events: none;
-filter: grayscale(1);  
+  filter: grayscale(1);
 }

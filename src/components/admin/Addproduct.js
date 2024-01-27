@@ -1,5 +1,5 @@
 import { db } from "../../Firebase/fiirebase";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { collection, addDoc } from "firebase/firestore";
@@ -32,39 +32,48 @@ const Addproduct = () => {
   let processorref = useRef();
   let imgref = useRef();
   let categoryref = useRef();
-
+  let descriptionref = useRef();
+  const [categoryError, setCategoryError] = useState(false);
   async function validate(e) {
     e.preventDefault();
-    console.log(imgref)
-      await addDoc(collection(db, "product"), {
-        productname: nameref.current.value + i,
-        productprice: priceref.current.value + i,
-        productram: ramref.current.value + i,
-        productrom: romref.current.value + i,
-        productcolor: colorref.current.value + i,
-        productcamera: cameraref.current.value + i + "MP",
-        productbattery: battteryref.current.value + i + "MAH",
-        productdisplay: displayref.current.value,
-        productprocessor: processorref.current.value,
-        productimage:  imgref.current.files? imgref.current.files[0].name:"",
-        categoryname: categoryref.current.value,
-      }).then((res) => {
-        if (res._key.path.segments[1]) {
-          nameref.current.value = "";
-          priceref.current.value = "";
-          ramref.current.value = "";
-          romref.current.value = "";
-          colorref.current.value = "";
-          cameraref.current.value = "";
-          battteryref.current.value = "";
-          displayref.current.value = "";
-          processorref.current.value = "";
-          imgref.current.value = "";
-          categoryref.current.value = categoryarr[0];
-          notify();
-        }
-      });
+    if (categoryref.current.value === categoryarr[0]) {
+      setCategoryError(true);
+      return;
     }
+
+    setCategoryError(false);
+    await addDoc(collection(db, "product"), {
+      productname: nameref.current.value,
+      productprice: priceref.current.value,
+      productram: ramref.current.value,
+      productdescription: descriptionref.current.value,
+      productrom: romref.current.value,
+      productcolor: colorref.current.value,
+      productcamera: cameraref.current.value,
+      productbattery: battteryref.current.value,
+      productdisplay: displayref.current.value,
+      productprocessor: processorref.current.value,
+      productimage:
+        imgref.current.files.length > 0 ? imgref.current.files[0].name : "",
+      categoryname: categoryref.current.value,
+    }).then((res) => {
+      if (res._key.path.segments[1]) {
+        nameref.current.value = "";
+        priceref.current.value = "";
+        ramref.current.value = "";
+        romref.current.value = "";
+        colorref.current.value = "";
+        cameraref.current.value = "";
+        battteryref.current.value = "";
+        displayref.current.value = "";
+        processorref.current.value = "";
+        imgref.current.value = "";
+        descriptionref.current.value = "";
+        categoryref.current.value = categoryarr[0];
+        notify();
+      }
+    });
+  }
 
   return (
     <div className="bg-gray-200">
@@ -95,6 +104,20 @@ const Addproduct = () => {
                 className="mt-1 p-2 w-full border rounded-md"
                 required
               />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-600">
+                Product discription
+              </label>
+              <textarea
+                type="text"
+                name="productdescription"
+                placeholder="Enter Product description"
+                ref={descriptionref}
+                autoComplete="on"
+                className="mt-1 p-2 w-full border rounded-md"
+                required
+              ></textarea>
             </div>
 
             <div className="mb-4">
@@ -181,7 +204,9 @@ const Addproduct = () => {
               <select
                 name="categoryname"
                 ref={categoryref}
-                className="mt-1 p-2 w-full border rounded-md"
+                className={`mt-1 p-2 w-full border rounded-md ${
+                  categoryError ? "border-red-500" : ""
+                }`}
                 required
                 defaultValue={categoryarr[0]}
               >
@@ -195,6 +220,11 @@ const Addproduct = () => {
                   </option>
                 ))}
               </select>
+              {categoryError && (
+                <p className="text-red-500 text-sm mt-2">
+                  Please select a valid category.
+                </p>
+              )}
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">
@@ -203,7 +233,7 @@ const Addproduct = () => {
               <input
                 type="text"
                 name="productbattery"
-                placeholder="Enter Product Camera"
+                placeholder="Enter Product Battery Capacity"
                 ref={battteryref}
                 className="mt-1 p-2 w-full border rounded-md"
               />
