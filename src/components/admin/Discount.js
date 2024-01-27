@@ -129,7 +129,7 @@ const Discount = () => {
                       className="whitespace-nowrap px-6 py-4 cursor-pointer"
                       onClick={() => {
                         if (
-                          window.confirm("Do you want to delete this product")
+                          window.confirm("Do you want to delete this discount")
                         ) {
                           deleteDoc(doc(db, "discount", item.id));
                         }

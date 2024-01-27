@@ -31,13 +31,19 @@ const Cart = () => {
     toast.error("This code is already applied");
   const notifycouponexpired = () => toast.error("Sorry Counpon Is Expired");
   const notifycouponapplied = (money) =>
-    toast.success(" Coupon Applied Sucessfully You Saved " + money + "₹");
+    toast.success(
+      " Coupon Applied Sucessfully You Saved " +
+        parseInt(money).toLocaleString() +
+        "₹"
+    );
   const notifyalreadycoupon = () =>
     toast.error(
       "Already one coupon code is applied please remove it first to apply another"
     );
   const notifymincartvalue = (price) =>
-    toast.error(`Minimum Cart Value Should be ${price}`);
+    toast.error(
+      `Minimum Cart Value Should be ${parseInt(price).toLocaleString()}`
+    );
 
   let totalprice = 0;
   document.title = "Mobile Planet | Cart";
