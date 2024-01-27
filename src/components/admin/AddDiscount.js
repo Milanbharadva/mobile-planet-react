@@ -2,7 +2,7 @@ import { db } from "../../Firebase/fiirebase";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import AdminNavbar from "./AdminNavbar";
 import { milisecondtotime } from "./TImeConvertor";
@@ -29,7 +29,16 @@ const AddDiscount = () => {
   const notify = () => toast.success("Product updated sucessfully");
   async function validate(e) {
     e.preventDefault();
+    const discountCodeExists = await checkDiscountCodeExists(
+      formdata.DiscountCode
+    );
 
+    if (discountCodeExists) {
+      toast.error(
+        "Discount code already exists. Please choose a different code."
+      );
+      return;
+    }
     await addDoc(collection(db, "discount"), formdata).then((res) => {
       if (res._key.path.segments[1]) {
         setFormdata({
@@ -46,7 +55,16 @@ const AddDiscount = () => {
       }
     });
   }
+  async function checkDiscountCodeExists(discountCode) {
+    const querySnapshot = await getDocs(
+      query(
+        collection(db, "discount"),
+        where("DiscountCode", "==", discountCode)
+      )
+    );
 
+    return querySnapshot.size > 0;
+  }
   return (
     <div className="bg-gray-200">
       <AdminNavbar />
