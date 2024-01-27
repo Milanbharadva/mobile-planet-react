@@ -23,23 +23,15 @@ const EditDiscount = () => {
   )[0];
 
   const initialformdata = {
-    Discount: productforedit && productforedit.Discount,
-    DiscountCode: productforedit && productforedit.DiscountCode,
-    MinimumCart: productforedit && productforedit.MinimumCart,
-    name: productforedit && productforedit.name,
-    DiscountBy: productforedit && productforedit.DiscountBy,
-    startDate: productforedit && productforedit.startDate,
-    endDate: productforedit && productforedit.endDate,
+    Discount: productforedit?.Discount || 0,
+    DiscountCode: productforedit?.DiscountCode || "",
+    MinimumCart: productforedit?.MinimumCart || 0,
+    name: productforedit?.name || "",
+    DiscountBy: productforedit?.DiscountBy || "percentage",
+    startDate: productforedit?.startDate || new Date().toISOString(),
+    endDate: productforedit?.endDate || new Date().toISOString(),
   };
-  const [formdata, setFormdata] = useState({
-    Discount: productforedit && productforedit.Discount,
-    DiscountCode: productforedit && productforedit.DiscountCode,
-    MinimumCart: productforedit && productforedit.MinimumCart,
-    name: productforedit && productforedit.name,
-    DiscountBy: productforedit && productforedit.DiscountBy,
-    startDate: productforedit && productforedit.startDate,
-    endDate: productforedit && productforedit.endDate,
-  });
+  const [formdata, setFormdata] = useState(initialformdata);
   useEffect(() => {
     setFormdata(initialformdata);
   }, [productforedit]);
@@ -47,18 +39,11 @@ const EditDiscount = () => {
     const { name, value } = e.target;
     setFormdata((prevformdata) => ({ ...prevformdata, [name]: value }));
   };
+
   async function validate(e) {
     e.preventDefault();
     const getdiscount = doc(db, "discount", state.discountid);
-    await updateDoc(getdiscount, {
-      Discount: formdata.Discount,
-      DiscountCode: formdata.DiscountCode,
-      MinimumCart: formdata.MinimumCart,
-      name: formdata.name,
-      DiscountBy: formdata.DiscountBy,
-      startDate: formdata.startDate,
-      endDate: formdata.endDate,
-    });
+    await updateDoc(getdiscount, formdata);
     notify();
     navigate("/admin/discount");
   }
@@ -118,13 +103,11 @@ const EditDiscount = () => {
                         type="radio"
                         value="percentage"
                         name="DiscountBy"
-                        onClick={(e) => {
+                        onChange={(e) => {
                           handler(e);
                         }}
                         checked={
-                          formdata && formdata.DiscountBy == "percentage"
-                            ? "true"
-                            : ""
+                          formdata && formdata.DiscountBy === "percentage"
                         }
                         required
                       />
@@ -135,14 +118,10 @@ const EditDiscount = () => {
                         type="radio"
                         value="rupee"
                         name="DiscountBy"
-                        onClick={(e) => {
+                        onChange={(e) => {
                           handler(e);
                         }}
-                        checked={
-                          formdata && formdata.DiscountBy == "rupee"
-                            ? "true"
-                            : ""
-                        }
+                        checked={formdata && formdata.DiscountBy === "rupee"}
                       />
                       <label htmlFor="percentage">RUPEE ( ₹ )</label>
                     </div>
@@ -158,7 +137,7 @@ const EditDiscount = () => {
                   }}
                   className="mt-1 p-2 w-full border rounded-md"
                   min={1}
-                  max={formdata.DiscountBy == "percentage" ? 100 : ""}
+                  max={formdata.DiscountBy === "percentage" ? 100 : ""}
                 />
               </div>
               <div className="mb-4 flex gap-2">

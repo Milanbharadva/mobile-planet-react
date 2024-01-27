@@ -58,18 +58,12 @@ const Discount = () => {
               setCurrentPage(1);
               setitemperpage(e.target.value);
             }}
-            defaultValue={2}
+            value={itemperpage}
             className="h-10 px-2 border border-gray-300 rounded-md"
           >
-            <option value="2" selected={2 == itemperpage}>
-              2
-            </option>
-            <option value="5" selected={5 == itemperpage}>
-              5
-            </option>
-            <option value="10" selected={10 == itemperpage}>
-              10
-            </option>
+            <option value="2">2</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
           </select>
         </div>
 
@@ -174,12 +168,14 @@ const Discount = () => {
                       <MdEdit />
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      <h5 className="font-medium text-black dark:text-white">
+                      <h5 className="font-medium text-black ">
                         {calculatedId}
                       </h5>
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      <p className="text-black dark:text-white">{item.name}</p>
+                      <p className="text-black text-md font-bold">
+                        {item.name}
+                      </p>
                     </td>
 
                     <td className="whitespace-nowrap px-6 py-4">
