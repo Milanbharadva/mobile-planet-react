@@ -35,6 +35,7 @@ const Addproduct = () => {
 
   async function validate(e) {
     e.preventDefault();
+    console.log(imgref)
       await addDoc(collection(db, "product"), {
         productname: nameref.current.value + i,
         productprice: priceref.current.value + i,
