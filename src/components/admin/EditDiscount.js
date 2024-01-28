@@ -9,6 +9,7 @@ import AdminNavbar from "./AdminNavbar";
 import { milisecondtotime } from "./TImeConvertor";
 const EditDiscount = () => {
   const { state } = useLocation();
+  const [disable, setDisable] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     if (localStorage.getItem("adminid") === null) {
@@ -21,7 +22,12 @@ const EditDiscount = () => {
   const productforedit = loadeddata.loadeddata.filter(
     (item) => item.id == state.discountid
   )[0];
-
+  useEffect(() => {
+    console.log(state.disablechange);
+    if (state && state.disablechange == true) {
+      setDisable(true);
+    }
+  }, []);
   const initialformdata = {
     Discount: productforedit?.Discount || 0,
     DiscountCode: productforedit?.DiscountCode || "",
@@ -52,7 +58,9 @@ const EditDiscount = () => {
       <AdminNavbar />
       <div className="flex justify-center items-center">
         <div className="bg-white p-8 rounded shadow-md lg:w-[40vw] w-[90vw]">
-          <h2 className="text-2xl font-semibold mb-6">Edit Discount</h2>
+          <h2 className="text-2xl font-semibold mb-6">
+            {disable ? "Show" : "Edit"} Discount
+          </h2>
           <form method="post" onSubmit={validate}>
             <div>
               <div className="mb-4">
@@ -67,6 +75,7 @@ const EditDiscount = () => {
                   onChange={(e) => {
                     handler(e);
                   }}
+                  disabled={disable}
                   className="mt-1 p-2 w-full border rounded-md"
                   autoComplete="on"
                   required
@@ -87,6 +96,7 @@ const EditDiscount = () => {
                   onChange={(e) => {
                     handler(e);
                   }}
+                  disabled={disable}
                   required
                   className="mt-1 p-2 w-full border rounded-md"
                 />
@@ -106,6 +116,7 @@ const EditDiscount = () => {
                         onChange={(e) => {
                           handler(e);
                         }}
+                        disabled={disable}
                         checked={
                           formdata && formdata.DiscountBy === "percentage"
                         }
@@ -121,6 +132,7 @@ const EditDiscount = () => {
                         onChange={(e) => {
                           handler(e);
                         }}
+                        disabled={disable}
                         checked={formdata && formdata.DiscountBy === "rupee"}
                       />
                       <label htmlFor="percentage">RUPEE ( ₹ )</label>
@@ -135,6 +147,7 @@ const EditDiscount = () => {
                   onChange={(e) => {
                     handler(e);
                   }}
+                  disabled={disable}
                   className="mt-1 p-2 w-full border rounded-md"
                   min={1}
                   max={formdata.DiscountBy === "percentage" ? 100 : ""}
@@ -159,6 +172,7 @@ const EditDiscount = () => {
                         startDate: Date.parse(e.target.value),
                       }));
                     }}
+                    disabled={disable}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
                 </div>
@@ -181,6 +195,7 @@ const EditDiscount = () => {
                         endDate: Date.parse(e.target.value),
                       }));
                     }}
+                    disabled={disable}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
                 </div>
@@ -200,36 +215,66 @@ const EditDiscount = () => {
                   onChange={(e) => {
                     handler(e);
                   }}
+                  disabled={disable}
                   className="mt-1 p-2 w-full border rounded-md"
                   min={1}
                 />
               </div>
             </div>
-            <div className="mb-4 flex gap-5">
-              <div>
-                <button
-                  type="submit"
-                  name="submit"
-                  value="add"
-                  className="btn btn-primary col-md-12 buttons"
-                >
-                  Submit
-                </button>
+
+            {disable ? (
+              <div className="mb-4 flex gap-5 justify-center md:flex-row flex-col ">
+                <div>
+                  <button
+                    type="submit"
+                    name="submit"
+                    value="add"
+                    className="btn btn-primary col-md-12 buttons w-full "
+                  >
+                    Return To Discount Page
+                  </button>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    name="button"
+                    value="button"
+                    className="btn btn-primary col-md-12 buttons w-full"
+                    onClick={() => {
+                     setDisable(false)
+                    }}
+                  >
+                    Edit Discount
+                  </button>
+                </div>
               </div>
-              <div>
-                <button
-                  type="button"
-                  name="reset"
-                  value="reset"
-                  className="btn btn-primary col-md-12 buttons"
-                  onClick={() => {
-                    // setFormdata(initialformdata);
-                  }}
-                >
-                  Reset
-                </button>
+            ) : (
+              <div className="mb-4 flex gap-5">
+                <div>
+                  <button
+                    type="submit"
+                    name="submit"
+                    value="add"
+                    className="btn btn-primary col-md-12 buttons"
+                  >
+                    Submit
+                  </button>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    name="reset"
+                    value="reset"
+                    className="btn btn-primary col-md-12 buttons"
+                    onClick={() => {
+                      setFormdata(initialformdata);
+                    }}
+                  >
+                    Reset
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </form>
         </div>
       </div>

@@ -93,7 +93,6 @@ const AdminNavbar = () => {
             </ul>
           </div>
         </div>
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden absolute top-20 right-0 bg-[#07212e] w-full">
             <ul className="flex flex-col text-center mt-4 gap-2">

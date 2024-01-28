@@ -275,8 +275,9 @@ const AdminProduct = () => {
                         <td
                           className="whitespace-nowrap px-6 py-4 cursor-pointer"
                           onClick={() => {
-                            navigate("/admin/showproduct", {
+                            navigate("/admin/editproduct", {
                               state: {
+                                disablechange: true,
                                 productid: item.id,
                               },
                             });

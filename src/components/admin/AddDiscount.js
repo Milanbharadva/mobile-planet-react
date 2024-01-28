@@ -26,7 +26,7 @@ const AddDiscount = () => {
     const { name, value } = e.target;
     setFormdata((prevformdata) => ({ ...prevformdata, [name]: value }));
   };
-  const notify = () => toast.success("Product updated sucessfully");
+  const notify = () => toast.success("Discount Code Added Sucessfully");
   async function validate(e) {
     e.preventDefault();
     const discountCodeExists = await checkDiscountCodeExists(
@@ -141,13 +141,14 @@ const AddDiscount = () => {
                 </label>
                 <input
                   type="number"
+                  required
                   name="Discount"
                   placeholder="Enter Discount"
                   className="mt-1 p-2 w-full border rounded-md"
                   onChange={(e) => {
                     handler(e);
                   }}
-                  min={1}
+                  min={0}
                   max={formdata.DiscountBy === "percentage" ? 100 : ""}
                 />
               </div>

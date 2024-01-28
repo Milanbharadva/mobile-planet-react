@@ -22,7 +22,6 @@ import EditProduct from "./components/admin/EditProduct";
 import Discount from "./components/admin/Discount";
 import EditDiscount from "./components/admin/EditDiscount";
 import AddDiscount from "./components/admin/AddDiscount";
-import ShowProduct from "./components/admin/ShowProduct";
 import Loader from "./Loader";
 const Routing = () => {
   const [userstatus, setUserstatus] = useState(false);
@@ -37,7 +36,6 @@ const Routing = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Simulate delay for 2 seconds (replace this with actual data fetching)
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsLoading(false);
     };
@@ -56,10 +54,9 @@ const Routing = () => {
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/signin" element={<AdminLogIn />} />
             <Route path="/admin/product" element={<AdminProduct />} />
-            <Route path="/admin/editproduct" element={<EditProduct />} />
-            <Route path="/admin/showproduct" element={<ShowProduct />} />
-            <Route path="/admin/editdiscount" element={<EditDiscount />} />
             <Route path="/admin/discount" element={<Discount />} />
+            <Route path="/admin/editproduct" element={<EditProduct />} />
+            <Route path="/admin/editdiscount" element={<EditDiscount />} />
             <Route exact path="/admin/addproduct" element={<Addproduct />} />
             <Route exact path="/admin/adddiscount" element={<AddDiscount />} />
           </Routes>

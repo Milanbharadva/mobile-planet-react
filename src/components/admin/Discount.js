@@ -217,6 +217,7 @@ const Discount = () => {
                         onClick={() => {
                           navigate("/admin/editdiscount", {
                             state: {
+                              disablechange: true,
                               discountid: item.id,
                             },
                           });

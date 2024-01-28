@@ -38,6 +38,13 @@ const EditProduct = () => {
     categoryname: productforedit?.categoryname || "",
   };
   const imgref = useRef();
+  const [disable, setDisable] = useState(false);
+  useEffect(() => {
+    console.log(state.disablechange);
+    if (state && state.disablechange == true) {
+      setDisable(true);
+    }
+  }, []);
   const [formdata, setFormdata] = useState(initialformdata);
   const [imagePreview, setImagePreview] = useState(null);
   useEffect(() => {
@@ -78,7 +85,9 @@ const EditProduct = () => {
       ) : (
         <div className="flex justify-center items-center">
           <div className="bg-white md:p-8 p-5 rounded shadow-md lg:w-[40vw] w-[100vw]">
-            <h2 className="text-2xl font-semibold mb-6">Edit Product</h2>
+            <h2 className="text-2xl font-semibold mb-6">
+              {disable ? "Show " : "Edit "} Product
+            </h2>
             <form method="post" onSubmit={validate}>
               <div>
                 <div className="mb-4">
@@ -93,6 +102,7 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                     className="mt-1 p-2 w-full border rounded-md"
                     autoComplete="on"
                     required
@@ -110,6 +120,7 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                   ></textarea>
                 </div>
                 <div className="mb-4">
@@ -127,6 +138,7 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                     required
                     min={1}
                     className="mt-1 p-2 w-full border rounded-md"
@@ -147,6 +159,7 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                     className="mt-1 p-2 w-full border rounded-md"
                     min={1}
                   />
@@ -161,10 +174,10 @@ const EditProduct = () => {
                   <input
                     type="file"
                     ref={imgref}
-                    // value={formdata.productimage}
                     className="mt-1 p-2 w-full border rounded-md"
                     id="imgpicker"
                     name="productimage"
+                    disabled={disable}
                     onChange={handleImageChange}
                   />
 
@@ -189,6 +202,7 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                     min={1}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
@@ -208,6 +222,7 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
                 </div>
@@ -226,6 +241,7 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
                 </div>
@@ -241,6 +257,7 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                     value={formdata && formdata.categoryname}
                     className="mt-1 p-2 w-full border rounded-md"
                   >
@@ -266,6 +283,7 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
                 </div>
@@ -284,6 +302,7 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
                 </div>
@@ -302,37 +321,65 @@ const EditProduct = () => {
                     onChange={(e) => {
                       handler(e);
                     }}
+                    disabled={disable}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
                 </div>
               </div>
-
-              <div className="mb-4 flex gap-5 justify-center">
-                <div>
-                  <button
-                    type="submit"
-                    name="submit"
-                    value="add"
-                    className="btn btn-primary col-md-12 buttons"
-                  >
-                    Submit
-                  </button>
+              {disable ? (
+                <div className="mb-4 flex gap-5 justify-center md:flex-row flex-col ">
+                  <div>
+                    <button
+                      type="submit"
+                      name="submit"
+                      value="add"
+                      className="btn btn-primary col-md-12 buttons w-full "
+                    >
+                      Return To Product Page
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      name="button"
+                      value="button"
+                      className="btn btn-primary col-md-12 buttons w-full"
+                      onClick={() => {
+                        setDisable(false);
+                      }}
+                    >
+                      Edit Product
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <button
-                    type="button"
-                    name="reset"
-                    value="reset"
-                    className="btn btn-primary col-md-12 buttons"
-                    onClick={() => {
-                      document.getElementById("imgpicker").value = "";
-                      setFormdata(initialformdata);
-                    }}
-                  >
-                    Reset
-                  </button>
+              ) : (
+                <div className="mb-4 flex gap-5 justify-center">
+                  <div>
+                    <button
+                      type="submit"
+                      name="submit"
+                      value="add"
+                      className="btn btn-primary col-md-12 buttons"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      name="reset"
+                      value="reset"
+                      className="btn btn-primary col-md-12 buttons"
+                      onClick={() => {
+                        document.getElementById("imgpicker").value = "";
+                        setFormdata(initialformdata);
+                      }}
+                    >
+                      Reset
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </form>
           </div>
         </div>
