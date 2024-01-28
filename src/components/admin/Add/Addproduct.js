@@ -1,10 +1,10 @@
-import { db } from "../../Firebase/fiirebase";
+import { db } from "../../../Firebase/fiirebase";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import AdminNavbar from "./AdminNavbar";
+import AdminNavbar from "../AdminNavbar";
 const Addproduct = () => {
   const navigate = useNavigate();
   useEffect(() => {

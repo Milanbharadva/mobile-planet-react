@@ -1,12 +1,12 @@
-import { db } from "../../Firebase/fiirebase";
+import { db } from "../../../Firebase/fiirebase";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { updateDoc, doc } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useFetch } from "../../hook/usefetch";
-import AdminNavbar from "./AdminNavbar";
-import { milisecondtotime } from "./TImeConvertor";
+import { useFetch } from "../../../hook/usefetch";
+import AdminNavbar from "../AdminNavbar";
+import { milisecondtotime } from "../TImeConvertor";
 const EditDiscount = () => {
   const { state } = useLocation();
   const [disable, setDisable] = useState(false);
