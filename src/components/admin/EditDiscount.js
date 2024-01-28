@@ -23,7 +23,6 @@ const EditDiscount = () => {
     (item) => item.id == state.discountid
   )[0];
   useEffect(() => {
-    console.log(state.disablechange);
     if (state && state.disablechange == true) {
       setDisable(true);
     }

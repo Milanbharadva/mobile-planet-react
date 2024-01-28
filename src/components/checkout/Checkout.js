@@ -31,7 +31,6 @@ const Checkout = () => {
                 <td className="py-5 border">Total</td>
               </tr>
               {data.map((item) => {
-                console.log(item);
                 let productdatafiltered = productdata.loadeddata.filter(
                   (items) => items.id === item.itemdata.productid
                 )[0];

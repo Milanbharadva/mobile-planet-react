@@ -14,12 +14,11 @@ const EditProduct = () => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
     }
-  }, []);
+  }, [navigate]);
 
   const notify = () => toast.success("Product updated sucessfully");
   const categoryarr = ["apple", "samsung", "oneplus"];
   const loadeddata = useFetch("product");
-  console.log(loadeddata.isPending);
   const productforedit = loadeddata.loadeddata.filter(
     (item) => item.id == state.productid
   )[0];
@@ -40,7 +39,6 @@ const EditProduct = () => {
   const imgref = useRef();
   const [disable, setDisable] = useState(false);
   useEffect(() => {
-    console.log(state.disablechange);
     if (state && state.disablechange == true) {
       setDisable(true);
     }
