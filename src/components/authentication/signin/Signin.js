@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Signin = (props) => {
   const notify = () => toast.error("Wrong Email or Password");
   const notify2 = () => toast.success("Login sucessful");
+  const notifytoSignin = () =>
+    toast.success("Sign Up Sucessful please Sign In To Continue");
   const notifyloginbeforecart = () =>
     toast.error("Please Log In To Access Cart");
   const { state } = useLocation();
@@ -19,21 +21,15 @@ const Signin = (props) => {
   };
   const [formdata, setFormdata] = useState(objstructutre);
 
-  const didMountRef = useRef(false);
-
-  useEffect(() => {
-    // Check if it's the initial render
-    if (!didMountRef.current) {
-      // Perform the initial render logic
-      window.scrollTo(0, 0);
-      if (state != null) {
-        notifyloginbeforecart();
-      }
-
-      // Set the ref to true, so the effect won't run again
-      didMountRef.current = true;
-    }
-  }, [state]);
+  // const didMountRef = useRef(false);
+  if (state && state.tosignin == true) {
+    notifytoSignin();
+    state.tosignin = false;
+  }
+  if (state && state.toaccesscart) {
+    notifyloginbeforecart();
+    state.toaccesscart = false;
+  }
 
   const handler = (e) => {
     e.preventDefault();

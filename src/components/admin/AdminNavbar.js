@@ -1,5 +1,5 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -9,11 +9,19 @@ const AdminNavbar = () => {
   const notify = () => toast.warning("Logout successfully");
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-
+  useEffect(() => {
+    // Check if the current location matches the desired URL
+    if (window.location.href === `${window.location.origin}/admin`) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }, []);
   return (
     <nav className="flex z-10 sticky top-0  bg-[#07212e] text-white">
       <div className="h-16vh flex z-50 lg:py-5 px-10 py-4 flex-1 items-center justify-between">
@@ -35,7 +43,10 @@ const AdminNavbar = () => {
           <div className="flex-10">
             <ul className="flex gap-8 mr-16 text-[17px] ">
               <Link to="/admin">
-                <li className="hover:text-[#F28123] transition  cursor-pointer">
+                <li
+                  className={`hover:text-[#F28123] transition  cursor-pointer
+                  ${isActive ? "active" : ""}`}
+                >
                   DASHBOARD
                 </li>
               </Link>
@@ -85,7 +96,7 @@ const AdminNavbar = () => {
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden absolute top-20 right-0 bg-[#07212e] w-full">
-            <ul className="flex flex-col text-center mt-4">
+            <ul className="flex flex-col text-center mt-4 gap-2">
               <Link to="/admin">
                 <li className="hover:text-[#F28123] transition  cursor-pointer">
                   DASHBOARD

@@ -94,7 +94,7 @@ const Shop = (props) => {
             </h1>
           )
         )}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-5 px-10 md:px-24  lg:px-32">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-5 px- md:px-24  lg:px-32">
           {loadeddata &&
             loadeddata.map((item) => (
               <div

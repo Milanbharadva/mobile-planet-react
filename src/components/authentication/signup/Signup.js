@@ -28,7 +28,13 @@ const Signup = () => {
       await addDoc(collection(db, "user"), {
         data,
       }).then((res) =>
-        res._key.path.segments[1] != null ? navigate("/signin") : ""
+        res._key.path.segments[1] != null
+          ? navigate("/signin", {
+              state: {
+                tosignin: true,
+              },
+            })
+          : ""
       );
     } else {
       setError(true);

@@ -10,16 +10,16 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         key="prev"
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
-        className="elative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+        className={`elative inline-flex items-center rounded-l-md px-2 py-2  ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
+          currentPage === 1 ? "text-gray-400" : "text-black font-semibold"
+        }`}
       >
         Previous
       </button>
     );
 
-    // Page numbers or ellipsis
     for (let i = 1; i <= totalPages; i++) {
       if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
-        // Display the first, last, or nearby page numbers
         links.push(
           <button
             key={i}
@@ -27,7 +27,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             className={`pagination-btn ${
               currentPage === i
                 ? "relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                : "relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+                : "relative  items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
             } `}
           >
             {i}
@@ -52,7 +52,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         key="next"
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
-        className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+        className={`relative inline-flex items-center rounded-r-md px-2 py-2  ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
+          currentPage === totalPages ? "text-gray-400" : "text-black font-semibold"
+        }`}
       >
         Next
       </button>

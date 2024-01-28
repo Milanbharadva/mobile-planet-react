@@ -7,8 +7,6 @@ import { useFetch } from "../../hook/usefetch";
 import Pagination from "./Pagination";
 import { db } from "../../Firebase/fiirebase";
 import { FaEye } from "react-icons/fa";
-import { FaSort } from "react-icons/fa6";
-import { ImSortAmountDesc } from "react-icons/im";
 
 const AdminProduct = () => {
   const navigate = useNavigate();
@@ -174,50 +172,50 @@ const AdminProduct = () => {
                   <th className="px-6 py-4">
                     <div className="flex items-center">
                       <span className="whitespace-nowrap"> ID</span>
-                      <FaSort className="cursor-pointer" />
-                      <ImSortAmountDesc />
+                      
+                      
                     </div>
                   </th>
                   <th className="px-6 py-4">
                     <div className="flex items-center">
                       <span className="whitespace-nowrap"> Category Name</span>
-                      <FaSort className="cursor-pointer" />
-                      <ImSortAmountDesc />
+                      
+                      
                     </div>
                   </th>
                   <th className="px-6 py-4">
                     <div className="flex items-center">
                       <span className="whitespace-nowrap"> Product Name</span>
-                      <FaSort className="cursor-pointer" />
-                      <ImSortAmountDesc />
+                      
+                      
                     </div>
                   </th>
                   <th className="px-6 py-4">
                     <div className="flex items-center">
                       <span className="whitespace-nowrap"> Product Color</span>
-                      <FaSort className="cursor-pointer" />
-                      <ImSortAmountDesc />
+                      
+                      
                     </div>
                   </th>
                   <th className="px-6 py-4">
                     <div className="flex items-center">
                       <span className="whitespace-nowrap"> Product Price</span>
-                      <FaSort className="cursor-pointer" />
-                      <ImSortAmountDesc />
+                      
+                      
                     </div>
                   </th>
                   <th className="px-6 py-4">
                     <div className="flex items-center">
                       <span className="whitespace-nowrap"> Product RAM</span>
-                      <FaSort className="cursor-pointer" />
-                      <ImSortAmountDesc />
+                      
+                      
                     </div>
                   </th>
                   <th className="px-6 py-4">
                     <div className="flex items-center">
                       <span className="whitespace-nowrap"> Product ROM</span>
-                      <FaSort className="cursor-pointer" />
-                      <ImSortAmountDesc />
+                      
+                      
                     </div>
                   </th>
                   <th className="px-6 py-4">Show</th>

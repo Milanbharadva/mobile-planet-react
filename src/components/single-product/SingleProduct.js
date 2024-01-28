@@ -123,7 +123,7 @@ const SingleProduct = (props) => {
                   Processor : {product.productprocessor}
                 </p>
                 <p className="text-xl font-bold">
-                  Description : {product.productdescription}
+                  Description : <span className=" font-semibold text-base"> {product.productdescription}</span>
                 </p>
                 <p className="text-xl font-bold">
                   Category : {product.categoryname.toUpperCase()}

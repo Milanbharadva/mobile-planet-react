@@ -114,12 +114,19 @@ const Cart = () => {
     <>
       <Breadcrumb paragraph="ORDER NOW" heading="Cart" />
       <div className="md:mx-20 mx-2">
+        {
+          loadeddata.filter(
+            (item) => item.itemdata.userid == localStorage.getItem("userid")
+          ).length
+        }
         {isPending ? (
           <div className="flex items-center justify-center ">
             <div className="w-8 h-8 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
           </div>
         ) : (
-          loadeddata.length == 0 && (
+          loadeddata.filter(
+            (item) => item.itemdata.userid == localStorage.getItem("userid")
+          ).length == 0 && (
             <div className="flex flex-col  items-center">
               <h1 className="text-xl font-semibold ">Your Cart Is Empty!</h1>
               <button className="buttons" onClick={() => navigate("/shop")}>
@@ -128,7 +135,9 @@ const Cart = () => {
             </div>
           )
         )}
-        {loadeddata.length > 0 && (
+        {loadeddata.filter(
+          (item) => item.itemdata.userid == localStorage.getItem("userid")
+        ).length > 0 && (
           <div className="flex flex-col md:flex-row gap-6">
             <div className="md:w-[60%] overflow-x-auto">
               <table width="100%" className="border-collapse">
@@ -138,7 +147,7 @@ const Cart = () => {
                     <td className="py-5 px-3">Product image</td>
                     <td className="py-5 px-3">Name</td>
                     <td className="py-5 px-3">Price</td>
-                    <td className="py-5 px-3">Quanitiy</td>
+                    <td className="py-5 px-3">Quantity</td>
                     <td className="py-5 px-3 pr-2">Total</td>
                   </tr>
                 </thead>
@@ -158,7 +167,7 @@ const Cart = () => {
                         productdatafiltered && (
                           <tr className="text-center " key={item.id}>
                             <td className="py-5 border">
-                              <div className="flex justify-center   ">
+                              <div className="flex justify-center">
                                 <IoClose
                                   className="border text-3xl cursor-pointer border-black p-1"
                                   onClick={async () => {
@@ -199,7 +208,7 @@ const Cart = () => {
                             <td className="py-5 whitespace-nowrap px-2 border ">
                               {parseInt(
                                 productdatafiltered.productprice
-                              ).toLocaleString()}
+                              ).toLocaleString()}₹
                             </td>
                             <td className="py-5 border">
                               {item.itemdata.quantity}
@@ -208,7 +217,7 @@ const Cart = () => {
                               {(
                                 productdatafiltered.productprice *
                                 item.itemdata.quantity
-                              ).toLocaleString()}
+                              ).toLocaleString()}₹
                             </td>
                           </tr>
                         )
@@ -237,7 +246,7 @@ const Cart = () => {
                       Apply
                     </button>
                     {discountcode != null && (
-                      <div className="flex items-center justify-center gap-2 border border-black rounded-[50px] px-2 bg-black text-white">
+                      <div className="flex items-center justify-center gap-4 border border-black rounded-[50px] px-2 bg-black text-white">
                         {discountcode}
                         <IoMdClose
                           onClick={(e) => {

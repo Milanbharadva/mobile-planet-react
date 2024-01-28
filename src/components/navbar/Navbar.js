@@ -4,7 +4,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { useFetch } from "../../hook/usefetch";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Navbar = (props) => {
   const notify = () => toast.warning("Logout sucessfully");
@@ -71,17 +71,19 @@ const Navbar = (props) => {
           loadeddata.filter(
             (item) => item.data.ID === localStorage.getItem("userid")
           ).length > 0 ? (
-            <li
-              className="my-4 py-4   hover:rounded cursor-pointer"
-              onClick={() => {
-                setClick(false);
-                props.onchange();
-                localStorage.removeItem("userid");
-                notify();
-              }}
-            >
-              SIGN OUT
-            </li>
+            <Link>
+              <li
+                className="my-4 py-4   hover:rounded cursor-pointer"
+                onClick={() => {
+                  setClick(false);
+                  props.onchange();
+                  localStorage.removeItem("userid");
+                  notify();
+                }}
+              >
+                SIGN OUT
+              </li>
+            </Link>
           ) : (
             <NavLink
               to="/signin"
@@ -92,36 +94,38 @@ const Navbar = (props) => {
               <li className="my-4 py-4   hover:rounded">SIGN IN</li>
             </NavLink>
           )}
-          <NavLink
-            to="/cart"
-            className="inline-block"
-            onClick={() => {
-              setClick(false);
-            }}
-          >
-            <li className=" hover:rounded flex">
-              <AiOutlineShoppingCart className="text-2xl" />
-              <span className="inline text-sm -pt-1">{counter}</span>
-            </li>
-          </NavLink>
-          {loadeddata &&
-          loadeddata.filter(
-            (item) => item.data.ID === localStorage.getItem("userid")
-          ).length > 0 ? (
+          <div className="mt-10 pb-10">
             <NavLink
-              to="/profile"
+              to="/cart"
               className="inline-block"
               onClick={() => {
                 setClick(false);
               }}
             >
-              <li className="my-4 py-4 hover:rounded">
-                <AiOutlineUser className="text-2xl" />
+              <li className=" hover:rounded flex">
+                <AiOutlineShoppingCart className="text-2xl" />
+                <span className="inline text-sm -pt-1">{counter}</span>
               </li>
             </NavLink>
-          ) : (
-            ""
-          )}
+            {loadeddata &&
+            loadeddata.filter(
+              (item) => item.data.ID === localStorage.getItem("userid")
+            ).length > 0 ? (
+              <NavLink
+                to="/profile"
+                className="inline-block ml-6"
+                onClick={() => {
+                  setClick(false);
+                }}
+              >
+                <li className=" hover:rounded">
+                  <AiOutlineUser className="text-2xl" />
+                </li>
+              </NavLink>
+            ) : (
+              ""
+            )}
+          </div>
         </ul>
       </div>
     </>

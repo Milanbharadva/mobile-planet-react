@@ -121,7 +121,7 @@ const Product = (props) => {
                   </div>
                   <div className="flex flex-col gap-3  items-center">
                     <h2 className="text-xl font-bold">
-                      {parseInt(item.productprice).toLocaleString()}
+                      {parseInt(item.productprice).toLocaleString()} ₹
                     </h2>
                     <button
                       className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
