@@ -209,14 +209,13 @@ const EditDiscount = () => {
                 <input
                   type="number"
                   name="MinimumCart"
-                  placeholder="Enter Product RAM"
+                  placeholder="Enter Minimun Cart Value"
                   value={formdata && formdata.MinimumCart}
                   onChange={(e) => {
                     handler(e);
                   }}
                   disabled={disable}
                   className="mt-1 p-2 w-full border rounded-md"
-                  min={1}
                 />
               </div>
             </div>
@@ -240,7 +239,7 @@ const EditDiscount = () => {
                     value="button"
                     className="btn btn-primary col-md-12 buttons w-full"
                     onClick={() => {
-                     setDisable(false)
+                      setDisable(false);
                     }}
                   >
                     Edit Discount

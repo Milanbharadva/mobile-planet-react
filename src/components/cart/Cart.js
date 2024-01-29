@@ -114,11 +114,6 @@ const Cart = () => {
     <>
       <Breadcrumb paragraph="ORDER NOW" heading="Cart" />
       <div className="md:mx-20 mx-2">
-        {
-          loadeddata.filter(
-            (item) => item.itemdata.userid == localStorage.getItem("userid")
-          ).length
-        }
         {isPending ? (
           <div className="flex items-center justify-center ">
             <div className="w-8 h-8 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
