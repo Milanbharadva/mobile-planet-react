@@ -72,7 +72,10 @@ const Cart = () => {
       if (!discountFilteredData) {
         notifywrongcoupon();
       } else {
-        if (Date.parse(new Date()) > discountFilteredData.endDate) {
+        if (
+          Date.parse(new Date()) > discountFilteredData.endDate &&
+          discountFilteredData.endDate != 0
+        ) {
           notifycouponexpired();
         } else if (totalprice < discountFilteredData.MinimumCart) {
           notifymincartvalue(discountFilteredData.MinimumCart.toLocaleString());
@@ -203,7 +206,8 @@ const Cart = () => {
                             <td className="py-5 whitespace-nowrap px-2 border ">
                               {parseInt(
                                 productdatafiltered.productprice
-                              ).toLocaleString()}₹
+                              ).toLocaleString()}
+                              ₹
                             </td>
                             <td className="py-5 border">
                               {item.itemdata.quantity}
@@ -212,7 +216,8 @@ const Cart = () => {
                               {(
                                 productdatafiltered.productprice *
                                 item.itemdata.quantity
-                              ).toLocaleString()}₹
+                              ).toLocaleString()}
+                              ₹
                             </td>
                           </tr>
                         )

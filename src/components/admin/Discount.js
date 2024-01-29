@@ -37,7 +37,7 @@ const Discount = () => {
       <AdminNavbar />
 
       <div className="flex flex-col md:flex-row mx-4 md:mx-10 my-5 gap-4 md:gap-5 md:items-end">
-        <div className="flex flex-col w-full md:w-1/4 gap-2">
+        <div className="flex flex-col w-full md:w-[20%] gap-2">
           <label className="text-sm md:text-base">Discount name</label>
           <input
             type="text"
@@ -48,7 +48,7 @@ const Discount = () => {
           />
         </div>
 
-        <div className="flex flex-col w-full md:w-1/4 gap-2">
+        <div className="flex flex-col w-full md:w-[20%] gap-2">
           <label className="text-sm md:text-base">
             Discount Items Per Page
           </label>
@@ -94,6 +94,8 @@ const Discount = () => {
         <div className="flex items-center justify-center ">
           <div className="w-8 h-8 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
         </div>
+      ) : totalProducts == 0 ? (
+        <h1 className="flex justify-center mt-10">No Data Available</h1>
       ) : (
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="max-w-full overflow-x-auto">
@@ -231,11 +233,13 @@ const Discount = () => {
               </tbody>
             </table>
           </div>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(totalProducts / itemperpage)}
-            onPageChange={handlePageChange}
-          />
+          {totalProducts != 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(totalProducts / itemperpage)}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       )}
     </>
