@@ -42,12 +42,12 @@ const Signin = (props) => {
     if (loadeddata != null) {
       let items = loadeddata.filter(
         (item) =>
-          item.data.email === formdata.email &&
-          item.data.password === formdata.password
+          item.email === formdata.email &&
+          item.password === formdata.password
       );
       if (items.length > 0) {
         items.map((userdata) => {
-          localStorage.setItem("userid", userdata.data.ID);
+          localStorage.setItem("userid", userdata.ID);
           props.onchange();
           notify2();
           navigate("/");

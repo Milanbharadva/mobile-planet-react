@@ -69,7 +69,7 @@ const Navbar = (props) => {
           </NavLink>
           {loadeddata &&
           loadeddata.filter(
-            (item) => item.data.ID === localStorage.getItem("userid")
+            (item) => item.ID === localStorage.getItem("userid")
           ).length > 0 ? (
             <Link>
               <li
@@ -109,7 +109,7 @@ const Navbar = (props) => {
             </NavLink>
             {loadeddata &&
             loadeddata.filter(
-              (item) => item.data.ID === localStorage.getItem("userid")
+              (item) => item.ID === localStorage.getItem("userid")
             ).length > 0 ? (
               <NavLink
                 to="/profile"
@@ -173,7 +173,7 @@ const Navbar = (props) => {
               </NavLink>
               {loadeddata &&
               loadeddata.filter(
-                (item) => item.data.ID === localStorage.getItem("userid")
+                (item) => item.ID === localStorage.getItem("userid")
               ).length > 0 ? (
                 <Link
                   onClick={() => {
@@ -201,7 +201,7 @@ const Navbar = (props) => {
               </NavLink>
               {loadeddata &&
               loadeddata.filter(
-                (item) => item.data.ID === localStorage.getItem("userid")
+                (item) => item.ID === localStorage.getItem("userid")
               ).length > 0 ? (
                 <NavLink to="/profile">
                   <li>

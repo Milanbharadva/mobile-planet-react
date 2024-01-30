@@ -21,14 +21,18 @@ const Cart = () => {
       });
     }
   }, []);
+  useEffect(() => {
+    if (discountcode == null) {
+      removeCouponFromLocalStorage();
+    }
+  });
+  const [discountdisable, setdiscountdisable] = useState(false);
   const [discountcode, setdiscountcode] = useState(null);
   const [discountprice, setDiscountprice] = useState(0);
   const [discountbyanddiscount, setdiscountbyanddiscount] = useState(null);
   const [afterdiscountprice, setAfterDiscountprice] = useState(0);
   const discountdata = useFetch("discount");
   const notifywrongcoupon = () => toast.error("Wrong Counpon Code");
-  const notifyalreadyapplied = () =>
-    toast.error("This code is already applied");
   const notifycouponexpired = () => toast.error("Sorry Counpon Is Expired");
   const notifycouponapplied = (money) =>
     toast.success(
@@ -36,10 +40,7 @@ const Cart = () => {
         parseInt(money).toLocaleString() +
         "₹"
     );
-  const notifyalreadycoupon = () =>
-    toast.error(
-      "Already one coupon code is applied please remove it first to apply another"
-    );
+
   const notifymincartvalue = (price) =>
     toast.error(
       `Minimum Cart Value Should be ${parseInt(price).toLocaleString()}`
@@ -58,61 +59,83 @@ const Cart = () => {
   }
   const applycoupon = () => {
     const codeOfDiscount = document.getElementById("discountcode").value;
-    document.getElementById("discountcode").value = "";
 
-    if (discountcode === codeOfDiscount) {
-      notifyalreadyapplied();
-    } else if (discountcode !== null) {
-      notifyalreadycoupon();
+    setdiscountdisable(true);
+    const discountFilteredData = discountdata.loadeddata.find(
+      (item) => item.DiscountCode === codeOfDiscount
+    );
+
+    if (!discountFilteredData) {
+      notifywrongcoupon();
     } else {
-      const discountFilteredData = discountdata.loadeddata.find(
-        (item) => item.DiscountCode === codeOfDiscount
-      );
-
-      if (!discountFilteredData) {
-        notifywrongcoupon();
+      if (
+        Date.parse(new Date()) > discountFilteredData.endDate &&
+        discountFilteredData.endDate != 0
+      ) {
+        notifycouponexpired();
+        removeCouponFromLocalStorage();
+      } else if (totalprice < discountFilteredData.MinimumCart) {
+        setDiscountprice(0);
+        setdiscountbyanddiscount(null);
+        setAfterDiscountprice(0);
+        notifymincartvalue(discountFilteredData.MinimumCart.toLocaleString());
+        removeCouponFromLocalStorage();
       } else {
-        if (
-          Date.parse(new Date()) > discountFilteredData.endDate &&
-          discountFilteredData.endDate != 0
-        ) {
-          notifycouponexpired();
-        } else if (totalprice < discountFilteredData.MinimumCart) {
-          notifymincartvalue(discountFilteredData.MinimumCart.toLocaleString());
-        } else {
-          const discountBy = discountFilteredData.DiscountBy;
-          setdiscountcode(discountFilteredData.DiscountCode);
-
-          if (discountBy === "percentage") {
-            setdiscountbyanddiscount(`${discountFilteredData.Discount} %`);
-            setDiscountprice(
-              (totalprice * discountFilteredData.Discount) / 100
-            );
-            setAfterDiscountprice(
-              totalprice - (totalprice * discountFilteredData.Discount) / 100
-            );
-            notifycouponapplied(
-              (totalprice * discountFilteredData.Discount) / 100
-            );
-          } else if (discountBy === "rupee") {
-            setdiscountbyanddiscount(null);
-            setDiscountprice(discountFilteredData.Discount);
-            setAfterDiscountprice(totalprice - discountFilteredData.Discount);
-            notifycouponapplied(totalprice - discountFilteredData.Discount);
-          }
+        const discountBy = discountFilteredData.DiscountBy;
+        setdiscountcode(discountFilteredData.DiscountCode);
+        if (discountBy === "percentage") {
+          setdiscountbyanddiscount(`${discountFilteredData.Discount} %`);
+          setDiscountprice((totalprice * discountFilteredData.Discount) / 100);
+          setAfterDiscountprice(
+            totalprice - (totalprice * discountFilteredData.Discount) / 100
+          );
+          notifycouponapplied(
+            (totalprice * discountFilteredData.Discount) / 100
+          );
+          localStorage.setItem("discountcode", codeOfDiscount);
+          localStorage.setItem(
+            "discountbyanddiscount",
+            `${discountFilteredData.Discount} %`
+          );
+          localStorage.setItem(
+            "discountprice",
+            (totalprice * discountFilteredData.Discount) / 100
+          );
+        } else if (discountBy === "rupee") {
+          setdiscountbyanddiscount(null);
+          setDiscountprice(discountFilteredData.Discount);
+          setAfterDiscountprice(totalprice - discountFilteredData.Discount);
+          notifycouponapplied(totalprice - discountFilteredData.Discount);
+          localStorage.setItem("discountcode", codeOfDiscount);
+          localStorage.setItem(
+            "discountbyanddiscount",
+            `${discountFilteredData.Discount} ₹`
+          );
+          localStorage.setItem("discountprice", discountFilteredData.Discount);
         }
       }
     }
   };
 
   function clearcounpon() {
+    document.getElementById("discountcode").value = "";
+    setdiscountdisable(false);
     setdiscountcode(null);
     setDiscountprice(0);
     setdiscountbyanddiscount(null);
     setAfterDiscountprice(0);
+    removeCouponFromLocalStorage();
+  }
+
+  function removeCouponFromLocalStorage() {
+    Object.keys(localStorage)
+      .filter((item) => item.includes("discount"))
+      .map((item) => localStorage.removeItem(item));
   }
   const productdata = useFetch("product");
-
+  useEffect(() => {
+    if (discountcode != null) applycoupon();
+  }, [data.length]);
   return (
     <>
       <Breadcrumb paragraph="ORDER NOW" heading="Cart" />
@@ -229,25 +252,29 @@ const Cart = () => {
             <div className="md:ml-10 text-center md:text-left md:w-[30%]">
               <div className="mb-5">
                 <h1 className="text-xl mb-3 ">Have coupon?</h1>
+
                 <div className="flex flex-col xl:flex-row gap-1 items-center ">
                   <input
                     type="text"
                     id="discountcode"
                     className="border border-gray-500 pl-3 rounded-lg h-10"
                     placeholder="Enter Coupon "
+                    disabled={discountdisable}
                   />
+
                   <div className="flex gap-2">
-                    <button
-                      className="h-12 w-24 bg-[#F28123] rounded-[50px] text-white"
-                      onClick={() => {
-                        applycoupon();
-                      }}
-                    >
-                      Apply
-                    </button>
-                    {discountcode != null && (
-                      <div className="flex items-center justify-center gap-4 border border-black rounded-[50px] px-2 bg-black text-white">
-                        {discountcode}
+                    {discountcode == null ? (
+                      <button
+                        type="button"
+                        className="h-12 w-24 bg-[#F28123] rounded-[50px] text-white"
+                        onClick={() => {
+                          applycoupon();
+                        }}
+                      >
+                        Apply
+                      </button>
+                    ) : (
+                      <div className="border bg-red-500  rounded-[50%] border-black">
                         <IoMdClose
                           onClick={(e) => {
                             if (
@@ -258,7 +285,7 @@ const Cart = () => {
                               clearcounpon();
                             }
                           }}
-                          className="cursor-pointer font-bold"
+                          className="cursor-pointer font-bold text-white text-2xl"
                         />
                       </div>
                     )}

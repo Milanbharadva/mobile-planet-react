@@ -26,7 +26,7 @@ const Signup = () => {
 
     if (data.email !== "" && data.password !== "") {
       await addDoc(collection(db, "user"), {
-        data,
+        ...data,
       }).then((res) =>
         res._key.path.segments[1] != null
           ? navigate("/signin", {
