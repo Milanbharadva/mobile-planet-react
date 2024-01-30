@@ -53,7 +53,7 @@ const Profile = () => {
   }
   document.title = "Mobile Planet | Profile";
   return (
-    <div className="flex justify-center items-center mt-10">
+    <div className="flex justify-center items-center">
       <div className="flex flex-col gap-3 items-center border border-black sm:px-10 sm:py-5">
         <h2 className="text-xl font-bold">Profile Settings</h2>
         <form onSubmit={validate} method="post">
@@ -84,7 +84,6 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
               name="phone"
               ref={phoneref}
-              value={items && items.phone}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -103,9 +102,7 @@ const Profile = () => {
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
               name="postal"
               ref={postallref}
-              onChange={(e) => {
-                postallref.current.value = e.target.value;
-              }}
+             
             />
           </div>
           <div className="flex gap-3">
@@ -116,7 +113,6 @@ const Profile = () => {
                 className="h-5 w-[130px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
                 name="country"
                 ref={countryref}
-                value={items && items.country}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -126,7 +122,6 @@ const Profile = () => {
                 className="h-5 w-[130px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
                 name="state"
                 ref={stateref}
-                value={items && items.state}
               />
             </div>
           </div>
