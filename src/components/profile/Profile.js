@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFetch } from "../../hook/usefetch";
 import {
   doc,
@@ -11,46 +11,62 @@ import { db } from "../../Firebase/fiirebase";
 import { toast } from "react-toastify";
 const Profile = () => {
   const notifyupdated = () => toast.success("Address Updated Sucessfully");
-
+  const [user, setUser] = useState({
+    id: "",
+    username: "",
+    email: "",
+    phone: "",
+    address: "",
+    postal: "",
+    country: "",
+    state: "",
+  });
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   const { loadeddata } = useFetch("user");
+  var items;
+  useEffect(() => {
+    if (loadeddata != null) {
+      items = loadeddata.filter(
+        (item) => item.ID === localStorage.getItem("userid")
+      )[0];
+      if (items) {
+        setUser({
+          id: items.id,
+          username: items.username,
+          email: items.email,
+          phone: items.phone,
+          address: items.address,
+          postal: items.postal,
+          country: items.country,
+          state: items.state,
+        });
+      }
+    }
+  }, [loadeddata]);
 
-  if (loadeddata != null) {
-    var items = loadeddata.filter(
-      (item) => item.ID === localStorage.getItem("userid")
-    )[0];
-  }
-  let usernameref = useRef();
-  let emailref = useRef();
-  let phoneref = useRef();
-  let addressref = useRef();
-  let postallref = useRef();
-  let countryref = useRef();
-  let stateref = useRef();
-  if (items != null) {
-    usernameref.current.value = items.username;
-    phoneref.current.value = items.phone;
-    addressref.current.value = items.address;
-    postallref.current.value = items.postal;
-    countryref.current.value = items.country;
-    stateref.current.value = items.state;
-  }
+  const handleChange = (e) => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   async function validate(e) {
     e.preventDefault();
-    const getproduct = doc(db, "user", items.id);
+    const getproduct = doc(db, "user", user.id);
     await updateDoc(getproduct, {
-      username: usernameref.current.value,
-      phone: phoneref.current.value,
-      address: addressref.current.value,
-      postal: postallref.current.value,
-      country: countryref.current.value,
-      state: stateref.current.value,
+      username: user.username,
+      phone: user.phone,
+      address: user.address,
+      postal: user.postal,
+      country: user.country,
+      state: user.state,
     });
     notifyupdated();
   }
+
   document.title = "Mobile Planet | Profile";
   return (
     <div className="flex justify-center items-center">
@@ -63,7 +79,8 @@ const Profile = () => {
               type="text"
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
               name="username"
-              ref={usernameref}
+              value={user.username}
+              onChange={handleChange}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -72,8 +89,7 @@ const Profile = () => {
               type="text"
               className="h-5  w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
               name="email"
-              ref={emailref}
-              value={items && items.email}
+              value={user.email}
               disabled
             />
           </div>
@@ -83,7 +99,8 @@ const Profile = () => {
               type="number"
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
               name="phone"
-              ref={phoneref}
+              value={user.phone}
+              onChange={handleChange}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -92,7 +109,8 @@ const Profile = () => {
               type="text"
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
               name="address"
-              ref={addressref}
+              value={user.address}
+              onChange={handleChange}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -101,8 +119,8 @@ const Profile = () => {
               type="number"
               className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
               name="postal"
-              ref={postallref}
-             
+              value={user.postal}
+              onChange={handleChange}
             />
           </div>
           <div className="flex gap-3">
@@ -112,7 +130,8 @@ const Profile = () => {
                 type="text"
                 className="h-5 w-[130px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
                 name="country"
-                ref={countryref}
+                value={user.country}
+                onChange={handleChange}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -121,7 +140,8 @@ const Profile = () => {
                 type="text"
                 className="h-5 w-[130px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
                 name="state"
-                ref={stateref}
+                value={user.state}
+                onChange={handleChange}
               />
             </div>
           </div>

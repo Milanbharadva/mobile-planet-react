@@ -8,6 +8,7 @@ import { db } from "../../Firebase/fiirebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoMdClose } from "react-icons/io";
+import { removeCouponFromLocalStorage } from "../../global";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -60,7 +61,6 @@ const Cart = () => {
   const applycoupon = () => {
     const codeOfDiscount = document.getElementById("discountcode").value;
 
-    setdiscountdisable(true);
     const discountFilteredData = discountdata.loadeddata.find(
       (item) => item.DiscountCode === codeOfDiscount
     );
@@ -81,6 +81,7 @@ const Cart = () => {
         notifymincartvalue(discountFilteredData.MinimumCart.toLocaleString());
         removeCouponFromLocalStorage();
       } else {
+        setdiscountdisable(true);
         const discountBy = discountFilteredData.DiscountBy;
         setdiscountcode(discountFilteredData.DiscountCode);
         if (discountBy === "percentage") {
@@ -127,11 +128,6 @@ const Cart = () => {
     removeCouponFromLocalStorage();
   }
 
-  function removeCouponFromLocalStorage() {
-    Object.keys(localStorage)
-      .filter((item) => item.includes("discount"))
-      .map((item) => localStorage.removeItem(item));
-  }
   const productdata = useFetch("product");
   useEffect(() => {
     if (discountcode != null) applycoupon();
