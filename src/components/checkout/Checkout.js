@@ -10,10 +10,11 @@ import {
 import { db } from "../../Firebase/fiirebase";
 import { toast } from "react-toastify";
 import Profile from "../profile/Profile";
-import { removeCouponFromLocalStorage } from "../../global";
+import { getUserID, removeCouponFromLocalStorage } from "../../global";
 import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
+  let userid = getUserID();
   const navigate = useNavigate();
   const orderSucessfull = () => toast.success("Order Placed Sucessfully");
   const orderError = () =>
@@ -24,9 +25,7 @@ const Checkout = () => {
   if (loadeddata) {
     data =
       loadeddata &&
-      loadeddata.filter(
-        (item) => item.itemdata.userid === localStorage.getItem("userid")
-      );
+      loadeddata.filter((item) => item.itemdata.userid === userid);
   }
   const productdata = useFetch("product");
   let totalprice = 0;

@@ -8,7 +8,9 @@ import { toast } from "react-toastify";
 import { db } from "../../Firebase/fiirebase";
 import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
+import { getUserID } from "../../global";
 const SingleProduct = (props) => {
+  let userid = getUserID();
   let productname;
   const navigate = useNavigate();
   const notify = () =>
@@ -35,7 +37,7 @@ const SingleProduct = (props) => {
     let isdatarepeat = false;
     let idtodelete;
     let previousquantity = 0;
-    if (localStorage.getItem("userid")) {
+    if (userid) {
       cartdata.loadeddata.map((data) => {
         if (data.itemdata.productid === productid) {
           previousquantity = data.itemdata.quantity;
@@ -47,7 +49,7 @@ const SingleProduct = (props) => {
         if (idtodelete != null) {
           const itemdata = {
             id: uuidv4(),
-            userid: localStorage.getItem("userid"),
+            userid: userid,
             productid: productid,
             quantity: previousquantity + 1,
           };
@@ -59,7 +61,7 @@ const SingleProduct = (props) => {
       } else {
         const itemdata = {
           id: uuidv4(),
-          userid: localStorage.getItem("userid"),
+          userid: userid,
           productid: productid,
           quantity: 1,
         };
@@ -123,7 +125,11 @@ const SingleProduct = (props) => {
                   Processor : {product.productprocessor}
                 </p>
                 <p className="text-xl font-bold">
-                  Description : <span className=" font-semibold text-base"> {product.productdescription}</span>
+                  Description :{" "}
+                  <span className=" font-semibold text-base">
+                    {" "}
+                    {product.productdescription}
+                  </span>
                 </p>
                 <p className="text-xl font-bold">
                   Category : {product.categoryname.toUpperCase()}

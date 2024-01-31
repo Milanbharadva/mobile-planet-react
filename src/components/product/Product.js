@@ -6,9 +6,10 @@ import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getUserID } from "../../global";
 const Product = (props) => {
   const cartdata = useFetch("cart");
-
+  let userid = getUserID();
   const notify = () => toast.success("Product added to cart");
   const notify4 = () => toast.success("item quantity updated sucessfully");
   const notify2 = () => toast.warning("Please log in to add to cart");
@@ -25,7 +26,7 @@ const Product = (props) => {
     let isdatarepeat = false;
     let idtodelete;
     let previousquantity = 0;
-    if (localStorage.getItem("userid")) {
+    if (userid) {
       cartdata.loadeddata.map((data) => {
         if (data.itemdata.productid == productid) {
           previousquantity = data.itemdata.quantity;
@@ -37,7 +38,7 @@ const Product = (props) => {
         if (idtodelete != null) {
           const itemdata = {
             id: uuidv4(),
-            userid: localStorage.getItem("userid"),
+            userid: userid,
             productid: productid,
             quantity: previousquantity + 1,
           };
@@ -49,7 +50,7 @@ const Product = (props) => {
       } else {
         const itemdata = {
           id: uuidv4(),
-          userid: localStorage.getItem("userid"),
+          userid: userid,
           productid: productid,
           quantity: 1,
         };

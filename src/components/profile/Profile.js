@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
 import { toast } from "react-toastify";
+import { getUserID } from "../../global";
 const Profile = () => {
   const notifyupdated = () => toast.success("Address Updated Sucessfully");
   const [user, setUser] = useState({
@@ -24,13 +25,12 @@ const Profile = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  let userid = getUserID();
   const { loadeddata } = useFetch("user");
   var items;
   useEffect(() => {
     if (loadeddata != null) {
-      items = loadeddata.filter(
-        (item) => item.ID === localStorage.getItem("userid")
-      )[0];
+      items = loadeddata.filter((item) => item.ID === userid)[0];
       if (items) {
         setUser({
           id: items.id,

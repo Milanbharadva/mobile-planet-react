@@ -6,19 +6,19 @@ import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { useFetch } from "../../hook/usefetch";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getUserID } from "../../global";
 const Navbar = (props) => {
   const notify = () => toast.warning("Logout sucessfully");
   const handleclick = () => {
     setClick(!click);
   };
   const { loadeddata } = useFetch("user");
+  let userid = getUserID();
   const data = useFetch("cart");
   const [counter, setCounter] = useState(0);
   const count =
     data.loadeddata &&
-    data.loadeddata.filter(
-      (item) => item.itemdata.userid === localStorage.getItem("userid")
-    ).length;
+    data.loadeddata.filter((item) => item.itemdata.userid === userid).length;
   useEffect(() => {
     setCounter(count);
   }, [count]);
@@ -68,9 +68,7 @@ const Navbar = (props) => {
             <li className="my-4 py-4   hover:rounded">PRODUCT</li>
           </NavLink>
           {loadeddata &&
-          loadeddata.filter(
-            (item) => item.ID === localStorage.getItem("userid")
-          ).length > 0 ? (
+          loadeddata.filter((item) => item.ID === userid).length > 0 ? (
             <Link>
               <li
                 className="my-4 py-4   hover:rounded cursor-pointer"
@@ -108,9 +106,7 @@ const Navbar = (props) => {
               </li>
             </NavLink>
             {loadeddata &&
-            loadeddata.filter(
-              (item) => item.ID === localStorage.getItem("userid")
-            ).length > 0 ? (
+            loadeddata.filter((item) => item.ID === userid).length > 0 ? (
               <NavLink
                 to="/profile"
                 className="inline-block ml-6"
@@ -172,9 +168,7 @@ const Navbar = (props) => {
                 </li>
               </NavLink>
               {loadeddata &&
-              loadeddata.filter(
-                (item) => item.ID === localStorage.getItem("userid")
-              ).length > 0 ? (
+              loadeddata.filter((item) => item.ID === userid).length > 0 ? (
                 <Link
                   onClick={() => {
                     props.onchange();
@@ -200,9 +194,7 @@ const Navbar = (props) => {
                 </li>
               </NavLink>
               {loadeddata &&
-              loadeddata.filter(
-                (item) => item.ID === localStorage.getItem("userid")
-              ).length > 0 ? (
+              loadeddata.filter((item) => item.ID === userid).length > 0 ? (
                 <NavLink to="/profile">
                   <li>
                     <AiOutlineUser className="text-2xl hover:fill-[#F28123]" />

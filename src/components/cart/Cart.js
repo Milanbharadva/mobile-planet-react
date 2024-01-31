@@ -8,13 +8,14 @@ import { db } from "../../Firebase/fiirebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoMdClose } from "react-icons/io";
-import { removeCouponFromLocalStorage } from "../../global";
+import { getUserID, removeCouponFromLocalStorage } from "../../global";
 
 const Cart = () => {
   const navigate = useNavigate();
+  let userid = getUserID();
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (localStorage.getItem("userid") == null) {
+    if (userid == null) {
       navigate("/signin", {
         state: {
           toaccesscart: true,
@@ -55,7 +56,7 @@ const Cart = () => {
     data =
       loadeddata &&
       loadeddata.filter(
-        (item) => item.itemdata.userid === localStorage.getItem("userid")
+        (item) => item.itemdata.userid === userid
       );
   }
   const applycoupon = () => {
@@ -142,7 +143,7 @@ const Cart = () => {
           </div>
         ) : (
           loadeddata.filter(
-            (item) => item.itemdata.userid == localStorage.getItem("userid")
+            (item) => item.itemdata.userid == userid
           ).length == 0 && (
             <div className="flex flex-col  items-center">
               <h1 className="text-xl font-semibold ">Your Cart Is Empty!</h1>
@@ -153,7 +154,7 @@ const Cart = () => {
           )
         )}
         {loadeddata.filter(
-          (item) => item.itemdata.userid == localStorage.getItem("userid")
+          (item) => item.itemdata.userid == userid
         ).length > 0 && (
           <div className="flex flex-col md:flex-row gap-6">
             <div className="md:w-[60%] overflow-x-auto">

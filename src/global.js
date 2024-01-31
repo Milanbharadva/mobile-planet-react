@@ -3,3 +3,6 @@ export function removeCouponFromLocalStorage() {
     .filter((item) => item.includes("discount"))
     .map((item) => localStorage.removeItem(item));
 }
+export function getUserID() {
+  return localStorage.getItem("userid");
+}
