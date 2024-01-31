@@ -5,7 +5,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
 import Profile from "../profile/Profile";

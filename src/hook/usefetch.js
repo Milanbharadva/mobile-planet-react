@@ -18,8 +18,8 @@ export const useFetch = (url) => {
             arr.push({ id: doc.id, ...doc.data() });
           });
           setLoadeddata(arr);
-          setIsPending(false); // Move inside the onSnapshot callback
-          setError(null); // Move inside the onSnapshot callback
+          setIsPending(false); 
+          setError(null); 
         });
       } catch (error) {
         setError(`${error} Could not Fetch Data `);

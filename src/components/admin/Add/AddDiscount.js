@@ -62,9 +62,8 @@ const AddDiscount = () => {
           }
         });
       } else {
-        discountInputRef.current.focus(); // Step 4
+        discountInputRef.current.focus(); 
 
-        //here i want to focus on input whose name is "Discount"
       }
     } else {
       await addDoc(collection(db, "discount"), formdata).then((res) => {

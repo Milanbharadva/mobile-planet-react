@@ -1,4 +1,3 @@
-// src/components/Slider.js
 
 import React, { useState } from "react";
 

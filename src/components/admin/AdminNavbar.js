@@ -14,7 +14,6 @@ const AdminNavbar = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
   useEffect(() => {
-    // Check if the current location matches the desired URL
     if (window.location.href === `${window.location.origin}/admin`) {
       setIsActive(true);
     } else {

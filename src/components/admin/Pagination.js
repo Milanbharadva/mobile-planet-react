@@ -4,7 +4,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const renderPaginationLinks = () => {
     const links = [];
 
-    // Previous button
     links.push(
       <button
         key="prev"
@@ -34,7 +33,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           </button>
         );
       } else if (Math.abs(i - currentPage) === 2) {
-        // Display ellipsis (...) for skipped pages
         links.push(
           <span
             key={`ellipsis${i}`}
@@ -46,7 +44,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       }
     }
 
-    // Next button
     links.push(
       <button
         key="next"
