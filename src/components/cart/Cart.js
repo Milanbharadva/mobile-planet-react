@@ -7,8 +7,17 @@ import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
 import "react-toastify/dist/ReactToastify.css";
 import { IoMdClose } from "react-icons/io";
-import { getUserID, removeCouponFromLocalStorage } from "../../global";
-import { notifycouponapplied, notifycouponexpired, notifymincartvalue, notifywrongcoupon } from "../../toast";
+import {
+  filterDataWithUserId,
+  getUserID,
+  removeCouponFromLocalStorage,
+} from "../../global";
+import {
+  notifycouponapplied,
+  notifycouponexpired,
+  notifymincartvalue,
+  notifywrongcoupon,
+} from "../../toast";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -34,18 +43,13 @@ const Cart = () => {
   const [discountbyanddiscount, setdiscountbyanddiscount] = useState(null);
   const [afterdiscountprice, setAfterDiscountprice] = useState(0);
   const discountdata = useFetch("discount");
-  
 
   let totalprice = 0;
   document.title = "Mobile Planet | Cart";
   const { loadeddata, isPending } = useFetch("cart");
   let data;
   if (loadeddata) {
-    data =
-      loadeddata &&
-      loadeddata.filter(
-        (item) => item.itemdata.userid === userid
-      );
+    data = filterDataWithUserId(loadeddata);
   }
   const applycoupon = () => {
     const codeOfDiscount = document.getElementById("discountcode").value;
@@ -130,9 +134,7 @@ const Cart = () => {
             <div className="w-8 h-8 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
           </div>
         ) : (
-          loadeddata.filter(
-            (item) => item.itemdata.userid == userid
-          ).length == 0 && (
+          filterDataWithUserId(loadeddata).length == 0 && (
             <div className="flex flex-col  items-center">
               <h1 className="text-xl font-semibold ">Your Cart Is Empty!</h1>
               <button className="buttons" onClick={() => navigate("/shop")}>
@@ -141,9 +143,7 @@ const Cart = () => {
             </div>
           )
         )}
-        {loadeddata.filter(
-          (item) => item.itemdata.userid == userid
-        ).length > 0 && (
+        {filterDataWithUserId(loadeddata).length > 0 && (
           <div className="flex flex-col md:flex-row gap-6">
             <div className="md:w-[60%] overflow-x-auto">
               <table width="100%" className="border-collapse">
@@ -161,13 +161,13 @@ const Cart = () => {
                   {data &&
                     data.map((item) => {
                       let productdatafiltered = productdata.loadeddata.filter(
-                        (items) => items.id === item.itemdata.productid
+                        (items) => items.id === item.productid
                       )[0];
                       if (productdatafiltered) {
                         totalprice =
                           totalprice +
                           productdatafiltered.productprice *
-                            item.itemdata.quantity;
+                            item.quantity;
                       }
                       return (
                         productdatafiltered && (
@@ -218,12 +218,12 @@ const Cart = () => {
                               ₹
                             </td>
                             <td className="py-5 border">
-                              {item.itemdata.quantity}
+                              {item.quantity}
                             </td>
                             <td className="py-5 whitespace-nowrap px-2 border pr-2">
                               {(
                                 productdatafiltered.productprice *
-                                item.itemdata.quantity
+                                item.quantity
                               ).toLocaleString()}
                               ₹
                             </td>

@@ -9,21 +9,23 @@ import {
 } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
 import Profile from "../profile/Profile";
-import { getUserID, removeCouponFromLocalStorage } from "../../global";
+import {
+  filterDataWithUserId,
+  getUserID,
+  removeCouponFromLocalStorage,
+} from "../../global";
 import { useNavigate } from "react-router-dom";
 import { orderSucessfull, orderplaceerror } from "../../toast";
 
 const Checkout = () => {
   let userid = getUserID();
   const navigate = useNavigate();
- 
+
   document.title = "Mobile Planet | Checkout";
   const { loadeddata, isPending } = useFetch("cart");
   let data;
   if (loadeddata) {
-    data =
-      loadeddata &&
-      loadeddata.filter((item) => item.itemdata.userid === userid);
+    data = loadeddata && filterDataWithUserId(loadeddata);
   }
   const productdata = useFetch("product");
   let totalprice = 0;
@@ -32,7 +34,7 @@ const Checkout = () => {
     let filteredproductdata = data.map(
       (item) =>
         productdata.loadeddata.filter(
-          (items) => items.id === item.itemdata.productid
+          (items) => items.id === item.productid
         )[0]
     );
     let discountcode = localStorage.getItem("discountcode") || "";
@@ -97,24 +99,24 @@ const Checkout = () => {
 
                 {data.map((item) => {
                   let productdatafiltered = productdata.loadeddata.filter(
-                    (items) => items.id === item.itemdata.productid
+                    (items) => items.id === item.productid
                   )[0];
                   if (productdatafiltered) {
                     totalprice =
                       totalprice +
                       parseInt(productdatafiltered.productprice) *
-                        parseInt(item.itemdata.quantity);
+                        parseInt(item.quantity);
                   }
 
                   return (
                     <tr className="text-center" key={item.id}>
                       <td className="py-5 border">
-                        {`${productdatafiltered.productname} * (${item.itemdata.quantity})`}
+                        {`${productdatafiltered.productname} * (${item.quantity})`}
                       </td>
                       <td className="py-5 border">
                         {(
                           parseInt(productdatafiltered.productprice) *
-                          parseInt(item.itemdata.quantity)
+                          parseInt(item.quantity)
                         ).toLocaleString()}
                       </td>
                     </tr>

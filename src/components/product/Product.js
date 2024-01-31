@@ -29,34 +29,28 @@ const Product = (props) => {
     let previousquantity = 0;
     if (userid) {
       cartdata.loadeddata.map((data) => {
-        if (data.itemdata.productid == productid) {
-          previousquantity = data.itemdata.quantity;
+        if (data.productid == productid) {
+          previousquantity = data.quantity;
           isdatarepeat = true;
           idtodelete = data.id;
         }
       });
       if (isdatarepeat) {
         if (idtodelete != null) {
-          const itemdata = {
+          await deleteDoc(doc(db, "cart", idtodelete));
+          await addDoc(collection(db, "cart"), {
             id: uuidv4(),
             userid: userid,
             productid: productid,
-            quantity: previousquantity + 1,
-          };
-          await deleteDoc(doc(db, "cart", idtodelete));
-          await addDoc(collection(db, "cart"), {
-            itemdata,
+            quantity: previousquantity + 1
           }).then((data) => (data.id ? notifyquantityupdated() : ""));
         }
       } else {
-        const itemdata = {
+        await addDoc(collection(db, "cart"), {
           id: uuidv4(),
           userid: userid,
           productid: productid,
           quantity: 1,
-        };
-        await addDoc(collection(db, "cart"), {
-          itemdata,
         }).then((res) => {
           if (res._key.path.segments[1] != null) {
             props.onchange();

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { useFetch } from "../../hook/usefetch";
 import "react-toastify/dist/ReactToastify.css";
-import { getUserID } from "../../global";
+import { filterDataWithUserId, getUserID } from "../../global";
 import { notifylogout } from "../../toast";
 const Navbar = (props) => {
   const handleclick = () => {
@@ -15,9 +15,7 @@ const Navbar = (props) => {
   let userid = getUserID();
   const data = useFetch("cart");
   const [counter, setCounter] = useState(0);
-  const count =
-    data.loadeddata &&
-    data.loadeddata.filter((item) => item.itemdata.userid === userid).length;
+  const count = data.loadeddata && filterDataWithUserId(data.loadeddata).length;
   useEffect(() => {
     setCounter(count);
   }, [count]);

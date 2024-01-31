@@ -37,8 +37,8 @@ const SingleProduct = (props) => {
     let previousquantity = 0;
     if (userid) {
       cartdata.loadeddata.map((data) => {
-        if (data.itemdata.productid === productid) {
-          previousquantity = data.itemdata.quantity;
+        if (data.productid === productid) {
+          previousquantity = data.quantity;
           isdatarepeat = true;
           idtodelete = data.id;
         }

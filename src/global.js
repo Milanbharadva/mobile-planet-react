@@ -6,3 +6,6 @@ export function removeCouponFromLocalStorage() {
 export function getUserID() {
   return localStorage.getItem("userid");
 }
+export function filterDataWithUserId(loadeddata) {
+  return loadeddata.filter((item) => item.userid === getUserID());
+}
