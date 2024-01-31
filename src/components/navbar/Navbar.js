@@ -4,11 +4,10 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { useFetch } from "../../hook/usefetch";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getUserID } from "../../global";
+import { notifylogout } from "../../toast";
 const Navbar = (props) => {
-  const notify = () => toast.warning("Logout sucessfully");
   const handleclick = () => {
     setClick(!click);
   };
@@ -76,7 +75,7 @@ const Navbar = (props) => {
                   setClick(false);
                   props.onchange();
                   localStorage.removeItem("userid");
-                  notify();
+                  notifylogout();
                 }}
               >
                 SIGN OUT
@@ -173,7 +172,7 @@ const Navbar = (props) => {
                   onClick={() => {
                     props.onchange();
                     localStorage.removeItem("userid");
-                    notify();
+                    notifylogout();
                   }}
                 >
                   <li className="hover:text-[#F28123] transition [#F28123] cursor-pointer">

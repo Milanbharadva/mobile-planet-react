@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { notifyloginsucess, notifywrongemail } from "../../../toast";
 const AdminLogIn = (props) => {
-  const notify = () => toast.error("Wrong Email or Password");
-  const notify2 = () => toast.success("Login sucessful");
-
   document.title = "Mobile Planet | Sign In";
 
   const { loadeddata } = useFetch("admin");
@@ -38,12 +35,12 @@ const AdminLogIn = (props) => {
       if (items.length > 0) {
         items.map((userdata) => {
           localStorage.setItem("adminid", userdata.data.ID);
-          notify2();
+          notifyloginsucess();
           navigate("/admin");
           return 0;
         });
       } else {
-        notify();
+        notifywrongemail();
       }
     }
   };

@@ -1,12 +1,12 @@
 import { db } from "../../../Firebase/fiirebase";
 import React, { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { updateDoc, doc } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
 import AdminNavbar from "../AdminNavbar";
 import Loader from "../../../Loader";
+import { notifyproductupdated } from "../../../toast";
 const EditProduct = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -16,7 +16,6 @@ const EditProduct = () => {
     }
   }, [navigate]);
 
-  const notify = () => toast.success("Product updated sucessfully");
   const categoryarr = ["apple", "samsung", "oneplus"];
   const loadeddata = useFetch("product");
   const productforedit = loadeddata.loadeddata.filter(
@@ -60,7 +59,7 @@ const EditProduct = () => {
     formdata.productimage = imagePreview;
     const getproduct = doc(db, "product", state.productid);
     await updateDoc(getproduct, formdata);
-    notify();
+    notifyproductupdated("product");
     navigate("/admin/product");
   }
   const handleImageChange = () => {

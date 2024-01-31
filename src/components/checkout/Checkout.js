@@ -8,17 +8,15 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
-import { toast } from "react-toastify";
 import Profile from "../profile/Profile";
 import { getUserID, removeCouponFromLocalStorage } from "../../global";
 import { useNavigate } from "react-router-dom";
+import { orderSucessfull, orderplaceerror } from "../../toast";
 
 const Checkout = () => {
   let userid = getUserID();
   const navigate = useNavigate();
-  const orderSucessfull = () => toast.success("Order Placed Sucessfully");
-  const orderError = () =>
-    toast.error(" Error In Order Placed ! Please try agian later");
+ 
   document.title = "Mobile Planet | Checkout";
   const { loadeddata, isPending } = useFetch("cart");
   let data;
@@ -65,7 +63,7 @@ const Checkout = () => {
         removeCouponFromLocalStorage();
         navigate("/cart");
       } else {
-        orderError();
+        orderplaceerror();
       }
     });
   }

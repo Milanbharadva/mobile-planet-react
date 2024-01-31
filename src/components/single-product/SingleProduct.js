@@ -4,23 +4,21 @@ import { useNavigate } from "react-router-dom";
 
 import { useFetch } from "../../hook/usefetch";
 import { v4 as uuidv4 } from "uuid";
-import { toast } from "react-toastify";
 import { db } from "../../Firebase/fiirebase";
 import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
 import { getUserID } from "../../global";
+import {
+  notifyerroraddingcart,
+  notifylogintoaccess,
+  notifyproductaddded,
+  notifyquantityupdated,
+} from "../../toast";
 const SingleProduct = (props) => {
   let userid = getUserID();
   let productname;
   const navigate = useNavigate();
-  const notify = () =>
-    toast.success("Product added to cart", {
-      toastId: "sucess",
-    });
-  const notify2 = () => toast.warning("Please log in to add to cart");
-  const notify3 = () =>
-    toast.error("error in add to cart please try again later");
-  const notify4 = () => toast.success("item quantity updated sucessfully");
+
   const cartdata = useFetch("cart");
 
   useEffect(() => {
@@ -56,7 +54,7 @@ const SingleProduct = (props) => {
           await deleteDoc(doc(db, "cart", idtodelete));
           await addDoc(collection(db, "cart"), {
             itemdata,
-          }).then((data) => (data.id ? notify4() : ""));
+          }).then((data) => (data.id ? notifyquantityupdated() : ""));
         }
       } else {
         const itemdata = {
@@ -70,14 +68,14 @@ const SingleProduct = (props) => {
         }).then((res) => {
           if (res._key.path.segments[1] != null) {
             props.onchange();
-            notify();
+            notifyproductaddded();
           } else {
-            notify3();
+            notifyerroraddingcart();
           }
         });
       }
     } else {
-      notify2();
+      notifylogintoaccess();
     }
   }
   return (

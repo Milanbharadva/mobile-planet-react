@@ -1,12 +1,12 @@
 import { db } from "../../../Firebase/fiirebase";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { updateDoc, doc } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
 import AdminNavbar from "../AdminNavbar";
 import { milisecondtotime } from "../TImeConvertor";
+import { notifyproductupdated } from "../../../toast";
 const EditDiscount = () => {
   const { state } = useLocation();
   const [disable, setDisable] = useState(false);
@@ -17,7 +17,6 @@ const EditDiscount = () => {
     }
   }, [navigate]);
 
-  const notify = () => toast.success("Product updated sucessfully");
   const loadeddata = useFetch("discount");
   const productforedit = loadeddata.loadeddata.filter(
     (item) => item.id == state.discountid
@@ -49,7 +48,7 @@ const EditDiscount = () => {
     e.preventDefault();
     const getdiscount = doc(db, "discount", state.discountid);
     await updateDoc(getdiscount, formdata);
-    notify();
+    notifyproductupdated("discount");
     navigate("/admin/discount");
   }
   return (

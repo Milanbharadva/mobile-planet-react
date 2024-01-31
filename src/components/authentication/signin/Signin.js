@@ -1,15 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFetch } from "../../../hook/usefetch";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { notifyloginbeforecart, notifyloginsucess, notifytoSignin, notifywrongemail } from "../../../toast";
 const Signin = (props) => {
-  const notify = () => toast.error("Wrong Email or Password");
-  const notify2 = () => toast.success("Login sucessful");
-  const notifytoSignin = () =>
-    toast.success("Sign Up Sucessful please Sign In To Continue");
-  const notifyloginbeforecart = () =>
-    toast.error("Please Log In To Access Cart");
+ 
   const { state } = useLocation();
   document.title = "Mobile Planet | Sign In";
 
@@ -42,19 +37,18 @@ const Signin = (props) => {
     if (loadeddata != null) {
       let items = loadeddata.filter(
         (item) =>
-          item.email === formdata.email &&
-          item.password === formdata.password
+          item.email === formdata.email && item.password === formdata.password
       );
       if (items.length > 0) {
         items.map((userdata) => {
           localStorage.setItem("userid", userdata.ID);
           props.onchange();
-          notify2();
+          notifyloginsucess();
           navigate("/");
           return 0;
         });
       } else {
-        notify();
+        notifywrongemail();
       }
     }
   };

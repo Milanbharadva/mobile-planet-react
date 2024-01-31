@@ -4,10 +4,10 @@ import { AiOutlineClockCircle } from "react-icons/ai";
 import { FaAddressBook, FaMapMarkerAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import {  toast } from "react-toastify";
 import { db } from "../../Firebase/fiirebase";
 import { collection, addDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
+import { notifycontactsubmit } from "../../toast";
 const Contact = () => {
   const date = new Date();
   let currenttime =
@@ -22,8 +22,7 @@ const Contact = () => {
     date.getMinutes() +
     ":" +
     date.getSeconds();
-  const notify = () =>
-    toast.success("Your contact request is submitted successfully");
+ 
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,7 +44,7 @@ const Contact = () => {
     e.preventDefault();
     await addDoc(collection(db, "contact"), {
       formdata,
-    }).then((res) => (res._key.path.segments[1] != null ? notify() : ""));
+    }).then((res) => (res._key.path.segments[1] != null ? notifycontactsubmit() : ""));
     setFormdata(objstructure);
   };
   const handler = (e) => {

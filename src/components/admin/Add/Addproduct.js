@@ -1,10 +1,10 @@
 import { db } from "../../../Firebase/fiirebase";
 import React, { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import AdminNavbar from "../AdminNavbar";
+import { notifyproductaddedsuccess } from "../../../toast";
 const Addproduct = () => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -12,7 +12,6 @@ const Addproduct = () => {
       navigate("/admin/signin");
     }
   }, [navigate]);
-  const notify = () => toast.success("Product added");
   const categoryarr = [
     "Select category",
     "apple",
@@ -84,7 +83,7 @@ const Addproduct = () => {
         imgref.current.value = "";
         descriptionref.current.value = "";
         categoryref.current.value = categoryarr[0];
-        notify();
+        notifyproductaddedsuccess();
       }
     });
   }

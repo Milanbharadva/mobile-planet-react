@@ -8,10 +8,9 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
-import { toast } from "react-toastify";
 import { getUserID } from "../../global";
+import { notifyaddressupdated } from "../../toast";
 const Profile = () => {
-  const notifyupdated = () => toast.success("Address Updated Sucessfully");
   const [user, setUser] = useState({
     id: "",
     username: "",
@@ -64,7 +63,7 @@ const Profile = () => {
       country: user.country,
       state: user.state,
     });
-    notifyupdated();
+    notifyaddressupdated();
   }
 
   document.title = "Mobile Planet | Profile";

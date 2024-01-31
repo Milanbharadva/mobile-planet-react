@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoMdClose } from "react-icons/io";
 import { getUserID, removeCouponFromLocalStorage } from "../../global";
+import { notifycouponapplied, notifycouponexpired, notifymincartvalue, notifywrongcoupon } from "../../toast";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -34,19 +34,7 @@ const Cart = () => {
   const [discountbyanddiscount, setdiscountbyanddiscount] = useState(null);
   const [afterdiscountprice, setAfterDiscountprice] = useState(0);
   const discountdata = useFetch("discount");
-  const notifywrongcoupon = () => toast.error("Wrong Counpon Code");
-  const notifycouponexpired = () => toast.error("Sorry Counpon Is Expired");
-  const notifycouponapplied = (money) =>
-    toast.success(
-      " Coupon Applied Sucessfully You Saved " +
-        parseInt(money).toLocaleString() +
-        "₹"
-    );
-
-  const notifymincartvalue = (price) =>
-    toast.error(
-      `Minimum Cart Value Should be ${parseInt(price).toLocaleString()}`
-    );
+  
 
   let totalprice = 0;
   document.title = "Mobile Planet | Cart";

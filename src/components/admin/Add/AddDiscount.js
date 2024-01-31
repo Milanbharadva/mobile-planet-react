@@ -1,11 +1,11 @@
 import { db } from "../../../Firebase/fiirebase";
 import React, { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import AdminNavbar from "../AdminNavbar";
 import { milisecondtotime } from "../TImeConvertor";
+import { discountalreadyexist, notifydiscountadded } from "../../../toast";
 const AddDiscount = () => {
   const navigate = useNavigate();
   const discountInputRef = useRef(null);
@@ -28,7 +28,7 @@ const AddDiscount = () => {
     const { name, value } = e.target;
     setFormdata((prevformdata) => ({ ...prevformdata, [name]: value }));
   };
-  const notify = () => toast.success("Discount Code Added Sucessfully");
+
   async function validate(e) {
     e.preventDefault();
     const discountCodeExists = await checkDiscountCodeExists(
@@ -36,9 +36,7 @@ const AddDiscount = () => {
     );
 
     if (discountCodeExists) {
-      toast.error(
-        "Discount code already exists. Please choose a different code."
-      );
+      discountalreadyexist();
       return;
     }
 
@@ -59,7 +57,7 @@ const AddDiscount = () => {
               name: "",
               startDate: 0,
             });
-            notify();
+            notifydiscountadded();
             navigate("/admin/discount");
           }
         });
@@ -80,7 +78,7 @@ const AddDiscount = () => {
             name: "",
             startDate: 0,
           });
-          notify();
+          notifydiscountadded();
           navigate("/admin/discount");
         }
       });

@@ -1,12 +1,11 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { notifylogout } from "../../toast";
 
 const AdminNavbar = () => {
   const navigate = useNavigate();
-  const notify = () => toast.warning("Logout successfully");
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -70,7 +69,7 @@ const AdminNavbar = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     localStorage.removeItem("adminid");
-                    notify();
+                    notifylogout();
                     navigate("/admin");
                   }}
                 >
@@ -121,7 +120,7 @@ const AdminNavbar = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     localStorage.removeItem("adminid");
-                    notify();
+                    notifylogout();
                     navigate("/admin");
                   }}
                 >
