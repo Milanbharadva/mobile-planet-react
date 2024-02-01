@@ -69,7 +69,7 @@ const About = () => {
           </div>
         </div>
         <div className="lg:w-[50%]">
-          <img src={`${window.location.origin}/assets/about.jpg`} alt="" />
+          <img src={`${window.location.origin}/assets/about.jpg`} alt="about" />
         </div>
       </div>
 

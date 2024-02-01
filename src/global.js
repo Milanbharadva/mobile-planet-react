@@ -7,13 +7,7 @@ import {
 
 import { v4 as uuidv4 } from "uuid";
 import { db } from "./Firebase/fiirebase";
-import {
-  collection,
-  addDoc,
-  doc,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 export function removeCouponFromLocalStorage() {
   Object.keys(localStorage)
     .filter((item) => item.includes("discount"))
@@ -32,13 +26,10 @@ export async function addtocart(productid, cartdata) {
   let previousquantity = 0;
   if (userid) {
     cartdata.loadeddata.map((data) => {
-      console.log(data);
       if (data.productid === productid) {
         previousquantity = data.quantity;
-        console.log(data.quantity);
         isdatarepeat = true;
         idtoupdate = data.id;
-        console.log(data.id);
       }
     });
     if (isdatarepeat) {
@@ -46,7 +37,7 @@ export async function addtocart(productid, cartdata) {
         const getdocofcart = doc(db, "cart", idtoupdate);
 
         await updateDoc(getdocofcart, {
-          id: uuidv4(),
+          cartid: uuidv4(),
           userid: userid,
           productid: productid,
           quantity: previousquantity + 1,
@@ -55,13 +46,12 @@ export async function addtocart(productid, cartdata) {
       }
     } else {
       await addDoc(collection(db, "cart"), {
-        id: uuidv4(),
+        cartid: uuidv4(),
         userid: userid,
         productid: productid,
         quantity: 1,
       }).then((res) => {
         if (res._key.path.segments[1] != null) {
-          // props.onchange();
           notifyproductaddded();
         } else {
           notifyerroraddingcart();

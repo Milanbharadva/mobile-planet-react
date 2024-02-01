@@ -6,7 +6,7 @@ import { useFetch } from "../../hook/usefetch";
 import "react-toastify/dist/ReactToastify.css";
 import { addtocart } from "../../global";
 
-const SingleProduct = (props) => {
+const SingleProduct = () => {
   let productname;
   const navigate = useNavigate();
 
@@ -93,7 +93,7 @@ const SingleProduct = (props) => {
         {loadeddata.filter(
           (items) =>
             items.productname.toUpperCase() === productname.toUpperCase() &&
-            items.id != productid
+            items.id !== productid
         ).length > 0 && (
           <div className="mt-24">
             <h1 className="underline text-3xl underline-offset-4 decoration-[#F28123] flex justify-center items-center">
@@ -106,7 +106,7 @@ const SingleProduct = (props) => {
                     .filter(
                       (items) =>
                         items.productname.toUpperCase() ===
-                          productname.toUpperCase() && items.id != productid
+                          productname.toUpperCase() && items.id !== productid
                     )
                     .map((item) => (
                       <div

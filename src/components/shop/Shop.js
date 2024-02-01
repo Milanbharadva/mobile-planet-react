@@ -2,19 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../hook/usefetch";
 import { useEffect } from "react";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
-import { v4 as uuidv4 } from "uuid";
 import "react-toastify/dist/ReactToastify.css";
-import { db } from "../../Firebase/fiirebase";
-import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
-import { addtocart, getUserID } from "../../global";
-import {
-  notifyerroraddingcart,
-  notifylogintoaccess,
-  notifyproductaddded,
-  notifyquantityupdated,
-} from "../../toast";
-const Shop = (props) => {
-  let userid = getUserID();
+import { addtocart } from "../../global";
+const Shop = () => {
   const { loadeddata, error, isPending } = useFetch("product");
   const cartdata = useFetch("cart");
 
@@ -41,7 +31,7 @@ const Shop = (props) => {
             <div className="w-8 h-8 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
           </div>
         ) : (
-          loadeddata.length == 0 && (
+          loadeddata.length === 0 && (
             <h1 className="flex justify-center items-center text-xl font-bold text-red-700">
               Sorry! No Product Available
             </h1>

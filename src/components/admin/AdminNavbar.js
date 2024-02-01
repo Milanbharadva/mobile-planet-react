@@ -29,7 +29,7 @@ const AdminNavbar = () => {
               src={`${window.location.origin}/assets/logo.png`}
               width="150px"
               height="70px"
-              alt=""
+              alt="logo"
             />
           </span>
         </div>

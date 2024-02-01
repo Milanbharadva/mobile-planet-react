@@ -18,8 +18,8 @@ export const useFetch = (url) => {
             arr.push({ id: doc.id, ...doc.data() });
           });
           setLoadeddata(arr);
-          setIsPending(false); 
-          setError(null); 
+          setIsPending(false);
+          setError(null);
         });
       } catch (error) {
         setError(`${error} Could not Fetch Data `);

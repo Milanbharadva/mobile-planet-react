@@ -3,9 +3,8 @@ import { useFetch } from "../../hook/usefetch";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { addtocart } from "../../global";
-const Product = (props) => {
+const Product = () => {
   const cartdata = useFetch("cart");
-
 
   const navigator = useNavigate();
   let parameter = useParams();
@@ -58,11 +57,11 @@ const Product = (props) => {
                       item.productcolor
                     } , ${item.productrom}GB )`}</h2>
                     <ul className="flex flex-col gap-1">
-                      <li className="">{`${item.productram} GB RAM | ${item.productrom} GB ROM`}</li>
-                      <li className="">{item.productdisplay}</li>
-                      <li className="">{item.productcamera}</li>
-                      <li className="">{item.productbattery}</li>
-                      <li className="">{item.productprocessor}</li>
+                      <li>{`${item.productram} GB RAM | ${item.productrom} GB ROM`}</li>
+                      <li>{item.productdisplay}</li>
+                      <li>{item.productcamera}</li>
+                      <li>{item.productbattery}</li>
+                      <li>{item.productprocessor}</li>
                     </ul>
                   </div>
                   <div className="flex flex-col gap-3  items-center">

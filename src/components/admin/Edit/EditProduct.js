@@ -19,7 +19,7 @@ const EditProduct = () => {
   const categoryarr = ["apple", "samsung", "oneplus"];
   const loadeddata = useFetch("product");
   const productforedit = loadeddata.loadeddata.filter(
-    (item) => item.id == state.productid
+    (item) => item.id === state.productid
   )[0];
   const initialformdata = {
     productname: productforedit?.productname || "",
@@ -38,10 +38,10 @@ const EditProduct = () => {
   const imgref = useRef();
   const [disable, setDisable] = useState(false);
   useEffect(() => {
-    if (state && state.disablechange == true) {
+    if (state && state.disablechange === true) {
       setDisable(true);
     }
-  }, []);
+  }, [state]);
   const [formdata, setFormdata] = useState(initialformdata);
   const [imagePreview, setImagePreview] = useState(null);
   useEffect(() => {
@@ -180,7 +180,7 @@ const EditProduct = () => {
 
                   {formdata && (
                     <div className="w-full  items-center flex">
-                      <img src={imagePreview} alt="" className="h-32 " />
+                      <img src={imagePreview} alt="preview" className="h-32 " />
                     </div>
                   )}
                 </div>
