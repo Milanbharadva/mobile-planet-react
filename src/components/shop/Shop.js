@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import "react-toastify/dist/ReactToastify.css";
 import { db } from "../../Firebase/fiirebase";
 import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
-import { getUserID } from "../../global";
+import { addtocart, getUserID } from "../../global";
 import {
   notifyerroraddingcart,
   notifylogintoaccess,
@@ -17,54 +17,6 @@ const Shop = (props) => {
   let userid = getUserID();
   const { loadeddata, error, isPending } = useFetch("product");
   const cartdata = useFetch("cart");
-
-  async function addtocart(productid) {
-    let isdatarepeat = false;
-    let idtodelete;
-    let previousquantity = 0;
-    if (userid) {
-      cartdata.loadeddata.map((data) => {
-        if (data.productid == productid) {
-          previousquantity = data.quantity;
-          isdatarepeat = true;
-          idtodelete = data.id;
-        }
-      });
-      if (isdatarepeat) {
-        if (idtodelete != null) {
-          const itemdata = {
-            id: uuidv4(),
-            userid: userid,
-            productid: productid,
-            quantity: previousquantity + 1,
-          };
-          await deleteDoc(doc(db, "cart", idtodelete));
-          await addDoc(collection(db, "cart"), {
-            itemdata,
-          }).then((data) => (data.id ? notifyquantityupdated() : ""));
-        }
-      } else {
-        const itemdata = {
-          id: uuidv4(),
-          userid: userid,
-          productid: productid,
-          quantity: 1,
-        };
-        await addDoc(collection(db, "cart"), {
-          itemdata,
-        }).then((res) => {
-          if (res._key.path.segments[1] != null) {
-            props.onchange();
-            notifyproductaddded();
-          } else {
-            notifyerroraddingcart();
-          }
-        });
-      }
-    } else {
-      notifylogintoaccess();
-    }
-  }
 
   document.title = "Mobile Planet | Shop";
 
@@ -120,7 +72,7 @@ const Shop = (props) => {
                 </p>
                 <button
                   onClick={() => {
-                    addtocart(`${item.id}`);
+                    addtocart(`${item.id}`, cartdata);
                   }}
                   className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
                 >

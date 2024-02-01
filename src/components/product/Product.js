@@ -1,20 +1,11 @@
 import { useEffect } from "react";
 import { useFetch } from "../../hook/usefetch";
 import { useNavigate, useParams } from "react-router-dom";
-import { db } from "../../Firebase/fiirebase";
-import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
-import { v4 as uuidv4 } from "uuid";
 import "react-toastify/dist/ReactToastify.css";
-import { getUserID } from "../../global";
-import {
-  notifyerroraddingcart,
-  notifylogintoaccess,
-  notifyproductaddded,
-  notifyquantityupdated,
-} from "../../toast";
+import { addtocart } from "../../global";
 const Product = (props) => {
   const cartdata = useFetch("cart");
-  let userid = getUserID();
+
 
   const navigator = useNavigate();
   let parameter = useParams();
@@ -23,47 +14,6 @@ const Product = (props) => {
     window.scrollTo(0, 0);
   }, []);
   document.title = "Mobile Planet | Product";
-  async function addtocart(productid) {
-    let isdatarepeat = false;
-    let idtodelete;
-    let previousquantity = 0;
-    if (userid) {
-      cartdata.loadeddata.map((data) => {
-        if (data.productid == productid) {
-          previousquantity = data.quantity;
-          isdatarepeat = true;
-          idtodelete = data.id;
-        }
-      });
-      if (isdatarepeat) {
-        if (idtodelete != null) {
-          await deleteDoc(doc(db, "cart", idtodelete));
-          await addDoc(collection(db, "cart"), {
-            id: uuidv4(),
-            userid: userid,
-            productid: productid,
-            quantity: previousquantity + 1
-          }).then((data) => (data.id ? notifyquantityupdated() : ""));
-        }
-      } else {
-        await addDoc(collection(db, "cart"), {
-          id: uuidv4(),
-          userid: userid,
-          productid: productid,
-          quantity: 1,
-        }).then((res) => {
-          if (res._key.path.segments[1] != null) {
-            props.onchange();
-            notifyproductaddded();
-          } else {
-            notifyerroraddingcart();
-          }
-        });
-      }
-    } else {
-      notifylogintoaccess();
-    }
-  }
 
   const { error, isPending, loadeddata } = useFetch("product");
   return (
@@ -79,7 +29,7 @@ const Product = (props) => {
         <div className="flex items-center justify-center ">
           <div className="w-8 h-8 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
         </div>
-      ) : loadeddata.length == 0 ? (
+      ) : loadeddata.length === 0 ? (
         <h1 className="flex justify-center items-center text-xl font-bold text-red-700">
           Sorry! No Product Available
         </h1>
@@ -127,7 +77,7 @@ const Product = (props) => {
                     </button>
                     <button
                       onClick={() => {
-                        addtocart(item.id);
+                        addtocart(item.id, cartdata);
                       }}
                       className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"
                     >

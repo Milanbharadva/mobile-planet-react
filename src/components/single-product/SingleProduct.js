@@ -3,19 +3,10 @@ import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 
 import { useFetch } from "../../hook/usefetch";
-import { v4 as uuidv4 } from "uuid";
-import { db } from "../../Firebase/fiirebase";
-import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
-import { getUserID } from "../../global";
-import {
-  notifyerroraddingcart,
-  notifylogintoaccess,
-  notifyproductaddded,
-  notifyquantityupdated,
-} from "../../toast";
+import { addtocart } from "../../global";
+
 const SingleProduct = (props) => {
-  let userid = getUserID();
   let productname;
   const navigate = useNavigate();
 
@@ -31,53 +22,7 @@ const SingleProduct = (props) => {
   if (loadeddata != null) {
     var items = loadeddata.filter((item) => item.id === productid);
   }
-  async function addtocart(productid) {
-    let isdatarepeat = false;
-    let idtodelete;
-    let previousquantity = 0;
-    if (userid) {
-      cartdata.loadeddata.map((data) => {
-        if (data.productid === productid) {
-          previousquantity = data.quantity;
-          isdatarepeat = true;
-          idtodelete = data.id;
-        }
-      });
-      if (isdatarepeat) {
-        if (idtodelete != null) {
-          const itemdata = {
-            id: uuidv4(),
-            userid: userid,
-            productid: productid,
-            quantity: previousquantity + 1,
-          };
-          await deleteDoc(doc(db, "cart", idtodelete));
-          await addDoc(collection(db, "cart"), {
-            itemdata,
-          }).then((data) => (data.id ? notifyquantityupdated() : ""));
-        }
-      } else {
-        const itemdata = {
-          id: uuidv4(),
-          userid: userid,
-          productid: productid,
-          quantity: 1,
-        };
-        await addDoc(collection(db, "cart"), {
-          itemdata,
-        }).then((res) => {
-          if (res._key.path.segments[1] != null) {
-            props.onchange();
-            notifyproductaddded();
-          } else {
-            notifyerroraddingcart();
-          }
-        });
-      }
-    } else {
-      notifylogintoaccess();
-    }
-  }
+
   return (
     <>
       <div className="mt-10">
@@ -136,7 +81,7 @@ const SingleProduct = (props) => {
                   <button
                     className="buttons"
                     onClick={() => {
-                      addtocart(product.id);
+                      addtocart(product.id, cartdata);
                     }}
                   >
                     Add to cart
@@ -189,7 +134,7 @@ const SingleProduct = (props) => {
                         </p>
                         <button
                           onClick={() => {
-                            addtocart(`${item.id}`);
+                            addtocart(`${item.id}`, cartdata);
                           }}
                           className="buttons"
                         >
