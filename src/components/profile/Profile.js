@@ -1,15 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useFetch } from "../../hook/usefetch";
-import {
-  doc,
-  deleteDoc,
-  addDoc,
-  collection,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
 import { getUserID } from "../../global";
 import { notifyaddressupdated } from "../../toast";
+
 const Profile = () => {
   const [user, setUser] = useState({
     id: "",
@@ -21,25 +16,29 @@ const Profile = () => {
     country: "",
     state: "",
   });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   let userid = getUserID();
   const { loadeddata } = useFetch("user");
-  var items;
+
+  const itemsRef = useRef();
+
   useEffect(() => {
     if (loadeddata != null) {
-      items = loadeddata.filter((item) => item.ID === userid)[0];
-      if (items) {
+      itemsRef.current = loadeddata.filter((item) => item.ID === userid)[0];
+      if (itemsRef.current) {
         setUser({
-          id: items.id,
-          username: items.username,
-          email: items.email,
-          phone: items.phone,
-          address: items.address,
-          postal: items.postal,
-          country: items.country,
-          state: items.state,
+          id: itemsRef.current.id,
+          username: itemsRef.current.username,
+          email: itemsRef.current.email,
+          phone: itemsRef.current.phone,
+          address: itemsRef.current.address,
+          postal: itemsRef.current.postal,
+          country: itemsRef.current.country,
+          state: itemsRef.current.state,
         });
       }
     }
@@ -100,6 +99,7 @@ const Profile = () => {
               name="phone"
               value={user.phone}
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -110,6 +110,7 @@ const Profile = () => {
               name="address"
               value={user.address}
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -120,6 +121,7 @@ const Profile = () => {
               name="postal"
               value={user.postal}
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex gap-3">
@@ -131,6 +133,7 @@ const Profile = () => {
                 name="country"
                 value={user.country}
                 onChange={handleChange}
+                required
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -141,6 +144,7 @@ const Profile = () => {
                 name="state"
                 value={user.state}
                 onChange={handleChange}
+                required
               />
             </div>
           </div>

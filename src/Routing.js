@@ -23,6 +23,7 @@ import Discount from "./components/admin/Discount";
 import EditDiscount from "./components/admin/Edit/EditDiscount";
 import AddDiscount from "./components/admin/Add/AddDiscount";
 import Loader from "./Loader";
+import Order from "./components/order/Order";
 const Routing = () => {
   const [userstatus, setUserstatus] = useState(false);
   const [onlinestatus, setonlinestatus] = useState(navigator.onLine);
@@ -84,6 +85,7 @@ const Routing = () => {
             <Route exact path="/cart" element={<Cart />} />
             <Route exact path="/profile" element={<Profile />} />
             <Route exact path="/checkout" element={<Checkout />} />
+            <Route exact path="/orders" element={<Order />} />
             <Route
               exact
               path="/singleproduct/:id"
