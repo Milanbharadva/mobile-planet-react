@@ -66,7 +66,7 @@ const Checkout = () => {
         });
       }
     }
-  }, [userdata.loadeddata]);
+  }, [userdata.loadeddata, userid]);
 
   const handleChange = (e) => {
     setUser({
@@ -94,12 +94,12 @@ const Checkout = () => {
 
   let filtereduserdata =
     userdata.loadeddata &&
-    userdata.loadeddata.filter((item) => item.ID == getUserID())[0];
+    userdata.loadeddata.filter((item) => item.ID === getUserID())[0];
   let data;
   if (loadeddata) {
     data = loadeddata && filterDataWithUserId(loadeddata);
   }
-  const productdata = useFetch("product");
+  const { loadeddata: productdata } = useFetch("product");
   let totalprice = 0;
   let orderobj = {};
   async function addOrder() {
@@ -156,10 +156,7 @@ const Checkout = () => {
       return;
     } else {
       let filteredproductdata = data.map(
-        (item) =>
-          productdata.loadeddata.filter(
-            (items) => items.id === item.productid
-          )[0]
+        (item) => productdata.filter((items) => items.id === item.productid)[0]
       );
       let discountcode = localStorage.getItem("discountcode") || "";
       let discountprice = localStorage.getItem("discountprice") || "";
@@ -169,6 +166,7 @@ const Checkout = () => {
       data.map((item, index) => (orderobj[`cartitem${index + 1}`] = item));
       let products = filteredproductdata.map((item) => item.id);
       orderobj["productsincart"] = products;
+      orderobj["orderID"] = Math.floor(Math.random() * 10000000);
       orderobj["address"] = {
         adddress: filtereduserdata.address,
         country: filtereduserdata.country,
@@ -182,6 +180,7 @@ const Checkout = () => {
       if (discountcode !== "") {
         orderobj["discountprice"] = discountprice;
         orderobj["discountbyanddiscount"] = discountbyanddiscount;
+        orderobj["discountcode"] = discountcode;
         orderobj["totalpricetopay"] =
           parseInt(totalprice) - parseInt(discountprice);
       }
@@ -201,7 +200,7 @@ const Checkout = () => {
   }
   return (
     <div className="md:mx-20 mx-4 mt-10">
-      {!isPending && data.length == 0 ? (
+      {!isPending && data.length === 0 ? (
         <div className="flex flex-col  items-center">
           <h1 className="text-xl font-semibold ">No Item To Checkout!</h1>
           <button className="buttons" onClick={() => navigate("/shop")}>
@@ -340,7 +339,7 @@ const Checkout = () => {
                 </tr>
 
                 {data.map((item) => {
-                  let productdatafiltered = productdata.loadeddata.filter(
+                  let productdatafiltered = productdata.filter(
                     (items) => items.id === item.productid
                   )[0];
                   if (productdatafiltered) {
