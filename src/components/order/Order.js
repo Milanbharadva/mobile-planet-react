@@ -105,7 +105,7 @@ const Order = () => {
                 </div>
                 {item.discountcode !== undefined ? (
                   <div>
-                    <p>Price :{parseInt(item.totalprice).toLocaleString()}</p>
+                    <p>Price : {parseInt(item.totalprice).toLocaleString()}</p>
                     <p className="text-green-600">
                       Discount : {parseInt(item.discountprice).toLocaleString()}
                       ( -{item.discountbyanddiscount} )

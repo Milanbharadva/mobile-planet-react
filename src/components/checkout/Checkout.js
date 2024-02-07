@@ -22,6 +22,72 @@ import {
 
 const Checkout = () => {
   const navigate = useNavigate();
+  let state = ["Select State", "Gujarat", "Karnataka"];
+  let city = {
+    default: "Select City",
+    Gujarat: [
+      "Select City",
+      "Ahmedabad",
+      "Amreli district",
+      "Anand",
+      "Banaskantha",
+      "Bharuch",
+      "Bhavnagar",
+      "Dahod",
+      "The Dangs",
+      "Gandhinagar",
+      "Jamnagar",
+      "Junagadh",
+      "Kutch",
+      "Kheda",
+      "Mehsana",
+      "Narmada",
+      "Navsari",
+      "Patan",
+      "Panchmahal",
+      "Porbandar",
+      "Rajkot",
+      "Sabarkantha",
+      "Surendranagar",
+      "Surat",
+      "Vyara",
+      "Vadodara",
+      "Valsad",
+    ],
+    Karnataka: [
+      "Select City",
+      "Bagalkot",
+      "Bangalore Rural",
+      "Bangalore Urban",
+      "Belgaum",
+      "Bellary",
+      "Bidar",
+      "Bijapur",
+      "Chamarajnagar",
+      "Chikkamagaluru",
+      "Chikkaballapur",
+      "Chitradurga",
+      "Davanagere",
+      "Dharwad",
+      "Dakshina Kannada",
+      "Gadag",
+      "Gulbarga",
+      "Hassan",
+      "Haveri district",
+      "Kodagu",
+      "Kolar",
+      "Koppal",
+      "Mandya",
+      "Mysore",
+      "Raichur",
+      "Shimoga",
+      "Tumkur",
+      "Udupi",
+      "Uttara Kannada",
+      "Ramanagara",
+      "Yadgir",
+    ],
+  };
   const [user, setUser] = useState({
     id: "",
     username: "",
@@ -31,7 +97,15 @@ const Checkout = () => {
     postal: "",
     country: "",
     state: "",
+    city: "",
   });
+  const [selectedState, setSelectedState] = useState(user.state || state[0]);
+  const [selectedCity, setSelectedCity] = useState(
+    user.city && city[selectedState]?.includes(user.city)
+      ? user.city
+      : city.default
+  );
+
   const [errorMessages, setErrorMessages] = useState({
     username: "",
     phone: "",
@@ -39,6 +113,7 @@ const Checkout = () => {
     postal: "",
     country: "",
     state: "",
+    city: "",
   });
   document.title = "Mobile Planet | Checkout";
   //profile
@@ -47,7 +122,17 @@ const Checkout = () => {
   let userid = getUserID();
 
   const itemsRef = useRef();
-
+  const handleStateChange = (e) => {
+    const newState = e.target.value;
+    setSelectedState(newState);
+    setSelectedCity(city[newState][0]); // Set the city to the first city in the selected state
+    handleChange(e); // Update the user state in the form data
+  };
+  const handleCityChange = (e) => {
+    const newCity = e.target.value;
+    setSelectedCity(newCity);
+    handleChange(e); // Update the user city in the form data
+  };
   useEffect(() => {
     if (userdata.loadeddata != null) {
       itemsRef.current = userdata.loadeddata.filter(
@@ -63,7 +148,10 @@ const Checkout = () => {
           postal: itemsRef.current.postal,
           country: itemsRef.current.country,
           state: itemsRef.current.state,
+          city: itemsRef.current.city,
         });
+        setSelectedState(itemsRef.current.state);
+        setSelectedCity(itemsRef.current.city);
       }
     }
   }, [userdata.loadeddata, userid]);
@@ -77,7 +165,9 @@ const Checkout = () => {
 
   async function validate(e) {
     e.preventDefault();
+
     const getproduct = doc(db, "user", user.id);
+    console.log(user.city);
     await updateDoc(getproduct, {
       username: user.username,
       phone: user.phone,
@@ -85,10 +175,10 @@ const Checkout = () => {
       postal: user.postal,
       country: user.country,
       state: user.state,
+      city: user.city,
     });
     notifyaddressupdated();
   }
-  //profile
 
   const { loadeddata, isPending } = useFetch("cart");
 
@@ -152,6 +242,14 @@ const Checkout = () => {
       }));
       document.getElementsByName("state")[0].focus();
     }
+    if (user.city == " ") {
+      emptyFields.push("city");
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        state: "Please enter your city.",
+      }));
+      document.getElementsByName("city")[0].focus();
+    }
     if (emptyFields.length > 0) {
       return;
     } else {
@@ -213,15 +311,16 @@ const Checkout = () => {
             <div className="flex justify-center items-center">
               <div className="flex flex-col gap-3 items-center border border-black sm:px-10 sm:py-5">
                 <h2 className="text-xl font-bold">Profile Settings</h2>
-                <form onSubmit={validate} method="post">
-                  <div className="flex flex-col gap-2">
+                <form onSubmit={validate} className="" method="post">
+                  <div className="flex flex-col gap-2 px-2 items-center">
                     <label htmlFor="username">Name</label>
                     <input
                       type="text"
-                      className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
+                      className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 py-4 pl-1.5 "
                       name="username"
                       value={user.username}
                       onChange={handleChange}
+                      required
                     />
                     {errorMessages.username && (
                       <div className="text-red-500">
@@ -229,21 +328,21 @@ const Checkout = () => {
                       </div>
                     )}
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 items-center">
                     <label htmlFor="email">Email</label>
                     <input
                       type="text"
-                      className="h-5  w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
+                      className="h-5  w-[270px] sm:w-[300px] mb-5 md:mb-0 py-4 pl-1.5 "
                       name="email"
                       value={user.email}
                       disabled
                     />
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 items-center">
                     <label htmlFor="phone">Mobile Number</label>
                     <input
                       type="number"
-                      className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
+                      className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 py-4 pl-1.5 "
                       name="phone"
                       value={user.phone}
                       onChange={handleChange}
@@ -253,27 +352,27 @@ const Checkout = () => {
                       <div className="text-red-500">{errorMessages.phone}</div>
                     )}
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 items-center">
                     <label htmlFor="address">Address</label>
                     <input
                       type="text"
-                      className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
+                      className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 py-4 pl-1.5 "
                       name="address"
                       value={user.address}
                       onChange={handleChange}
                       required
-                    />{" "}
+                    />
                     {errorMessages.address && (
                       <div className="text-red-500">
                         {errorMessages.address}
                       </div>
                     )}
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 items-center">
                     <label htmlFor="postal">Postal Code</label>
                     <input
                       type="number"
-                      className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
+                      className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 py-4 pl-1.5 "
                       name="postal"
                       value={user.postal}
                       onChange={handleChange}
@@ -283,41 +382,71 @@ const Checkout = () => {
                       <div className="text-red-500">{errorMessages.postal}</div>
                     )}
                   </div>
-                  <div className="flex gap-3">
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="country">Country</label>
-                      <input
-                        type="text"
-                        className="h-5 w-[130px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
-                        name="country"
-                        value={user.country}
-                        onChange={handleChange}
-                        required
-                      />
-                      {errorMessages.country && (
-                        <div className="text-red-500">
-                          {errorMessages.country}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="state">State</label>
-                      <input
-                        type="text"
-                        className="h-5 w-[130px] mb-5 md:mb-0 mr-4 py-4 pl-1.5 "
-                        name="state"
-                        value={user.state}
-                        onChange={handleChange}
-                        required
-                      />
-                      {errorMessages.state && (
-                        <div className="text-red-500">
-                          {errorMessages.state}
-                        </div>
-                      )}
-                    </div>
+
+                  <div className="flex flex-col gap-2 items-center">
+                    <label htmlFor="country">Country</label>
+                    <input
+                      type="text"
+                      className="h-5 w-[270px] sm:w-[300px] mb-5 md:mb-0 py-4 pl-1.5 "
+                      name="country"
+                      value={user.country}
+                      onChange={handleChange}
+                      required
+                    />
+                    {errorMessages.country && (
+                      <div className="text-red-500">
+                        {errorMessages.country}
+                      </div>
+                    )}
                   </div>
-                  <button className="buttons" type="submit">
+
+                  <div className="flex flex-col gap-2 items-center">
+                    <label htmlFor="state">State</label>
+                    <select
+                      name="state"
+                      id="state"
+                      className="h-8 w-[270px] sm:w-[300px] mb-5 md:mb-0"
+                      onChange={handleStateChange}
+                      value={selectedState}
+                      required
+                    >
+                      {state.map((item, index) => (
+                        <option value={item} key={item} disabled={index === 0}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                    {errorMessages.state && (
+                      <div className="text-red-500">{errorMessages.state}</div>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2 items-center">
+                    <label htmlFor="city">City</label>
+                    <select
+                      name="city"
+                      id="city"
+                      className="h-8 w-[270px] sm:w-[300px] mb-5 md:mb-0"
+                      onChange={handleCityChange}
+                      value={selectedCity != "" ? selectedCity : city.default}
+                      required
+                    >
+                      {selectedState !== "Select State" ? (
+                        city[selectedState].map((item, index) => (
+                          <option
+                            value={item}
+                            key={item}
+                            disabled={index === 0}
+                          >
+                            {item}
+                          </option>
+                        ))
+                      ) : (
+                        <option>No City Available</option>
+                      )}
+                    </select>
+                  </div>
+
+                  <button className="buttons mx-auto flex mb-2" type="submit">
                     Update Profile
                   </button>
                 </form>
