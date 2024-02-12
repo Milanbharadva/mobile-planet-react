@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useFetch } from "../../hook/usefetch";
 import "react-toastify/dist/ReactToastify.css";
-import { addtocart } from "../../global";
+import { addtocart, localStringConverter } from "../../global";
 
 const SingleProduct = () => {
   let productname;
@@ -44,7 +44,7 @@ const SingleProduct = () => {
                   {(productname = product.productname.toUpperCase())}
                 </h2>
                 <p className="text-xl font-bold">
-                  PRICE : {parseInt(product.productprice).toLocaleString()}
+                  PRICE : {localStringConverter(product.productprice)}
                 </p>
                 <p className="text-xl font-bold">
                   RAM : {product.productram}GB
@@ -130,7 +130,7 @@ const SingleProduct = () => {
                           {item.productcolor.toUpperCase()}
                         </p>
                         <p className="text-xl font-semibold">
-                          {parseInt(item.productprice).toLocaleString()}₹
+                          {localStringConverter(item.productprice)}₹
                         </p>
                         <button
                           onClick={() => {

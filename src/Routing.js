@@ -24,6 +24,7 @@ import EditDiscount from "./components/admin/Edit/EditDiscount";
 import AddDiscount from "./components/admin/Add/AddDiscount";
 import Loader from "./Loader";
 import Order from "./components/order/Order";
+import Orders from "./components/admin/Orders";
 const Routing = () => {
   const [userstatus, setUserstatus] = useState(false);
   const [onlinestatus, setonlinestatus] = useState(navigator.onLine);
@@ -56,6 +57,7 @@ const Routing = () => {
             <Route path="/admin/signin" element={<AdminLogIn />} />
             <Route path="/admin/product" element={<AdminProduct />} />
             <Route path="/admin/discount" element={<Discount />} />
+            <Route path="/admin/orders" element={<Orders />} />
             <Route path="/admin/editproduct" element={<EditProduct />} />
             <Route path="/admin/editdiscount" element={<EditDiscount />} />
             <Route exact path="/admin/addproduct" element={<Addproduct />} />

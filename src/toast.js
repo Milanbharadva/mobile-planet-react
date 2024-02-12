@@ -1,9 +1,10 @@
 import { toast } from "react-toastify";
+import { localStringConverter } from "./global";
 export const notifyproductaddded = () => toast.success("Product added to cart");
 export const notifyquantityupdated = () =>
-  toast.success("item quantity updated sucessfully");
+  toast.success("Item Quantity Updated Sucessfully");
 export const notifylogintoaccess = () =>
-  toast.warning("Please log in to add to cart");
+  toast.warning("Please Log In To Add To Cart");
 export const notifyerroraddingcart = () =>
   toast.error("error in add to cart please try again later");
 export const notifyproductaddedsuccess = () => toast.success("Product added");
@@ -22,15 +23,15 @@ export const notifycouponexpired = () =>
   toast.error("Sorry Counpon Is Expired");
 export const notifycouponapplied = (money) =>
   toast.success(
-    " Coupon Applied Sucessfully You Saved " +
-      parseInt(money).toLocaleString() +
-      "₹"
+    " Coupon Applied Sucessfully You Saved " + localStringConverter(money) + "₹"
   );
+export const notifyOrderRemoved = () =>
+  toast.warning("Your Order Is Cancelled");
+export const notifyOrderRemovedError = () =>
+  toast.error("Error In Order cancelation Please Try Again Later");
 
 export const notifymincartvalue = (price) =>
-  toast.error(
-    `Minimum Cart Value Should be ${parseInt(price).toLocaleString()}`
-  );
+  toast.error(`Minimum Cart Value Should be ${localStringConverter(price)}`);
 export const notifywrongemail = () => toast.error("Wrong Email or Password");
 export const notifyloginsucess = () => toast.success("Login sucessful");
 export const notifytoSignin = () =>

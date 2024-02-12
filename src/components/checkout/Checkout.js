@@ -11,6 +11,7 @@ import { db } from "../../Firebase/fiirebase";
 import {
   filterDataWithUserId,
   getUserID,
+  localStringConverter,
   removeCouponFromLocalStorage,
 } from "../../global";
 import { useNavigate } from "react-router-dom";
@@ -266,7 +267,7 @@ const Checkout = () => {
       orderobj["productsincart"] = products;
       orderobj["orderID"] = Math.floor(Math.random() * 10000000);
       orderobj["address"] = {
-        adddress: filtereduserdata.address,
+        address: filtereduserdata.address,
         country: filtereduserdata.country,
         state: filtereduserdata.state,
         postal: filtereduserdata.postal,
@@ -494,7 +495,9 @@ const Checkout = () => {
                 })}
                 <tr className="text-center">
                   <td className="py-5 border">SubTotal</td>
-                  <td className="py-5 border">{totalprice.toLocaleString()}</td>
+                  <td className="py-5 border">
+                    {localStringConverter(totalprice)}
+                  </td>
                 </tr>
                 <tr className="text-center">
                   <td className="py-5 border">Shipping</td>

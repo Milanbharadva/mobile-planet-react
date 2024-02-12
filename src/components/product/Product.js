@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useFetch } from "../../hook/usefetch";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { addtocart } from "../../global";
+import { addtocart, localStringConverter } from "../../global";
 const Product = () => {
   const cartdata = useFetch("cart");
 
@@ -66,7 +66,7 @@ const Product = () => {
                   </div>
                   <div className="flex flex-col gap-3  items-center">
                     <h2 className="text-xl font-bold">
-                      {parseInt(item.productprice).toLocaleString()} ₹
+                      {localStringConverter(item.productprice)} ₹
                     </h2>
                     <button
                       className="text-white bg-[#F28123] h-[50px] w-[200px] rounded-[50px]"

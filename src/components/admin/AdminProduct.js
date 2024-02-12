@@ -7,6 +7,7 @@ import { useFetch } from "../../hook/usefetch";
 import Pagination from "./Pagination";
 import { db } from "../../Firebase/fiirebase";
 import { FaEye } from "react-icons/fa";
+import { localStringConverter } from "../../global";
 
 const AdminProduct = () => {
   const navigate = useNavigate();
@@ -245,9 +246,7 @@ const AdminProduct = () => {
                         </td>
                         <td className="whitespace-nowrap px-6 py-4">
                           <p className="inline-flex rounded-full bg-warning whitespace-nowrap bg-opacity-10 py-1 px-3 text-sm font-medium text-warning">
-                            {`${parseInt(
-                              item.productprice
-                            ).toLocaleString()} ₹`}
+                            {`${localStringConverter(item.productprice)} ₹`}
                           </p>
                         </td>
                         <td className="whitespace-nowrap px-6 py-4">

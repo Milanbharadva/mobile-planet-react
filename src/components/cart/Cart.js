@@ -10,6 +10,7 @@ import { IoMdClose } from "react-icons/io";
 import {
   filterDataWithUserId,
   getUserID,
+  localStringConverter,
   removeCouponFromLocalStorage,
 } from "../../global";
 import {
@@ -71,7 +72,7 @@ const Cart = () => {
         setDiscountprice(0);
         setdiscountbyanddiscount(null);
         setAfterDiscountprice(0);
-        notifymincartvalue(discountFilteredData.MinimumCart.toLocaleString());
+        notifymincartvalue(discountFilteredData.MinimumCart);
         removeCouponFromLocalStorage();
       } else {
         setdiscountdisable(true);
@@ -166,8 +167,7 @@ const Cart = () => {
                       if (productdatafiltered) {
                         totalprice =
                           totalprice +
-                          productdatafiltered.productprice *
-                            item.quantity;
+                          productdatafiltered.productprice * item.quantity;
                       }
                       return (
                         productdatafiltered && (
@@ -212,19 +212,16 @@ const Cart = () => {
                                 productdatafiltered.productname.toUpperCase()}
                             </td>
                             <td className="py-5 whitespace-nowrap px-2 border ">
-                              {parseInt(
+                              {localStringConverter(
                                 productdatafiltered.productprice
-                              ).toLocaleString()}
+                              )}
                               ₹
                             </td>
-                            <td className="py-5 border">
-                              {item.quantity}
-                            </td>
+                            <td className="py-5 border">{item.quantity}</td>
                             <td className="py-5 whitespace-nowrap px-2 border pr-2">
-                              {(
-                                productdatafiltered.productprice *
-                                item.quantity
-                              ).toLocaleString()}
+                              {localStringConverter(
+                                productdatafiltered.productprice * item.quantity
+                              )}
                               ₹
                             </td>
                           </tr>
@@ -288,18 +285,18 @@ const Cart = () => {
                   <tr className="text-center">
                     <td className="py-5 border">Subtotal</td>
                     <td className="py-5 border">
-                      {totalprice.toLocaleString()}₹
+                      {localStringConverter(totalprice)}₹
                     </td>
                   </tr>
                   <tr className="text-center">
                     <td className="py-5 border">Discount</td>
                     {discountprice == 0 ? (
                       <td className="py-5 border">
-                        {discountprice.toLocaleString()}₹
+                        {localStringConverter(discountprice)}₹
                       </td>
                     ) : (
                       <td className="py-5 border text-green-600">
-                        - {discountprice.toLocaleString()}₹{" "}
+                        - {localStringConverter(discountprice)}₹{" "}
                         {discountbyanddiscount != null &&
                           `(-${discountbyanddiscount})`}
                       </td>
@@ -313,11 +310,11 @@ const Cart = () => {
                     <td className="py-5 border">Total</td>
                     {afterdiscountprice == 0 ? (
                       <td className="py-5 border">
-                        {totalprice.toLocaleString()}₹
+                        {localStringConverter(totalprice)}₹
                       </td>
                     ) : (
                       <td className="py-5 border flex gap-2 justify-center items-center">
-                        {afterdiscountprice.toLocaleString()}₹
+                        {localStringConverter(afterdiscountprice)}₹
                       </td>
                     )}
                   </tr>

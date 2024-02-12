@@ -62,3 +62,6 @@ export async function addtocart(productid, cartdata) {
     notifylogintoaccess();
   }
 }
+export const localStringConverter = (number) => {
+  return parseInt(number).toLocaleString();
+};

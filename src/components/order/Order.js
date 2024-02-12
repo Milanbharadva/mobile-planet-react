@@ -1,8 +1,11 @@
 import React from "react";
 import { useFetch } from "../../hook/usefetch";
-import { filterDataWithUserId } from "../../global";
+import { filterDataWithUserId, localStringConverter } from "../../global";
 import { Link, useNavigate } from "react-router-dom";
 import { milisecondtotime } from "../admin/TImeConvertor";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../../Firebase/fiirebase";
+import { notifyOrderRemoved, notifyOrderRemovedError } from "../../toast";
 
 const Order = () => {
   const navigate = useNavigate();
@@ -48,10 +51,32 @@ const Order = () => {
                 className="flex border py-5 flex-col gap-5 mx-[32rem] px-5"
                 key={item.orderdate}
               >
-                <h1 className="text-2xl font-semibold">
-                  Order ID : {item.orderID}
-                </h1>
-                <p>Order Date & Time : {milisecondtotime(item.orderdate)}</p>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h1 className="text-2xl font-semibold">
+                      Order ID : {item.orderID}
+                    </h1>
+                    <p>
+                      Order Date & Time : {milisecondtotime(item.orderdate)}
+                    </p>
+                  </div>
+                  <div
+                    onClick={() => {
+                      if (
+                        window.confirm("Are You Sure You Want To Cancel Order?")
+                      ) {
+                        try {
+                          deleteDoc(doc(db, "orders", item.id));
+                          notifyOrderRemoved();
+                        } catch {
+                          notifyOrderRemovedError();
+                        }
+                      }
+                    }}
+                  >
+                    <button className="buttons">Cancel Order</button>
+                  </div>
+                </div>
                 <div className="flex flex-col gap-2 ">
                   {productdataofcart.map((product) => {
                     return (
@@ -76,7 +101,7 @@ const Order = () => {
                           </div>
                           <div>
                             <p className="font-semibold">
-                              {parseInt(product.productprice).toLocaleString()}{" "}
+                              {localStringConverter(product.productprice)}{" "}
                               ₹
                             </p>
                             {item.productsincart.length > 1 ? (
@@ -105,14 +130,14 @@ const Order = () => {
                 </div>
                 {item.discountcode !== undefined ? (
                   <div>
-                    <p>Price : {parseInt(item.totalprice).toLocaleString()}</p>
+                    <p>Price : {localStringConverter(item.totalprice)}</p>
                     <p className="text-green-600">
-                      Discount : {parseInt(item.discountprice).toLocaleString()}
+                      Discount : {localStringConverter(item.discountprice)}
                       ( -{item.discountbyanddiscount} )
                     </p>
                     <p>
                       Total Amount :{" "}
-                      {parseInt(item.totalpricetopay).toLocaleString()}
+                      {localStringConverter(item.totalpricetopay)}
                     </p>
                   </div>
                 ) : (

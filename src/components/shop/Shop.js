@@ -3,7 +3,7 @@ import { useFetch } from "../../hook/usefetch";
 import { useEffect } from "react";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
 import "react-toastify/dist/ReactToastify.css";
-import { addtocart } from "../../global";
+import { addtocart, localStringConverter } from "../../global";
 const Shop = () => {
   const { loadeddata, error, isPending } = useFetch("product");
   const cartdata = useFetch("cart");
@@ -58,7 +58,7 @@ const Shop = () => {
                   {item.productname.toUpperCase()}
                 </h1>
                 <p className="text-xl font-semibold">
-                  {parseInt(item.productprice).toLocaleString()}₹
+                  {localStringConverter(item.productprice)}₹
                 </p>
                 <button
                   onClick={() => {
