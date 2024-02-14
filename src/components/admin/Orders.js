@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminNavbar from "./AdminNavbar";
 import { useFetch } from "../../hook/usefetch";
 import { deleteDoc, doc } from "firebase/firestore";
@@ -12,6 +12,7 @@ import { localStringConverter } from "../../global";
 const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemperpage, setitemperpage] = useState(2);
+  
   const [discountnamesearch, setdiscountnamesearch] = useState("");
   const navigate = useNavigate();
   const { loadeddata, isPending } = useFetch("orders");
@@ -82,9 +83,6 @@ const Orders = () => {
             <table className="min-w-full text-left text-sm font-light">
               <thead className="border-b font-medium dark:border-neutral-500">
                 <tr>
-                  <th className="px-6 py-4" scope="col">
-                    Delete
-                  </th>
                   <th className="px-6 py-4">ID</th>
                   <th className="px-6 py-4">Date</th>
                   <th className="px-6 py-4">Item</th>
@@ -94,35 +92,43 @@ const Orders = () => {
                   <th className="px-6 py-4">Delivery</th>
                   <th className="px-6 py-4">Address</th>
                   <th className="px-6 py-4">Mobile</th>
+                  <th className="px-6 py-4">Print</th>
                 </tr>
               </thead>
               <tbody>
-                {paginatedProducts.map((item, index) => {
-                  const calculatedId =
-                    (currentPage - 1) * itemperpage + index + 1;
-                  console.log(item.address);
+                {paginatedProducts.map((item) => {
                   return (
                     <tr
                       className="border-b  dark:border-neutral-500"
                       key={item.id}
                     >
-                      <td
-                        className="whitespace-nowrap px-6 py-4"
-                        onClick={() => {
-                          navigate("/admin/editdiscount", {
-                            state: {
-                              discountid: item.id,
-                            },
-                          });
-                        }}
-                      >
-                        <MdEdit />
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {item.orderID}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4"></td>
                       <td className="whitespace-nowrap px-6 py-4">
                         {milisecondtotime(item.orderdate)}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4"></td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {item.products.map((singleitem, index) => (
+                          <React.Fragment key={index}>
+                            <span>
+                              {singleitem.product.productname}
+                              <br />
+                              {"RAM : " +
+                                singleitem.product.productram +
+                                " GB "}
+                              <br />
+                              {"ROM : " +
+                                singleitem.product.productrom +
+                                " GB "}
+                              <br />
+                              {"Quantity : " + singleitem.quantity}
+                              <br />
+                            </span>
+                            {item.products.length != index + 1 && <br />}
+                          </React.Fragment>
+                        ))}
+                      </td>
                       <td className="whitespace-nowrap px-6 py-4">
                         {localStringConverter(item.totalprice)}
                       </td>
@@ -134,10 +140,42 @@ const Orders = () => {
                       <td className="whitespace-nowrap px-6 py-4">
                         {item.discountprice
                           ? localStringConverter(item.totalpricetopay)
-                          : "0"}
+                          : localStringConverter(item.totalprice)}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
-                        {`${item.address.address} , ${item.address.country} , ${item.address.state} , ${item.address.postal}`}
+                        <select
+                          name="orderstatus"
+                          id="orderstatus"
+                          defaultValue={item.status}
+                          className="px-3 py-1 cursor-pointer font-bold"
+                          onChange={(e) => {
+                            if (
+                              window.confirm(
+                                "Are you sure you want to change order status"
+                              )
+                            ) {
+                              console.log(e.target.value);
+                            }
+                          }}
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Confirm">Confirm</option>
+                          <option value="Processing">Processing</option>
+                          <option value="Shipped">Shipped</option>
+                          <option value="Cancel">Cancel</option>
+                        </select>
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        <span>
+                          {item.address.address}
+                          <br />
+                          {"Country : " + item.address.country}
+                          <br />
+                          {"State : " + item.address.state}
+                          <br />
+                          {"Pin code : " + item.address.postal}
+                          <br />
+                        </span>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
                         {item.address.phone}
@@ -153,7 +191,9 @@ const Orders = () => {
                         //   });
                         // }}
                       >
-                        <div>Show</div>
+                        <div className="bg-[#F28123] text-center py-2 px-3 text-white font-bold rounded-lg">
+                          Print
+                        </div>
                       </td>
                     </tr>
                   );

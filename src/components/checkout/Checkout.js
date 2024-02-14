@@ -23,6 +23,7 @@ import {
 
 const Checkout = () => {
   const navigate = useNavigate();
+  let productarr = [];
   let state = ["Select State", "Gujarat", "Karnataka"];
   let city = {
     default: "Select City",
@@ -168,7 +169,7 @@ const Checkout = () => {
     e.preventDefault();
 
     const getproduct = doc(db, "user", user.id);
-    console.log(user.city);
+
     await updateDoc(getproduct, {
       username: user.username,
       phone: user.phone,
@@ -193,6 +194,7 @@ const Checkout = () => {
   const { loadeddata: productdata } = useFetch("product");
   let totalprice = 0;
   let orderobj = {};
+
   async function addOrder() {
     const emptyFields = [];
     if (!user.username) {
@@ -262,9 +264,17 @@ const Checkout = () => {
       let discountbyanddiscount =
         localStorage.getItem("discountbyanddiscount") || "";
 
-      data.map((item, index) => (orderobj[`cartitem${index + 1}`] = item));
-      let products = filteredproductdata.map((item) => item.id);
-      orderobj["productsincart"] = products;
+      data.map((item) => {
+        filteredproductdata.map((productitem) =>
+          productitem.id == item.productid
+            ? productarr.push({
+                product: productitem,
+                quantity: item.quantity,
+              })
+            : ""
+        );
+      });
+      orderobj["products"] = productarr;
       orderobj["orderID"] = Math.floor(Math.random() * 10000000);
       orderobj["address"] = {
         address: filtereduserdata.address,

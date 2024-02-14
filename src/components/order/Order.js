@@ -10,10 +10,10 @@ import { notifyOrderRemoved, notifyOrderRemovedError } from "../../toast";
 const Order = () => {
   const navigate = useNavigate();
   const { loadeddata, isPending } = useFetch("orders");
-  const { loadeddata: productdata } = useFetch("product");
-  const data = filterDataWithUserId(loadeddata);
-  let productwithquantityforsingle = [];
-  let productwithquantityformultiple = [];
+  const data = filterDataWithUserId(loadeddata).sort(
+    (a, b) => a.orderdate - b.orderdate
+  );
+
   return (
     <div className="mt-5">
       {!isPending && data.length === 0 ? (
@@ -26,26 +26,6 @@ const Order = () => {
       ) : (
         <div className="flex flex-col gap-10 px-5">
           {data.map((item) => {
-            const productdataofcart =
-              item.productsincart.length <= 1
-                ? productdata.filter((product) => {
-                    productwithquantityforsingle = {
-                      quantity: item.cartitem1.quantity,
-                      productid: item.cartitem1.productid,
-                    };
-                    return product.id === item.productsincart[0];
-                  })
-                : item.productsincart.map((productId, index) => {
-                    index++;
-                    productwithquantityformultiple.push({
-                      quantity: item["cartitem" + index].quantity,
-                      productid: item["cartitem" + index].productid,
-                    });
-                    return productdata.find(
-                      (product) => product.id === productId
-                    );
-                  });
-
             return (
               <div
                 className="flex border py-5 flex-col gap-5 mx-[32rem] px-5"
@@ -78,50 +58,38 @@ const Order = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 ">
-                  {productdataofcart.map((product) => {
+                  {item.products.map((product) => {
                     return (
                       <Link
-                        to={`/singleproduct/${product.id}`}
-                        key={product.id}
+                        to={`/singleproduct/${product.product.id}`}
+                        key={product.product.id}
                       >
                         <div className="flex justify-between items-center border px-3">
                           <div className="flex gap-3 items-center ">
                             <img
-                              src={product.productimage}
+                              src={product.product.productimage}
                               alt=""
                               className="h-[80px] p-1"
                             />
                             <div>
-                              <p>{product.productname}</p>
+                              <p>{product.product.productname}</p>
                               <p className="text-sm text-gray-500">
-                                {product.productcolor} | {product.productram} GB
-                                | {product.productrom} GB
+                                {product.product.productcolor} |{" "}
+                                {product.product.productram} GB |{" "}
+                                {product.product.productrom} GB
                               </p>
                             </div>
                           </div>
                           <div>
                             <p className="font-semibold">
-                              {localStringConverter(product.productprice)}{" "}
+                              {localStringConverter(
+                                product.product.productprice
+                              )}{" "}
                               ₹
                             </p>
-                            {item.productsincart.length > 1 ? (
-                              productwithquantityformultiple.map(
-                                (item, index) =>
-                                  item.productid === product.id && (
-                                    <p
-                                      className="text-sm text-gray-500"
-                                      key={index}
-                                    >
-                                      Qty : {item.quantity}
-                                    </p>
-                                  )
-                              )
-                            ) : (
-                              <p className="text-sm text-gray-500">
-                                Quantity :
-                                {productwithquantityforsingle.quantity}
-                              </p>
-                            )}
+                            <p className="text-sm text-gray-500">
+                              Qty : {product.quantity}
+                            </p>
                           </div>
                         </div>
                       </Link>
@@ -132,17 +100,18 @@ const Order = () => {
                   <div>
                     <p>Price : {localStringConverter(item.totalprice)}</p>
                     <p className="text-green-600">
-                      Discount : {localStringConverter(item.discountprice)}
-                      ( -{item.discountbyanddiscount} )
+                      Discount : {localStringConverter(item.discountprice)}( -
+                      {item.discountbyanddiscount} )
                     </p>
                     <p>
-                      Total Amount :{" "}
-                      {localStringConverter(item.totalpricetopay)}
+                      Total Amount :{localStringConverter(item.totalpricetopay)}
                     </p>
                   </div>
                 ) : (
                   <div>
-                    <p> Total Amount : {item.totalprice}</p>
+                    <p>
+                      Total Amount : {localStringConverter(item.totalprice)}
+                    </p>
                   </div>
                 )}
               </div>
@@ -153,5 +122,4 @@ const Order = () => {
     </div>
   );
 };
-
 export default Order;
