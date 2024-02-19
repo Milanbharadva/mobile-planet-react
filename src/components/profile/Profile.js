@@ -148,7 +148,7 @@ const Profile = () => {
               />
             </div>
           </div>
-          <button className="buttons" type="submit">
+          <button className="buttons mt-3" type="submit">
             Update Profile
           </button>
         </form>

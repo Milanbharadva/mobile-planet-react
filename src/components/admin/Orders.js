@@ -5,7 +5,6 @@ import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
 import { useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
-import { MdEdit } from "react-icons/md";
 import { milisecondtotime } from "./TImeConvertor";
 import { localStringConverter } from "../../global";
 
@@ -13,7 +12,6 @@ const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemperpage, setitemperpage] = useState(2);
 
-  const [discountnamesearch, setdiscountnamesearch] = useState("");
   const [orderdatesearch, setorderdatesearch] = useState(null);
   const navigate = useNavigate();
   const { loadeddata, isPending } = useFetch("orders");
@@ -23,11 +21,7 @@ const Orders = () => {
     }
   }, [navigate]);
 
-  let filteredwithname = discountnamesearch
-    ? loadeddata.filter((item) =>
-        item.name.toLowerCase().includes(discountnamesearch.toLowerCase())
-      )
-    : loadeddata;
+  let filteredwithname = loadeddata;
 
   if (orderdatesearch != null) {
     let todayDate = new Date();
@@ -87,7 +81,7 @@ const Orders = () => {
         </div>
         <div className="flex gap-2">
           <button
-            className="buttons"
+            className={`buttons ${orderdatesearch == "today" ? "activebutton" : ""}`}
             onClick={() => {
               setorderdatesearch("today");
             }}
@@ -95,7 +89,7 @@ const Orders = () => {
             Today
           </button>
           <button
-            className="buttons"
+            className={`buttons ${orderdatesearch == "week" ? "activebutton" : ""}`}
             onClick={() => {
               setorderdatesearch("week");
             }}
@@ -103,7 +97,7 @@ const Orders = () => {
             This Week
           </button>
           <button
-            className="buttons"
+            className={`buttons ${orderdatesearch == "month" ? "activebutton" : ""}`}
             onClick={() => {
               setorderdatesearch("month");
             }}
@@ -111,19 +105,27 @@ const Orders = () => {
             This Month
           </button>
           <button
-            className="buttons"
+            className={`buttons ${orderdatesearch == "year" ? "activebutton" : ""}`}
             onClick={() => {
               setorderdatesearch("year");
             }}
           >
             This Year
           </button>
+          <button
+            className={`buttons ${orderdatesearch == null ? "activebutton" : ""}`}
+            onClick={() => {
+              setorderdatesearch(null);
+            }}
+          >
+            All Orders
+          </button>
         </div>
         <div className="flex items-center justify-center">
           <button
             onClick={() => {
               setitemperpage(2);
-              setdiscountnamesearch("");
+              setorderdatesearch(null);
             }}
             className="border px-4 md:px-10 h-10 border-black"
           >
@@ -245,17 +247,7 @@ const Orders = () => {
                       <td className="whitespace-nowrap px-6 py-4">
                         {item.address.phone}
                       </td>
-                      <td
-                        className="whitespace-nowrap px-6 py-4 cursor-pointer"
-                        // onClick={() => {
-                        //   navigate("/admin/editdiscount", {
-                        //     state: {
-                        //       disablechange: true,
-                        //       discountid: item.id,
-                        //     },
-                        //   });
-                        // }}
-                      >
+                      <td className="whitespace-nowrap px-6 py-4 cursor-pointer">
                         <div className="bg-[#F28123] text-center py-2 px-3 text-white font-bold rounded-lg">
                           Print
                         </div>

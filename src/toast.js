@@ -1,23 +1,23 @@
 import { toast } from "react-toastify";
 import { localStringConverter } from "./global";
-export const notifyproductaddded = () => toast.success("Product added to cart");
+export const notifyproductaddded = () => toast.success("Product Added To Cart");
 export const notifyquantityupdated = () =>
   toast.success("Item Quantity Updated Sucessfully");
 export const notifylogintoaccess = () =>
   toast.warning("Please Log In To Add To Cart");
 export const notifyerroraddingcart = () =>
-  toast.error("error in add to cart please try again later");
+  toast.error("Error In Add To Cart Please Try Again Later");
 export const notifyproductaddedsuccess = () => toast.success("Product added");
 export const notifyaddressupdated = () =>
-  toast.success("Address Updated Sucessfully");
-export const notifylogout = () => toast.warning("Logout successfully");
+  toast.success("Profile Updated Sucessfully");
+export const notifylogout = () => toast.warning("Logout Successfully");
 export const notifyproductupdated = (item) =>
-  toast.success(`${item} updated sucessfully`);
+  toast.success(`${item} Updated Sucessfully`);
 export const notifycontactsubmit = () =>
-  toast.success("Your contact request is submitted successfully");
+  toast.success("Your Contact Request Is Submitted Successfully");
 export const orderSucessfull = () => toast.success("Order Placed Sucessfully");
 export const orderplaceerror = () =>
-  toast.error(" Error In Order Placed ! Please try agian later");
+  toast.error(" Error In Order Placed ! Please Try Again Later");
 export const notifywrongcoupon = () => toast.error("Wrong Counpon Code");
 export const notifycouponexpired = () =>
   toast.error("Sorry Counpon Is Expired");
@@ -41,4 +41,4 @@ export const notifyloginbeforecart = () =>
 export const notifydiscountadded = () =>
   toast.success("Discount Code Added Sucessfully");
 export const discountalreadyexist = () =>
-  toast.error("Discount code already exists. Please choose a different code.");
+  toast.error("Discount Code Already Exists. Please Choose a Different Code.");

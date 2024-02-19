@@ -120,7 +120,7 @@ const Contact = () => {
                   value={formdata.message}
                   required
                 ></textarea>
-                <button className="buttons">Submit</button>
+                <button className="buttons mt-3">Submit</button>
               </form>
             </div>
           </div>

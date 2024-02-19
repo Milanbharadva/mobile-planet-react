@@ -457,7 +457,7 @@ const Checkout = () => {
                     </select>
                   </div>
 
-                  <button className="buttons mx-auto flex mb-2" type="submit">
+                  <button className="buttons mx-auto flex mb-2 mt-3   " type="submit">
                     Update Profile
                   </button>
                 </form>
@@ -540,7 +540,7 @@ const Checkout = () => {
             </table>
             <div className="flex justify-center items-center">
               <button
-                className="buttons"
+                className="buttons mt-3"
                 onClick={() => {
                   addOrder();
                 }}

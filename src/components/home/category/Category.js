@@ -36,7 +36,7 @@ const Category = () => {
                 {item.categoryname}
               </h3>
 
-              <button className="buttons">Explore More</button>
+              <button className="buttons mt-3">Explore More</button>
             </div>
           );
         })}

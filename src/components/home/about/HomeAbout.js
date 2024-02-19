@@ -24,7 +24,7 @@ const HomeAbout = () => {
             onClick={() => {
               navigate("/about");
             }}
-            className="buttons"
+            className="buttons mt-3"
           >
             Know More
           </button>

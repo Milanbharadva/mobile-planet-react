@@ -26,6 +26,12 @@
   transition: all .1s;
 }
 
+.activebutton {
+  color: #F28123;
+  background-color: #051922;
+  transition: all .1s;
+}
+
 .icons {
   border: 2px #F28123 dotted;
   border-radius: 50%;
@@ -33,7 +39,9 @@
   height: fit-content;
 }
 
-input, textarea,select {
+input,
+textarea,
+select {
   border: 1px solid rgb(53, 52, 52);
 }
 

@@ -138,7 +138,7 @@ const Cart = () => {
           filterDataWithUserId(loadeddata).length == 0 && (
             <div className="flex flex-col  items-center">
               <h1 className="text-xl font-semibold ">Your Cart Is Empty!</h1>
-              <button className="buttons" onClick={() => navigate("/shop")}>
+              <button className="buttons mt-3" onClick={() => navigate("/shop")}>
                 Shop Now
               </button>
             </div>
@@ -323,7 +323,7 @@ const Cart = () => {
 
               <div className="text-center">
                 <button
-                  className="text-center buttons"
+                  className="text-center buttons mt-3"
                   onClick={() => {
                     navigate("/checkout");
                   }}
