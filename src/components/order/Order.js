@@ -19,7 +19,7 @@ const Order = () => {
       {!isPending && data.length === 0 ? (
         <div className="flex flex-col items-center">
           <h1 className="text-xl font-semibold">No Order Found!</h1>
-          <button className="buttons" onClick={() => navigate("/shop")}>
+          <button className="buttons mt-3" onClick={() => navigate("/shop")}>
             Order Now
           </button>
         </div>

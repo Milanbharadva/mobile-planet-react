@@ -79,7 +79,7 @@ const SingleProduct = () => {
                 </p>
                 <div>
                   <button
-                    className="buttons"
+                    className="buttons mt-2"
                     onClick={() => {
                       addtocart(product.id, cartdata);
                     }}

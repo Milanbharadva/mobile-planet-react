@@ -6,7 +6,7 @@ const Error = () => {
     <div className="flex mt-5 gap-3 flex-col justify-center items-center">
       <h1 className="text-3xl font-bold text-red-700">Page not found</h1>
       <button
-        className="buttons "
+        className="buttons mt-3"
         onClick={() => {
           navigate("/");
         }}
