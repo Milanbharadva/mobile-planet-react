@@ -28,10 +28,10 @@ const Order = () => {
           {data.map((item) => {
             return (
               <div
-                className="flex border py-5 flex-col gap-5 mx-[32rem] px-5"
+                className="flex border py-5 flex-col gap-5 sm:mx-[2rem] md:mx-[10rem] lg:mx-[32rem] px-5"
                 key={item.orderdate}
               >
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center md:flex-row flex-col">
                   <div>
                     <h1 className="text-2xl font-semibold">
                       Order ID : {item.orderID}
@@ -64,8 +64,8 @@ const Order = () => {
                         to={`/singleproduct/${product.product.id}`}
                         key={product.product.id}
                       >
-                        <div className="flex justify-between items-center border px-3">
-                          <div className="flex gap-3 items-center ">
+                        <div className="flex justify-between items-center border md:px-3 px-1">
+                          <div className="flex gap-1 md:gap-3 items-center ">
                             <img
                               src={product.product.productimage}
                               alt=""
@@ -113,6 +113,32 @@ const Order = () => {
                       Total Amount : {localStringConverter(item.totalprice)}
                     </p>
                   </div>
+                )}
+                {item.status.toLowerCase() != "cancel" ? (
+                  <div className="w-full flex gap-1 h-fit text-center text-white">
+                    <div
+                      className={` w-1/4 ${item.status.toLowerCase() == "pending" || item.status.toLowerCase() == "confirm" || item.status.toLowerCase() == "processing" || item.status.toLowerCase() == "shipped" ? "bg-[#F28123]" : "text-gray-400"}`}
+                    >
+                      <span> Pending</span>
+                    </div>
+                    <div
+                      className={` w-1/4 ${item.status.toLowerCase() == "confirm" || item.status.toLowerCase() == "processing" || item.status.toLowerCase() == "shipped" ? "bg-[#F28123]" : "text-gray-400"}`}
+                    >
+                      <span>Confirm</span>
+                    </div>
+                    <div
+                      className={`w-1/4 ${item.status.toLowerCase() == "processing" || item.status.toLowerCase() == "shipped" ? "bg-[#F28123]" : "text-gray-400"}`}
+                    >
+                      <span>Processing</span>
+                    </div>
+                    <div
+                      className={` w-1/4 ${item.status.toLowerCase() == "shipped" ? "bg-[#F28123]" : "text-gray-400  "}`}
+                    >
+                      <span>Shipped</span>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-red-600">Your Order Is Cancelled</p>
                 )}
               </div>
             );

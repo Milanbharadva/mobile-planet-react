@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminNavbar from "./AdminNavbar";
 import { useFetch } from "../../hook/usefetch";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
 import { useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
@@ -12,8 +12,9 @@ import { localStringConverter } from "../../global";
 const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemperpage, setitemperpage] = useState(2);
-  
+
   const [discountnamesearch, setdiscountnamesearch] = useState("");
+  const [orderdatesearch, setorderdatesearch] = useState(null);
   const navigate = useNavigate();
   const { loadeddata, isPending } = useFetch("orders");
   useEffect(() => {
@@ -27,12 +28,38 @@ const Orders = () => {
         item.name.toLowerCase().includes(discountnamesearch.toLowerCase())
       )
     : loadeddata;
+
+  if (orderdatesearch != null) {
+    let todayDate = new Date();
+    let yesterdayTimestamp = todayDate.getTime() - 24 * 60 * 60 * 1000;
+    let weekTimestamp = todayDate.getTime() - 7 * 24 * 60 * 60 * 1000;
+    let monthTimestamp = todayDate.getTime() - 30 * 24 * 60 * 60 * 1000;
+    let yearTimestamp = todayDate.getTime() - 365 * 24 * 60 * 60 * 1000;
+    let yesterdayDate = new Date(yesterdayTimestamp);
+    let weekDate = new Date(weekTimestamp);
+    let monthDate = new Date(monthTimestamp);
+    let yearDate = new Date(yearTimestamp);
+
+    filteredwithname = loadeddata.filter((item) => {
+      if (orderdatesearch == "today") {
+        return item.orderdate > yesterdayDate;
+      } else if (orderdatesearch == "week") {
+        return item.orderdate > weekDate;
+      } else if (orderdatesearch == "month") {
+        return item.orderdate > monthDate;
+      } else if (orderdatesearch == "year") {
+        return item.orderdate > yearDate;
+      } else {
+        return item;
+      }
+    });
+  }
+
   var totalProducts = filteredwithname.length;
   var paginatedProducts = filteredwithname.slice(
     (currentPage - 1) * itemperpage,
     currentPage * itemperpage
   );
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -58,7 +85,40 @@ const Orders = () => {
             <option value="10">10</option>
           </select>
         </div>
-
+        <div className="flex gap-2">
+          <button
+            className="buttons"
+            onClick={() => {
+              setorderdatesearch("today");
+            }}
+          >
+            Today
+          </button>
+          <button
+            className="buttons"
+            onClick={() => {
+              setorderdatesearch("week");
+            }}
+          >
+            This Week
+          </button>
+          <button
+            className="buttons"
+            onClick={() => {
+              setorderdatesearch("month");
+            }}
+          >
+            This Month
+          </button>
+          <button
+            className="buttons"
+            onClick={() => {
+              setorderdatesearch("year");
+            }}
+          >
+            This Year
+          </button>
+        </div>
         <div className="flex items-center justify-center">
           <button
             onClick={() => {
@@ -124,6 +184,8 @@ const Orders = () => {
                               <br />
                               {"Quantity : " + singleitem.quantity}
                               <br />
+                              {"Color : " + singleitem.product.productcolor}
+                              <br />
                             </span>
                             {item.products.length != index + 1 && <br />}
                           </React.Fragment>
@@ -148,13 +210,16 @@ const Orders = () => {
                           id="orderstatus"
                           defaultValue={item.status}
                           className="px-3 py-1 cursor-pointer font-bold"
-                          onChange={(e) => {
+                          onChange={async (e) => {
                             if (
                               window.confirm(
                                 "Are you sure you want to change order status"
                               )
                             ) {
-                              console.log(e.target.value);
+                              const getproduct = doc(db, "orders", item.id);
+                              await updateDoc(getproduct, {
+                                status: e.target.value,
+                              });
                             }
                           }}
                         >

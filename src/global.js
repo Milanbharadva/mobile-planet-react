@@ -25,7 +25,7 @@ export async function addtocart(productid, cartdata) {
   let idtoupdate;
   let previousquantity = 0;
   if (userid) {
-    cartdata.loadeddata.map((data) => {
+    filterDataWithUserId(cartdata.loadeddata).map((data) => {
       if (data.productid === productid) {
         previousquantity = data.quantity;
         isdatarepeat = true;
