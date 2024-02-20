@@ -283,6 +283,7 @@ const Checkout = () => {
         postal: filtereduserdata.postal,
         phone: filtereduserdata.phone,
       };
+      orderobj["status"] = "pending";
       orderobj["orderdate"] = Date.parse(new Date());
       orderobj["userid"] = getUserID();
       orderobj["totalprice"] = totalprice;
@@ -457,7 +458,10 @@ const Checkout = () => {
                     </select>
                   </div>
 
-                  <button className="buttons mx-auto flex mb-2 mt-3   " type="submit">
+                  <button
+                    className="buttons mx-auto flex mb-2 mt-3   "
+                    type="submit"
+                  >
                     Update Profile
                   </button>
                 </form>
