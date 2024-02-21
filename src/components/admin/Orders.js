@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminNavbar from "./AdminNavbar";
 import { useFetch } from "../../hook/usefetch";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../Firebase/fiirebase";
 import { useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
@@ -79,9 +79,9 @@ const Orders = () => {
             <option value="10">10</option>
           </select>
         </div>
-        <div className="flex gap-2">
+        <div className="flex md:flex-row mx-24 md:mx-0 flex-col gap-2">
           <button
-            className={`buttons ${orderdatesearch == "today" ? "activebutton" : ""}`}
+            className={` buttons ${orderdatesearch == "today" ? "activebutton" : ""}`}
             onClick={() => {
               setorderdatesearch("today");
             }}
@@ -138,7 +138,7 @@ const Orders = () => {
           <div className="w-8 h-8 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
         </div>
       ) : totalProducts === 0 ? (
-        <h1 className="flex justify-center mt-10">No Data Available</h1>
+        <h1 className="flex justify-center mt-10">No Order Found</h1>
       ) : (
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="max-w-full overflow-x-auto">

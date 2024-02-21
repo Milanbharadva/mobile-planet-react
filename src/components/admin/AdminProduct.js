@@ -167,50 +167,20 @@ const AdminProduct = () => {
       ) : totalProducts === 0 ? (
         <h1 className="flex justify-center mt-10">No Data Available</h1>
       ) : (
-        <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+        <div className="rounded-sm border border-stroke bg-white px-1 md:px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="max-w-full overflow-x-auto">
             <table className="min-w-full text-left text-sm font-light">
-              <thead className="border-b font-medium dark:border-neutral-500">
+              <thead className="border-b text-center font-medium dark:border-neutral-500">
                 <tr>
-                  <th className="px-6 py-4">
-                    <div className="flex items-center">
-                      <span className="whitespace-nowrap"> ID</span>
-                    </div>
-                  </th>
-                  <th className="px-6 py-4">
-                    <div className="flex items-center">
-                      <span className="whitespace-nowrap"> Category Name</span>
-                    </div>
-                  </th>
-                  <th className="px-6 py-4">
-                    <div className="flex items-center">
-                      <span className="whitespace-nowrap"> Product Name</span>
-                    </div>
-                  </th>
-                  <th className="px-6 py-4">
-                    <div className="flex items-center">
-                      <span className="whitespace-nowrap"> Product Color</span>
-                    </div>
-                  </th>
-                  <th className="px-6 py-4">
-                    <div className="flex items-center">
-                      <span className="whitespace-nowrap"> Product Price</span>
-                    </div>
-                  </th>
-                  <th className="px-6 py-4">
-                    <div className="flex items-center">
-                      <span className="whitespace-nowrap"> Product RAM</span>
-                    </div>
-                  </th>
-                  <th className="px-6 py-4">
-                    <div className="flex items-center">
-                      <span className="whitespace-nowrap"> Product ROM</span>
-                    </div>
-                  </th>
+                  <th className="px-6 py-4">ID</th>
+                  <th className="px-6 py-4 whitespace-nowrap">Category</th>
+                  <th className="px-6 py-4">Name</th>
+                  <th className="px-6 py-4">Color</th>
+                  <th className="px-6 py-4">Price</th>
+                  <th className="px-6 py-4">RAM</th>
+                  <th className="px-6 py-4">ROM</th>
                   <th className="px-6 py-4">Show</th>
-                  <th className="px-6 py-4" scope="col">
-                    Delete
-                  </th>
+                  <th className="px-6 py-4">Delete</th>
                   <th className="px-6 py-4">Edit</th>
                 </tr>
               </thead>
@@ -221,7 +191,7 @@ const AdminProduct = () => {
                   return (
                     <>
                       <tr
-                        className="border-b  dark:border-neutral-500"
+                        className="border-b text-center  dark:border-neutral-500"
                         key={calculatedId}
                       >
                         <td className="whitespace-nowrap px-6 py-4">

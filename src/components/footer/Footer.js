@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#0c1923] text-white mt-28">
+    <footer className="bg-[#0c1923] text-white mt-20">
       <div className="flex py-24 px-8 flex-col md:flex-row lg:px-24 justify-center gap-10">
         <div className="md:w-[30%] flex flex-col gap-10">
           <h1 className="text-2xl font-semibold">About us</h1>

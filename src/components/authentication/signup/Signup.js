@@ -109,8 +109,7 @@ const Signup = () => {
               navigate("/signin");
             }}
           >
-            {" "}
-            Sign In{" "}
+            Sign In
           </button>
         </h2>
       </div>

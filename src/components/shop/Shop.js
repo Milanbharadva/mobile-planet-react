@@ -52,7 +52,7 @@ const Shop = () => {
                   onClick={() => {
                     navigate(`/singleproduct/${item.id}`);
                   }}
-                  className="cursor-pointer"
+                  className="cursor-pointer mx-3"
                 />
                 <h1 className="text-lg md:text-xl font-bold text-center">
                   {item.productname.toUpperCase()}

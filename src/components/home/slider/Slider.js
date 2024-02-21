@@ -1,6 +1,6 @@
-
 import React, { useState } from "react";
-
+import { FaAngleLeft } from "react-icons/fa";
+import { FaAngleRight } from "react-icons/fa";
 const images = ["apple.png", "samsung.png", "oneplus.png"];
 
 const Slider2 = () => {
@@ -39,7 +39,7 @@ const Slider2 = () => {
           onClick={prevImage}
           className="p-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-full focus:outline-none"
         >
-          Previous
+          <FaAngleLeft className="text-3xl" />
         </button>
       </div>
       <div className="absolute top-1/2 transform -translate-y-1/2 right-4">
@@ -47,7 +47,7 @@ const Slider2 = () => {
           onClick={nextImage}
           className="p-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-full focus:outline-none"
         >
-          Next
+          <FaAngleRight className="text-3xl" />
         </button>
       </div>
     </div>

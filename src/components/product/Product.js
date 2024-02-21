@@ -16,7 +16,7 @@ const Product = () => {
 
   const { error, isPending, loadeddata } = useFetch("product");
   return (
-    <div className="mt-10 md:mx-20 sm:mx-10 mx-3 lg:mx-20 xl:mx-48 ">
+    <div className="mt-10 md:mx-20 sm:mx-10 mx-5 lg:mx-20 xl:mx-48 ">
       {error && !isPending && (
         <div className="flex items-center justify-center">
           <h1 className="text-3xl font-semibold text-red-700">
@@ -33,22 +33,22 @@ const Product = () => {
           Sorry! No Product Available
         </h1>
       ) : (
-        <div>
+        <>
           {loadeddata &&
             loadeddata
               .filter((item) =>
                 category ? item.categoryname === category : item
               )
-              .map((item) => (
+              .map((item, index) => (
                 <div
                   key={item.id}
-                  className="flex justify-around py-5 border-2 items-center md:items-start md:flex-row flex-col gap-8"
+                  className={`flex justify-around py-5 ${index==loadeddata.length-1?"":"border-b-0"}  border-2 items-center md:items-start md:flex-row flex-col gap-8`}
                 >
                   <div className="lg:w-[20%] object-contain">
                     <img
                       src={`${item.productimage}`}
-                      height="200px"
-                      width="200px"
+                      height="280px"
+                      width="280px"
                       alt={item.productname}
                     />
                   </div>
@@ -85,7 +85,7 @@ const Product = () => {
                   </div>
                 </div>
               ))}
-        </div>
+        </>
       )}
     </div>
   );

@@ -192,7 +192,12 @@ const Navbar = (props) => {
                 </Link>
               ) : (
                 <NavLink to="/signin">
-                  <li className="hover:text-[#F28123] transition [#F28123] cursor-pointer">
+                  <li
+                    className="hover:text-[#F28123] transition [#F28123] cursor-pointer"
+                    onClick={() => {
+                      toggleMobileMenu();
+                    }}
+                  >
                     SIGN&nbsp;IN
                   </li>
                 </NavLink>
@@ -201,7 +206,7 @@ const Navbar = (props) => {
                 <li
                   className={`flex gap-0 justify-center ${
                     loadeddata &&
-                    loadeddata.filter((item) => item.ID === userid).length <
+                    loadeddata.filter((item) => item.ID === userid).length <=
                       0 &&
                     "mb-5"
                   } `}
