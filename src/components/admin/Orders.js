@@ -15,6 +15,7 @@ const Orders = () => {
   const [orderdatesearch, setorderdatesearch] = useState(null);
   const navigate = useNavigate();
   const { loadeddata, isPending } = useFetch("orders");
+  const productdata = useFetch("product");
   useEffect(() => {
     if (localStorage.getItem("adminid") === null) {
       navigate("/admin/signin");
@@ -81,7 +82,9 @@ const Orders = () => {
         </div>
         <div className="flex md:flex-row mx-24 md:mx-0 flex-col gap-2">
           <button
-            className={` buttons ${orderdatesearch == "today" ? "activebutton" : ""}`}
+            className={` buttons ${
+              orderdatesearch == "today" ? "activebutton" : ""
+            }`}
             onClick={() => {
               setorderdatesearch("today");
             }}
@@ -89,7 +92,9 @@ const Orders = () => {
             Today
           </button>
           <button
-            className={`buttons ${orderdatesearch == "week" ? "activebutton" : ""}`}
+            className={`buttons ${
+              orderdatesearch == "week" ? "activebutton" : ""
+            }`}
             onClick={() => {
               setorderdatesearch("week");
             }}
@@ -97,7 +102,9 @@ const Orders = () => {
             This Week
           </button>
           <button
-            className={`buttons ${orderdatesearch == "month" ? "activebutton" : ""}`}
+            className={`buttons ${
+              orderdatesearch == "month" ? "activebutton" : ""
+            }`}
             onClick={() => {
               setorderdatesearch("month");
             }}
@@ -105,7 +112,9 @@ const Orders = () => {
             This Month
           </button>
           <button
-            className={`buttons ${orderdatesearch == "year" ? "activebutton" : ""}`}
+            className={`buttons ${
+              orderdatesearch == "year" ? "activebutton" : ""
+            }`}
             onClick={() => {
               setorderdatesearch("year");
             }}
@@ -113,7 +122,9 @@ const Orders = () => {
             This Year
           </button>
           <button
-            className={`buttons ${orderdatesearch == null ? "activebutton" : ""}`}
+            className={`buttons ${
+              orderdatesearch == null ? "activebutton" : ""
+            }`}
             onClick={() => {
               setorderdatesearch(null);
             }}
@@ -171,27 +182,27 @@ const Orders = () => {
                         {milisecondtotime(item.orderdate)}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
-                        {item.products.map((singleitem, index) => (
-                          <React.Fragment key={index}>
-                            <span>
-                              {singleitem.product.productname}
-                              <br />
-                              {"RAM : " +
-                                singleitem.product.productram +
-                                " GB "}
-                              <br />
-                              {"ROM : " +
-                                singleitem.product.productrom +
-                                " GB "}
-                              <br />
-                              {"Quantity : " + singleitem.quantity}
-                              <br />
-                              {"Color : " + singleitem.product.productcolor}
-                              <br />
-                            </span>
-                            {item.products.length != index + 1 && <br />}
-                          </React.Fragment>
-                        ))}
+                        {item.products.map((singleitem, index) =>
+                          productdata.loadeddata
+                            .filter((items) => items.id == singleitem.productid)
+                            .map((product) => (
+                              <React.Fragment key={index}>
+                                <span>
+                                  {product.productname}
+                                  <br />
+                                  {"RAM : " + product.productram + " GB "}
+                                  <br />
+                                  {"ROM : " + product.productrom + " GB "}
+                                  <br />
+                                  {"Quantity : " + singleitem.quantity}
+                                  <br />
+                                  {"Color : " + product.productcolor}
+                                  <br />
+                                </span>
+                                {item.products.length != index + 1 && <br />}
+                              </React.Fragment>
+                            ))
+                        )}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
                         {localStringConverter(item.totalprice)}
